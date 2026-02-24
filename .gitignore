@@ -401,3 +401,6 @@ FodyWeavers.xsd
 # Custom: "nul" files
 nul
 **/nul
+
+# MCP configuration (local tool config)
+.mcp.json

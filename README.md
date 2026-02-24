@@ -13,7 +13,23 @@ Kompletne rozwiazanie .NET do integracji z **Krajowym Systemem e-Faktur (KSeF)**
 | **KSeF.Api** | Serwisy integracji z API KSeF - wysylanie i odbieranie faktur |
 | **KSeF.Invoice.Tests** | Testy jednostkowe dla KSeF.Invoice |
 | **KSeF.Api.Tests** | Testy jednostkowe dla KSeF.Api |
-| **Samples** | Przyklady uzycia |
+| **KSeF.Sample** | Przyklady uzycia KSeF.Invoice i KSeF.Api |
+
+---
+
+## Dokumentacja
+
+Pelna dokumentacja dostepna w katalogu [docs/](docs/):
+
+| Dokument | Opis |
+|----------|------|
+| [Pierwsze kroki](docs/getting-started.md) | Szybki start, instalacja, podstawowe uzycie |
+| [Architektura](docs/architecture.md) | Struktura projektu, wzorce, interfejsy |
+| [Typy faktur](docs/invoice-types.md) | Wszystkie 7 typow faktur z przykladami |
+| [API KSeF](docs/ksef-api.md) | Integracja z API: sesje, wysylanie, pobieranie |
+| [Walidacja](docs/validation.md) | Walidacja biznesowa i XSD |
+| [Testy](docs/testing.md) | Struktura testow i konwencje |
+| [Mapowanie pol XSD](docs/ksef_fa3_field_mappings.csv) | Mapowanie pol schematu FA(3) |
 
 ---
 
@@ -845,9 +861,11 @@ KSeF.sln
 │   │   └── IKsefInvoiceStatusService.cs  # Statusy faktur
 │   └── ServiceCollectionExtensions.cs # Rejestracja DI
 │
-├── KSeF.Invoice.Tests/                # Testy jednostkowe dla KSeF.Invoice
-├── KSeF.Api.Tests/                    # Testy jednostkowe dla KSeF.Api
-└── Samples/                           # Przyklady uzycia
+├── Tests/
+│   ├── KSeF.Invoice.Tests/            # Testy jednostkowe dla KSeF.Invoice
+│   └── KSeF.Api.Tests/               # Testy jednostkowe dla KSeF.Api
+├── KSeF.Sample/                       # Przyklady uzycia KSeF.Invoice i KSeF.Api
+└── docs/                              # Dokumentacja
 ```
 
 ### Glowne interfejsy
