@@ -1,0 +1,1187 @@
+{
+  "schemaInfo": {
+    "source": "http://crd.gov.pl/wzor/2025/06/25/13775/schemat.xsd",
+    "version": "FA(3) v1-0E",
+    "namespace": "http://crd.gov.pl/wzor/2025/06/25/13775/",
+    "description": "Schemat faktury VAT dla KSeF (Krajowy System e-Faktur)"
+  },
+
+  "entityMappings": {
+    "Podmiot1": {
+      "englishName": "Seller",
+      "description_pl": "Dane podatnika (sprzedawcy towarów lub usług)",
+      "description_en": "Taxpayer (seller) data - name and identification of goods/services seller"
+    },
+    "Podmiot2": {
+      "englishName": "Buyer",
+      "description_pl": "Dane nabywcy",
+      "description_en": "Buyer data - name and identification of goods/services buyer"
+    },
+    "Podmiot3": {
+      "englishName": "ThirdParty",
+      "description_pl": "Dane podmiotu trzeciego (innego niż sprzedawca i nabywca)",
+      "description_en": "Third party data (other than seller and buyer)",
+      "roles": {
+        "1": { "pl": "Faktor", "en": "Factor" },
+        "2": { "pl": "Odbiorca (jednostka wewnętrzna nabywcy)", "en": "Recipient (internal unit of buyer)" },
+        "3": { "pl": "Podmiot pierwotny (przejęty/przekształcony)", "en": "Original entity (acquired/transformed)" },
+        "4": { "pl": "Dodatkowy nabywca", "en": "Additional buyer" },
+        "5": { "pl": "Wystawca faktury (w imieniu podatnika)", "en": "Invoice issuer (on behalf of taxpayer)" },
+        "6": { "pl": "Dokonujący płatności", "en": "Payer" },
+        "7": { "pl": "Jednostka samorządu terytorialnego - wystawca", "en": "Local government unit - issuer" },
+        "8": { "pl": "Jednostka samorządu terytorialnego - odbiorca", "en": "Local government unit - recipient" },
+        "9": { "pl": "Członek grupy VAT - wystawca", "en": "VAT group member - issuer" },
+        "10": { "pl": "Członek grupy VAT - odbiorca", "en": "VAT group member - recipient" },
+        "11": { "pl": "Pracownik", "en": "Employee" }
+      }
+    },
+    "PodmiotUpowazniony": {
+      "englishName": "AuthorizedEntity",
+      "description_pl": "Podmiot upoważniony do wystawienia faktury",
+      "description_en": "Entity authorized to issue invoice",
+      "roles": {
+        "1": { "pl": "Organ egzekucyjny", "en": "Enforcement authority" },
+        "2": { "pl": "Komornik sądowy", "en": "Bailiff" },
+        "3": { "pl": "Przedstawiciel podatkowy", "en": "Tax representative" }
+      }
+    },
+    "Podmiot1K": {
+      "englishName": "OriginalSeller",
+      "description_pl": "Dane pierwotnego sprzedawcy (dla faktur korygujących)",
+      "description_en": "Original seller data (for corrective invoices)"
+    },
+    "Podmiot2K": {
+      "englishName": "OriginalBuyer",
+      "description_pl": "Dane pierwotnego nabywcy (dla faktur korygujących)",
+      "description_en": "Original buyer data (for corrective invoices)"
+    }
+  },
+
+  "invoiceFields": {
+    "P_1": {
+      "englishName": "InvoiceDate",
+      "type": "TDataT",
+      "description_pl": "Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy",
+      "description_en": "Invoice issue date",
+      "required": true
+    },
+    "P_1M": {
+      "englishName": "IssuePlace",
+      "type": "TZnakowy",
+      "description_pl": "Miejsce wystawienia faktury",
+      "description_en": "Place of invoice issue",
+      "required": false
+    },
+    "P_2": {
+      "englishName": "InvoiceNumber",
+      "type": "TZnakowy",
+      "description_pl": "Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny identyfikuje fakturę",
+      "description_en": "Sequential invoice number uniquely identifying the invoice",
+      "required": true
+    },
+    "P_6": {
+      "englishName": "DeliveryDate",
+      "type": "TDataT",
+      "description_pl": "Data dokonania lub zakończenia dostawy towarów lub wykonania usługi lub data otrzymania zapłaty",
+      "description_en": "Date of delivery of goods/services or payment receipt date",
+      "required": false
+    },
+    "P_6_Od": {
+      "englishName": "PeriodStartDate",
+      "type": "TDataT",
+      "description_pl": "Data początkowa okresu, którego dotyczy faktura",
+      "description_en": "Start date of the invoice period",
+      "required": false
+    },
+    "P_6_Do": {
+      "englishName": "PeriodEndDate",
+      "type": "TDataT",
+      "description_pl": "Data końcowa okresu, którego dotyczy faktura",
+      "description_en": "End date of the invoice period",
+      "required": false
+    },
+    "P_13_1": {
+      "englishName": "NetAmount23",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży netto objętej stawką podstawową 23% albo 22%",
+      "description_en": "Sum of net sales at standard rate (23% or 22%)",
+      "required": false
+    },
+    "P_14_1": {
+      "englishName": "VatAmount23",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku od sumy wartości sprzedaży netto objętej stawką podstawową 23% albo 22%",
+      "description_en": "VAT amount at standard rate (23% or 22%)",
+      "required": false
+    },
+    "P_14_1W": {
+      "englishName": "VatAmount23ForeignCurrency",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku VAT 23%/22% przeliczona (dla faktur w walucie obcej)",
+      "description_en": "VAT amount 23%/22% converted (for foreign currency invoices)",
+      "required": false
+    },
+    "P_13_2": {
+      "englishName": "NetAmount8",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży netto objętej stawką obniżoną 8% albo 7%",
+      "description_en": "Sum of net sales at reduced rate (8% or 7%)",
+      "required": false
+    },
+    "P_14_2": {
+      "englishName": "VatAmount8",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku od sumy wartości sprzedaży netto objętej stawką obniżoną 8% albo 7%",
+      "description_en": "VAT amount at reduced rate (8% or 7%)",
+      "required": false
+    },
+    "P_14_2W": {
+      "englishName": "VatAmount8ForeignCurrency",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku VAT 8%/7% przeliczona (dla faktur w walucie obcej)",
+      "description_en": "VAT amount 8%/7% converted (for foreign currency invoices)",
+      "required": false
+    },
+    "P_13_3": {
+      "englishName": "NetAmount5",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży netto objętej stawką obniżoną 5%",
+      "description_en": "Sum of net sales at reduced rate 5%",
+      "required": false
+    },
+    "P_14_3": {
+      "englishName": "VatAmount5",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku od sumy wartości sprzedaży netto objętej stawką obniżoną 5%",
+      "description_en": "VAT amount at reduced rate 5%",
+      "required": false
+    },
+    "P_14_3W": {
+      "englishName": "VatAmount5ForeignCurrency",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku VAT 5% przeliczona (dla faktur w walucie obcej)",
+      "description_en": "VAT amount 5% converted (for foreign currency invoices)",
+      "required": false
+    },
+    "P_13_4": {
+      "englishName": "NetAmountTaxi",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych",
+      "description_en": "Sum of net sales under taxi flat rate",
+      "required": false
+    },
+    "P_14_4": {
+      "englishName": "VatAmountTaxi",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku od sumy wartości sprzedaży netto w przypadku ryczałtu dla taksówek osobowych",
+      "description_en": "VAT amount under taxi flat rate",
+      "required": false
+    },
+    "P_14_4W": {
+      "englishName": "VatAmountTaxiForeignCurrency",
+      "type": "TKwotowy",
+      "description_pl": "Wysokość ryczałtu dla taksówek osobowych przeliczona (dla faktur w walucie obcej)",
+      "description_en": "Taxi flat rate converted (for foreign currency invoices)",
+      "required": false
+    },
+    "P_13_5": {
+      "englishName": "NetAmountOSS",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży netto w procedurze szczególnej OSS",
+      "description_en": "Sum of net sales under special OSS procedure",
+      "required": false
+    },
+    "P_14_5": {
+      "englishName": "VatAmountOSS",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku od wartości dodanej w procedurze szczególnej OSS",
+      "description_en": "VAT amount under special OSS procedure",
+      "required": false
+    },
+    "P_13_6_1": {
+      "englishName": "Amount0Domestic",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży objętej stawką 0% (z wyłączeniem WDT i eksportu)",
+      "description_en": "Sum of sales at 0% rate (excluding intra-EU delivery and export)",
+      "required": false
+    },
+    "P_13_6_2": {
+      "englishName": "Amount0IntraEU",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży objętej stawką 0% - wewnątrzwspólnotowa dostawa towarów (WDT)",
+      "description_en": "Sum of sales at 0% rate - intra-Community supply of goods",
+      "required": false
+    },
+    "P_13_6_3": {
+      "englishName": "Amount0Export",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży objętej stawką 0% - eksport",
+      "description_en": "Sum of sales at 0% rate - export",
+      "required": false
+    },
+    "P_13_7": {
+      "englishName": "AmountExempt",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży zwolnionej od podatku",
+      "description_en": "Sum of tax-exempt sales",
+      "required": false
+    },
+    "P_13_8": {
+      "englishName": "AmountOutsideTerritory",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży poza terytorium kraju",
+      "description_en": "Sum of sales outside the country's territory",
+      "required": false
+    },
+    "P_13_9": {
+      "englishName": "AmountServices100",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości świadczenia usług (art. 100 ust. 1 pkt 4 ustawy)",
+      "description_en": "Sum of services value (art. 100 sec. 1 point 4)",
+      "required": false
+    },
+    "P_13_10": {
+      "englishName": "AmountReverseCharge",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży w procedurze odwrotnego obciążenia",
+      "description_en": "Sum of sales under reverse charge procedure",
+      "required": false
+    },
+    "P_13_11": {
+      "englishName": "AmountMargin",
+      "type": "TKwotowy",
+      "description_pl": "Suma wartości sprzedaży w procedurze marży",
+      "description_en": "Sum of sales under margin scheme",
+      "required": false
+    },
+    "P_15": {
+      "englishName": "TotalAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota należności ogółem",
+      "description_en": "Total amount due",
+      "required": true
+    },
+    "P_16": {
+      "englishName": "MetalScrapFlag",
+      "type": "TWybor1_2",
+      "description_pl": "Znacznik metoda kasowa - transakcje metali i złomu",
+      "description_en": "Cash method flag - metal and scrap transactions",
+      "required": false
+    },
+    "P_17": {
+      "englishName": "SelfBillingFlag",
+      "type": "TWybor1_2",
+      "description_pl": "Znacznik samofakturowania",
+      "description_en": "Self-billing flag",
+      "required": false
+    },
+    "P_18": {
+      "englishName": "ReverseChargeFlag",
+      "type": "TWybor1_2",
+      "description_pl": "Znacznik odwrotnego obciążenia",
+      "description_en": "Reverse charge flag",
+      "required": false
+    },
+    "P_18A": {
+      "englishName": "SplitPaymentFlag",
+      "type": "TWybor1_2",
+      "description_pl": "Znacznik mechanizmu podzielonej płatności (MPP)",
+      "description_en": "Split payment mechanism flag",
+      "required": false
+    },
+    "P_19": {
+      "englishName": "ExportFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik eksportu towarów",
+      "description_en": "Export flag",
+      "required": false
+    },
+    "P_19A": {
+      "englishName": "ExportCustomsOffice",
+      "type": "TZnakowy",
+      "description_pl": "Urząd celny, w którym towary opuściły terytorium UE",
+      "description_en": "Customs office where goods left EU territory",
+      "required": false
+    },
+    "P_19B": {
+      "englishName": "ExportCustomsDate",
+      "type": "TZnakowy",
+      "description_pl": "Data opuszczenia terytorium UE",
+      "description_en": "Date of leaving EU territory",
+      "required": false
+    },
+    "P_19C": {
+      "englishName": "ExportCustomsDeclaration",
+      "type": "TZnakowy",
+      "description_pl": "Numer zgłoszenia celnego",
+      "description_en": "Customs declaration number",
+      "required": false
+    },
+    "P_19N": {
+      "englishName": "NoExportFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik braku informacji eksportowych",
+      "description_en": "No export information flag",
+      "required": false
+    },
+    "P_22": {
+      "englishName": "NewTransportFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik nowych środków transportu (WDT)",
+      "description_en": "New means of transport flag (intra-EU delivery)",
+      "required": false
+    },
+    "P_22A": {
+      "englishName": "NewTransportFirstRegDate",
+      "type": "TDataT",
+      "description_pl": "Data pierwszej rejestracji nowego środka transportu",
+      "description_en": "First registration date of new means of transport",
+      "required": false
+    },
+    "P_22N": {
+      "englishName": "NoNewTransportFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik braku informacji o nowym środku transportu",
+      "description_en": "No new means of transport information flag",
+      "required": false
+    },
+    "P_23": {
+      "englishName": "SimplifiedInvoiceFlag",
+      "type": "TWybor1_2",
+      "description_pl": "Znacznik faktury uproszczonej",
+      "description_en": "Simplified invoice flag",
+      "required": false
+    },
+    "P_PMarzy": {
+      "englishName": "MarginSchemeFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik procedury marży",
+      "description_en": "Margin scheme flag",
+      "required": false
+    },
+    "P_PMarzy_2": {
+      "englishName": "MarginSchemeUsedGoods",
+      "type": "TWybor1",
+      "description_pl": "Procedura marży dla towarów używanych",
+      "description_en": "Margin scheme for second-hand goods",
+      "required": false
+    },
+    "P_PMarzy_3_1": {
+      "englishName": "MarginSchemeArt",
+      "type": "TWybor1",
+      "description_pl": "Procedura marży dla dzieł sztuki",
+      "description_en": "Margin scheme for works of art",
+      "required": false
+    },
+    "P_PMarzy_3_2": {
+      "englishName": "MarginSchemeCollectibles",
+      "type": "TWybor1",
+      "description_pl": "Procedura marży dla przedmiotów kolekcjonerskich",
+      "description_en": "Margin scheme for collectors' items",
+      "required": false
+    },
+    "P_PMarzy_3_3": {
+      "englishName": "MarginSchemeAntiques",
+      "type": "TWybor1",
+      "description_pl": "Procedura marży dla antyków",
+      "description_en": "Margin scheme for antiques",
+      "required": false
+    },
+    "P_PMarzyN": {
+      "englishName": "NoMarginSchemeFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik braku procedury marży",
+      "description_en": "No margin scheme flag",
+      "required": false
+    }
+  },
+
+  "invoiceLineFields": {
+    "NrWierszaFa": {
+      "englishName": "LineNumber",
+      "type": "TNaturalny",
+      "description_pl": "Kolejny numer wiersza faktury",
+      "description_en": "Sequential line number"
+    },
+    "UU_ID": {
+      "englishName": "UniqueLineId",
+      "type": "TZnakowy50",
+      "description_pl": "Uniwersalny unikalny numer wiersza faktury",
+      "description_en": "Universal unique line identifier"
+    },
+    "P_6A": {
+      "englishName": "LineDeliveryDate",
+      "type": "TDataT",
+      "description_pl": "Data dokonania dostawy/usługi dla konkretnej pozycji",
+      "description_en": "Delivery/service date for specific line"
+    },
+    "P_7": {
+      "englishName": "ItemName",
+      "type": "TZnakowy512",
+      "description_pl": "Nazwa (rodzaj) towaru lub usługi",
+      "description_en": "Name (type) of goods or services"
+    },
+    "Indeks": {
+      "englishName": "ItemCode",
+      "type": "TZnakowy50",
+      "description_pl": "Wewnętrzny kod towaru lub usługi nadany przez podatnika",
+      "description_en": "Internal product/service code assigned by taxpayer"
+    },
+    "GTIN": {
+      "englishName": "GTIN",
+      "type": "TZnakowy20",
+      "description_pl": "Globalny numer jednostki handlowej",
+      "description_en": "Global Trade Item Number"
+    },
+    "PKWiU": {
+      "englishName": "PKWiU",
+      "type": "TZnakowy50",
+      "description_pl": "Symbol Polskiej Klasyfikacji Wyrobów i Usług",
+      "description_en": "Polish Classification of Products and Services symbol"
+    },
+    "CN": {
+      "englishName": "CNCode",
+      "type": "TZnakowy50",
+      "description_pl": "Symbol Nomenklatury Scalonej",
+      "description_en": "Combined Nomenclature code"
+    },
+    "PKOB": {
+      "englishName": "PKOB",
+      "type": "TZnakowy50",
+      "description_pl": "Symbol Polskiej Klasyfikacji Obiektów Budowlanych",
+      "description_en": "Polish Classification of Construction Objects symbol"
+    },
+    "P_8A": {
+      "englishName": "UnitOfMeasure",
+      "type": "TZnakowy",
+      "description_pl": "Miara dostarczonych towarów lub zakres wykonanych usług",
+      "description_en": "Unit of measure of goods/services"
+    },
+    "P_8B": {
+      "englishName": "Quantity",
+      "type": "TIlosci",
+      "description_pl": "Ilość (liczba) dostarczonych towarów lub zakres wykonanych usług",
+      "description_en": "Quantity of goods/services"
+    },
+    "P_9A": {
+      "englishName": "UnitPriceNet",
+      "type": "TKwotowy2",
+      "description_pl": "Cena jednostkowa towaru lub usługi bez kwoty podatku (cena jednostkowa netto)",
+      "description_en": "Unit price without tax (net unit price)"
+    },
+    "P_9B": {
+      "englishName": "UnitPriceGross",
+      "type": "TKwotowy2",
+      "description_pl": "Cena wraz z kwotą podatku (cena jednostkowa brutto)",
+      "description_en": "Unit price with tax (gross unit price)"
+    },
+    "P_10": {
+      "englishName": "Discount",
+      "type": "TKwotowy2",
+      "description_pl": "Kwoty wszelkich opustów lub obniżek cen (rabaty)",
+      "description_en": "Discounts or price reductions"
+    },
+    "P_11": {
+      "englishName": "NetValue",
+      "type": "TKwotowy",
+      "description_pl": "Wartość sprzedaży netto (wartość dostarczonych towarów lub wykonanych usług bez VAT)",
+      "description_en": "Net sales value (goods/services value without VAT)"
+    },
+    "P_11A": {
+      "englishName": "GrossValue",
+      "type": "TKwotowy",
+      "description_pl": "Wartość sprzedaży brutto (w przypadku stosowania art. 106e ust. 7 i 8 ustawy)",
+      "description_en": "Gross sales value"
+    },
+    "P_11Vat": {
+      "englishName": "LineVatAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku dla pozycji (art. 106e ust. 10 ustawy)",
+      "description_en": "VAT amount for line item"
+    },
+    "P_12": {
+      "englishName": "VatRate",
+      "type": "TStawkaPodatku",
+      "description_pl": "Stawka podatku",
+      "description_en": "VAT rate"
+    },
+    "P_12_XII": {
+      "englishName": "VatRateOSS",
+      "type": "TProcentowy",
+      "description_pl": "Stawka podatku od wartości dodanej w procedurze OSS",
+      "description_en": "VAT rate under OSS procedure"
+    },
+    "P_12_Zal_15": {
+      "englishName": "Annex15Flag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik dla towaru/usługi z załącznika nr 15 do ustawy",
+      "description_en": "Flag for goods/services from Annex 15"
+    },
+    "KwotaAkcyzy": {
+      "englishName": "ExciseDutyAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota podatku akcyzowego zawarta w cenie towaru",
+      "description_en": "Excise duty amount included in price"
+    },
+    "GTU": {
+      "englishName": "GTUCode",
+      "type": "TGTU",
+      "description_pl": "Oznaczenie dotyczące dostawy towarów i świadczenia usług",
+      "description_en": "Goods and services type code"
+    },
+    "Procedura": {
+      "englishName": "ProcedureCode",
+      "type": "TOznaczenieProcedury",
+      "description_pl": "Oznaczenie dotyczące procedury",
+      "description_en": "Procedure code"
+    },
+    "KursWaluty": {
+      "englishName": "ExchangeRate",
+      "type": "TIlosci",
+      "description_pl": "Kurs waluty stosowany do wyliczenia kwoty podatku",
+      "description_en": "Exchange rate used for tax calculation"
+    },
+    "StanPrzed": {
+      "englishName": "BeforeCorrectionFlag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik stanu przed korektą",
+      "description_en": "Before correction flag"
+    }
+  },
+
+  "correctionFields": {
+    "P_15ZK": {
+      "englishName": "CorrectionTotalAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota należności ogółem z faktury korygowanej",
+      "description_en": "Total amount from corrected invoice"
+    },
+    "P_6Z": {
+      "englishName": "CorrectedInvoiceDeliveryDate",
+      "type": "TDataT",
+      "description_pl": "Data dostawy z faktury korygowanej",
+      "description_en": "Delivery date from corrected invoice"
+    },
+    "P_15Z": {
+      "englishName": "CorrectedInvoiceTotalAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota należności ogółem z faktury korygowanej (przed korektą)",
+      "description_en": "Total amount from corrected invoice (before correction)"
+    },
+    "P_7Z": {
+      "englishName": "CorrectedItemName",
+      "type": "TZnakowy512",
+      "description_pl": "Nazwa towaru/usługi z pozycji korygowanej",
+      "description_en": "Item name from corrected line"
+    },
+    "P_8AZ": {
+      "englishName": "CorrectedUnitOfMeasure",
+      "type": "TZnakowy",
+      "description_pl": "Miara z pozycji korygowanej",
+      "description_en": "Unit of measure from corrected line"
+    },
+    "P_8BZ": {
+      "englishName": "CorrectedQuantity",
+      "type": "TIlosci",
+      "description_pl": "Ilość z pozycji korygowanej",
+      "description_en": "Quantity from corrected line"
+    },
+    "P_9AZ": {
+      "englishName": "CorrectedUnitPriceNet",
+      "type": "TKwotowy2",
+      "description_pl": "Cena jednostkowa netto z pozycji korygowanej",
+      "description_en": "Net unit price from corrected line"
+    },
+    "P_11NettoZ": {
+      "englishName": "CorrectedNetValue",
+      "type": "TKwotowy",
+      "description_pl": "Wartość netto z pozycji korygowanej",
+      "description_en": "Net value from corrected line"
+    },
+    "P_11VatZ": {
+      "englishName": "CorrectedVatAmount",
+      "type": "TKwotowy",
+      "description_pl": "Kwota VAT z pozycji korygowanej",
+      "description_en": "VAT amount from corrected line"
+    },
+    "P_12Z": {
+      "englishName": "CorrectedVatRate",
+      "type": "TStawkaPodatku",
+      "description_pl": "Stawka podatku z pozycji korygowanej",
+      "description_en": "VAT rate from corrected line"
+    },
+    "P_12Z_XII": {
+      "englishName": "CorrectedVatRateOSS",
+      "type": "TProcentowy",
+      "description_pl": "Stawka VAT OSS z pozycji korygowanej",
+      "description_en": "OSS VAT rate from corrected line"
+    },
+    "P_12Z_Zal_15": {
+      "englishName": "CorrectedAnnex15Flag",
+      "type": "TWybor1",
+      "description_pl": "Znacznik załącznika 15 z pozycji korygowanej",
+      "description_en": "Annex 15 flag from corrected line"
+    }
+  },
+
+  "enumerations": {
+    "TRodzajFaktury": {
+      "englishName": "InvoiceType",
+      "description_pl": "Rodzaj faktury",
+      "description_en": "Invoice type",
+      "values": {
+        "VAT": { "pl": "Faktura podstawowa", "en": "Standard invoice" },
+        "KOR": { "pl": "Faktura korygująca", "en": "Corrective invoice" },
+        "ZAL": { "pl": "Faktura zaliczkowa", "en": "Advance payment invoice" },
+        "ROZ": { "pl": "Faktura rozliczeniowa (art. 106f ust. 3)", "en": "Settlement invoice" },
+        "UPR": { "pl": "Faktura uproszczona (art. 106e ust. 5 pkt 3)", "en": "Simplified invoice" },
+        "KOR_ZAL": { "pl": "Faktura korygująca fakturę zaliczkową", "en": "Corrective advance payment invoice" },
+        "KOR_ROZ": { "pl": "Faktura korygująca fakturę rozliczeniową", "en": "Corrective settlement invoice" }
+      }
+    },
+    "TTypKorekty": {
+      "englishName": "CorrectionEffectType",
+      "description_pl": "Typ skutku korekty w ewidencji VAT",
+      "description_en": "Correction effect type in VAT records",
+      "values": {
+        "1": { "pl": "Korekta skutkująca w dacie ujęcia faktury pierwotnej", "en": "Correction effective on original invoice date" },
+        "2": { "pl": "Korekta skutkująca w dacie wystawienia faktury korygującej", "en": "Correction effective on corrective invoice date" },
+        "3": { "pl": "Korekta skutkująca w dacie innej", "en": "Correction effective on other date" }
+      }
+    },
+    "TStawkaPodatku": {
+      "englishName": "VatRate",
+      "description_pl": "Stawka podatku VAT",
+      "description_en": "VAT rate",
+      "values": {
+        "23": { "pl": "23%", "en": "23%" },
+        "22": { "pl": "22%", "en": "22%" },
+        "8": { "pl": "8%", "en": "8%" },
+        "7": { "pl": "7%", "en": "7%" },
+        "5": { "pl": "5%", "en": "5%" },
+        "4": { "pl": "4%", "en": "4%" },
+        "3": { "pl": "3%", "en": "3%" },
+        "0 KR": { "pl": "0% sprzedaż krajowa", "en": "0% domestic sale" },
+        "0 WDT": { "pl": "0% wewnątrzwspólnotowa dostawa towarów", "en": "0% intra-Community supply" },
+        "0 EX": { "pl": "0% eksport", "en": "0% export" },
+        "zw": { "pl": "Zwolnione od podatku", "en": "Tax exempt" },
+        "oo": { "pl": "Odwrotne obciążenie", "en": "Reverse charge" },
+        "np I": { "pl": "Niepodlegające - dostawa poza terytorium kraju", "en": "Not applicable - supply outside territory" },
+        "np II": { "pl": "Niepodlegające - usługi (art. 100 ust. 1 pkt 4)", "en": "Not applicable - services (art. 100 sec. 1 pt 4)" }
+      }
+    },
+    "TFormaPlatnosci": {
+      "englishName": "PaymentMethod",
+      "description_pl": "Typy form płatności",
+      "description_en": "Payment methods",
+      "values": {
+        "1": { "pl": "Gotówka", "en": "Cash" },
+        "2": { "pl": "Karta", "en": "Card" },
+        "3": { "pl": "Bon", "en": "Voucher" },
+        "4": { "pl": "Czek", "en": "Check" },
+        "5": { "pl": "Kredyt", "en": "Credit" },
+        "6": { "pl": "Przelew", "en": "Bank transfer" },
+        "7": { "pl": "Mobilna", "en": "Mobile payment" }
+      }
+    },
+    "TStatusInfoPodatnika": {
+      "englishName": "TaxpayerStatus",
+      "description_pl": "Status podatnika",
+      "description_en": "Taxpayer status",
+      "values": {
+        "1": { "pl": "Podatnik znajdujący się w stanie likwidacji", "en": "Taxpayer in liquidation" },
+        "2": { "pl": "Podatnik w trakcie postępowania restrukturyzacyjnego", "en": "Taxpayer in restructuring proceedings" },
+        "3": { "pl": "Podatnik znajdujący się w stanie upadłości", "en": "Taxpayer in bankruptcy" },
+        "4": { "pl": "Przedsiębiorstwo w spadku", "en": "Inherited enterprise" }
+      }
+    },
+    "TOznaczenieProcedury": {
+      "englishName": "ProcedureCode",
+      "description_pl": "Oznaczenia procedur dla faktur",
+      "description_en": "Procedure codes for invoices",
+      "values": {
+        "WSTO_EE": { "pl": "Wewnątrzwspólnotowa sprzedaż towarów na odległość (EE)", "en": "Intra-Community distance sales of goods (EE)" },
+        "IED": { "pl": "Interfejs elektroniczny jako dostawca", "en": "Electronic interface as supplier" },
+        "TT_D": { "pl": "Transakcja trójstronna - dostawa", "en": "Triangular transaction - delivery" },
+        "I_42": { "pl": "Import - procedura 42", "en": "Import - procedure 42" },
+        "I_63": { "pl": "Import - procedura 63", "en": "Import - procedure 63" },
+        "B_SPV": { "pl": "Transfer bonów jednego przeznaczenia", "en": "Single-purpose voucher transfer" },
+        "B_SPV_DOSTAWA": { "pl": "Dostawa związana z bonem jednego przeznaczenia", "en": "Delivery related to single-purpose voucher" },
+        "B_MPV_PROWIZJA": { "pl": "Prowizja od bonów różnego przeznaczenia", "en": "Commission from multi-purpose vouchers" }
+      }
+    },
+    "TGTU": {
+      "englishName": "GTUCode",
+      "description_pl": "Oznaczenia GTU (grupy towarów i usług)",
+      "description_en": "GTU codes (goods and services groups)",
+      "values": {
+        "GTU_01": { "pl": "Napoje alkoholowe", "en": "Alcoholic beverages" },
+        "GTU_02": { "pl": "Paliwa", "en": "Fuels" },
+        "GTU_03": { "pl": "Oleje opałowe", "en": "Heating oils" },
+        "GTU_04": { "pl": "Wyroby tytoniowe", "en": "Tobacco products" },
+        "GTU_05": { "pl": "Odpady", "en": "Waste" },
+        "GTU_06": { "pl": "Urządzenia elektroniczne", "en": "Electronic devices" },
+        "GTU_07": { "pl": "Pojazdy i części samochodowe", "en": "Vehicles and car parts" },
+        "GTU_08": { "pl": "Metale szlachetne i nieszlachetne", "en": "Precious and base metals" },
+        "GTU_09": { "pl": "Produkty lecznicze i wyroby medyczne", "en": "Medicinal products and medical devices" },
+        "GTU_10": { "pl": "Budynki i grunty", "en": "Buildings and land" },
+        "GTU_11": { "pl": "Usługi w zakresie przenoszenia uprawnień do emisji gazów cieplarnianych", "en": "Greenhouse gas emission rights transfer services" },
+        "GTU_12": { "pl": "Usługi niematerialne (doradcze, księgowe, prawne, zarządcze, itp.)", "en": "Intangible services (consulting, accounting, legal, management, etc.)" },
+        "GTU_13": { "pl": "Usługi transportowe i magazynowe", "en": "Transport and storage services" }
+      }
+    },
+    "TRodzajTransportu": {
+      "englishName": "TransportType",
+      "description_pl": "Rodzaj transportu",
+      "description_en": "Transport type",
+      "values": {
+        "1": { "pl": "Transport morski", "en": "Sea transport" },
+        "2": { "pl": "Transport kolejowy", "en": "Rail transport" },
+        "3": { "pl": "Transport drogowy", "en": "Road transport" },
+        "4": { "pl": "Transport lotniczy", "en": "Air transport" },
+        "5": { "pl": "Przesyłka pocztowa", "en": "Postal shipment" },
+        "7": { "pl": "Stałe instalacje przesyłowe", "en": "Fixed transport installations" },
+        "8": { "pl": "Żegluga śródlądowa", "en": "Inland waterway transport" }
+      }
+    },
+    "TLadunek": {
+      "englishName": "CargoType",
+      "description_pl": "Typy ładunków (opakowania)",
+      "description_en": "Cargo types (packaging)",
+      "values": {
+        "1": { "pl": "Bańka", "en": "Can" },
+        "2": { "pl": "Beczka", "en": "Barrel" },
+        "3": { "pl": "Butla", "en": "Cylinder" },
+        "4": { "pl": "Karton", "en": "Carton" },
+        "5": { "pl": "Kanister", "en": "Canister" },
+        "6": { "pl": "Klatka", "en": "Cage" },
+        "7": { "pl": "Kontener", "en": "Container" },
+        "8": { "pl": "Kosz/koszyk", "en": "Basket" },
+        "9": { "pl": "Łubianka", "en": "Punnet" },
+        "10": { "pl": "Opakowanie zbiorcze", "en": "Bulk packaging" },
+        "11": { "pl": "Paczka", "en": "Parcel" },
+        "12": { "pl": "Pakiet", "en": "Package" },
+        "13": { "pl": "Paleta", "en": "Pallet" },
+        "14": { "pl": "Pojemnik", "en": "Container" },
+        "15": { "pl": "Pojemnik do ładunków masowych stałych", "en": "Solid bulk container" },
+        "16": { "pl": "Pojemnik do ładunków masowych w postaci płynnej", "en": "Liquid bulk container" },
+        "17": { "pl": "Pudełko", "en": "Box" },
+        "18": { "pl": "Puszka", "en": "Tin" },
+        "19": { "pl": "Skrzynia", "en": "Crate" },
+        "20": { "pl": "Worek", "en": "Bag" }
+      }
+    },
+    "TRachunekWlasnyBanku": {
+      "englishName": "BankOwnAccountType",
+      "description_pl": "Typy rachunków własnych banku",
+      "description_en": "Bank's own account types",
+      "values": {
+        "1": { "pl": "Rachunek banku/SKOK służący do rozliczeń z tytułu nabywanych wierzytelności", "en": "Bank/SKOK account for debt acquisition settlements" },
+        "2": { "pl": "Rachunek banku/SKOK wykorzystywany do pobrania należności od nabywcy", "en": "Bank/SKOK account for collecting payments from buyer" },
+        "3": { "pl": "Rachunek banku/SKOK prowadzony w ramach gospodarki własnej", "en": "Bank/SKOK internal account" }
+      }
+    },
+    "TKodyKrajowUE": {
+      "englishName": "EUCountryCode",
+      "description_pl": "Kody krajów członkowskich Unii Europejskiej",
+      "description_en": "EU member country codes",
+      "values": {
+        "AT": { "pl": "Austria", "en": "Austria" },
+        "BE": { "pl": "Belgia", "en": "Belgium" },
+        "BG": { "pl": "Bułgaria", "en": "Bulgaria" },
+        "CY": { "pl": "Cypr", "en": "Cyprus" },
+        "CZ": { "pl": "Czechy", "en": "Czech Republic" },
+        "DE": { "pl": "Niemcy", "en": "Germany" },
+        "DK": { "pl": "Dania", "en": "Denmark" },
+        "EE": { "pl": "Estonia", "en": "Estonia" },
+        "EL": { "pl": "Grecja", "en": "Greece" },
+        "ES": { "pl": "Hiszpania", "en": "Spain" },
+        "FI": { "pl": "Finlandia", "en": "Finland" },
+        "FR": { "pl": "Francja", "en": "France" },
+        "HR": { "pl": "Chorwacja", "en": "Croatia" },
+        "HU": { "pl": "Węgry", "en": "Hungary" },
+        "IE": { "pl": "Irlandia", "en": "Ireland" },
+        "IT": { "pl": "Włochy", "en": "Italy" },
+        "LT": { "pl": "Litwa", "en": "Lithuania" },
+        "LU": { "pl": "Luksemburg", "en": "Luxembourg" },
+        "LV": { "pl": "Łotwa", "en": "Latvia" },
+        "MT": { "pl": "Malta", "en": "Malta" },
+        "NL": { "pl": "Holandia", "en": "Netherlands" },
+        "PL": { "pl": "Polska", "en": "Poland" },
+        "PT": { "pl": "Portugalia", "en": "Portugal" },
+        "RO": { "pl": "Rumunia", "en": "Romania" },
+        "SE": { "pl": "Szwecja", "en": "Sweden" },
+        "SI": { "pl": "Słowenia", "en": "Slovenia" },
+        "SK": { "pl": "Słowacja", "en": "Slovakia" },
+        "XI": { "pl": "Irlandia Północna", "en": "Northern Ireland" }
+      }
+    }
+  },
+
+  "dataTypes": {
+    "TKwotowy": {
+      "englishName": "MonetaryAmount",
+      "description_pl": "Kwota z dokładnością do 2 miejsc po przecinku",
+      "description_en": "Monetary amount with 2 decimal places",
+      "baseType": "decimal",
+      "fractionDigits": 2,
+      "totalDigits": 18
+    },
+    "TKwotowy2": {
+      "englishName": "MonetaryAmountExtended",
+      "description_pl": "Kwota z dokładnością do 8 miejsc po przecinku",
+      "description_en": "Monetary amount with 8 decimal places",
+      "baseType": "decimal",
+      "fractionDigits": 8,
+      "totalDigits": 22
+    },
+    "TIlosci": {
+      "englishName": "Quantity",
+      "description_pl": "Ilość z dokładnością do 8 miejsc po przecinku",
+      "description_en": "Quantity with 8 decimal places",
+      "baseType": "decimal",
+      "fractionDigits": 8,
+      "totalDigits": 22
+    },
+    "TProcentowy": {
+      "englishName": "PercentageRate",
+      "description_pl": "Wartość procentowa z dokładnością do 6 miejsc po przecinku",
+      "description_en": "Percentage with 6 decimal places",
+      "baseType": "decimal",
+      "fractionDigits": 6,
+      "totalDigits": 9,
+      "minInclusive": 0,
+      "maxInclusive": 100
+    },
+    "TNaturalny": {
+      "englishName": "NaturalNumber",
+      "description_pl": "Liczba naturalna",
+      "description_en": "Natural number",
+      "baseType": "nonNegativeInteger"
+    },
+    "TZnakowy": {
+      "englishName": "Text256",
+      "description_pl": "Tekst do 256 znaków",
+      "description_en": "Text up to 256 characters",
+      "baseType": "normalizedString",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "TZnakowy2": {
+      "englishName": "Text1000",
+      "description_pl": "Tekst do 1000 znaków",
+      "description_en": "Text up to 1000 characters",
+      "baseType": "normalizedString",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "TZnakowy20": {
+      "englishName": "Text20",
+      "description_pl": "Tekst do 20 znaków",
+      "description_en": "Text up to 20 characters",
+      "baseType": "normalizedString",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "TZnakowy50": {
+      "englishName": "Text50",
+      "description_pl": "Tekst do 50 znaków",
+      "description_en": "Text up to 50 characters",
+      "baseType": "normalizedString",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "TZnakowy512": {
+      "englishName": "Text512",
+      "description_pl": "Tekst do 512 znaków",
+      "description_en": "Text up to 512 characters",
+      "baseType": "normalizedString",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "TData": {
+      "englishName": "Date",
+      "description_pl": "Data w formacie YYYY-MM-DD",
+      "description_en": "Date in YYYY-MM-DD format",
+      "baseType": "date"
+    },
+    "TDataT": {
+      "englishName": "DateTime",
+      "description_pl": "Data z godziną w formacie YYYY-MM-DDTHH:MM:SS",
+      "description_en": "DateTime in YYYY-MM-DDTHH:MM:SS format",
+      "baseType": "dateTime"
+    },
+    "TDataU": {
+      "englishName": "DateYYYYMM",
+      "description_pl": "Data w formacie YYYY-MM",
+      "description_en": "Date in YYYY-MM format",
+      "baseType": "gYearMonth"
+    },
+    "TNumerKSeF": {
+      "englishName": "KSeFNumber",
+      "description_pl": "Numer nadany przez KSeF (32 znaki)",
+      "description_en": "Number assigned by KSeF (32 characters)",
+      "baseType": "token",
+      "length": 32
+    },
+    "TNrVatUE": {
+      "englishName": "EUVatNumber",
+      "description_pl": "Numer identyfikacyjny VAT UE",
+      "description_en": "EU VAT identification number",
+      "baseType": "normalizedString",
+      "minLength": 2,
+      "maxLength": 15
+    },
+    "TNIPIdWew": {
+      "englishName": "NIPOrInternalId",
+      "description_pl": "NIP lub identyfikator wewnętrzny (ID-Wew)",
+      "description_en": "NIP or internal identifier",
+      "baseType": "token",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "TNrRB": {
+      "englishName": "BankAccountNumber",
+      "description_pl": "Pełny numer rachunku bankowego",
+      "description_en": "Full bank account number",
+      "baseType": "normalizedString",
+      "minLength": 5,
+      "maxLength": 34
+    },
+    "SWIFT_Type": {
+      "englishName": "SWIFTCode",
+      "description_pl": "Kod SWIFT banku (8 lub 11 znaków)",
+      "description_en": "Bank SWIFT code (8 or 11 characters)",
+      "baseType": "token",
+      "pattern": "[A-Z]{6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3})?"
+    },
+    "TGLN": {
+      "englishName": "GLNNumber",
+      "description_pl": "Globalny Numer Lokalizacyjny (do 13 znaków)",
+      "description_en": "Global Location Number (up to 13 characters)",
+      "baseType": "token",
+      "maxLength": 13
+    },
+    "TNumerTelefonu": {
+      "englishName": "PhoneNumber",
+      "description_pl": "Numer telefonu (do 16 znaków)",
+      "description_en": "Phone number (up to 16 characters)",
+      "baseType": "token",
+      "maxLength": 16
+    }
+  },
+
+  "structuralElements": {
+    "Faktura": {
+      "englishName": "Invoice",
+      "description_pl": "Główny element dokumentu faktury VAT",
+      "description_en": "Main VAT invoice document element"
+    },
+    "Naglowek": {
+      "englishName": "Header",
+      "description_pl": "Nagłówek faktury",
+      "description_en": "Invoice header"
+    },
+    "Fa": {
+      "englishName": "InvoiceData",
+      "description_pl": "Dane faktury",
+      "description_en": "Invoice data"
+    },
+    "FaWiersz": {
+      "englishName": "InvoiceLine",
+      "description_pl": "Wiersz faktury (pozycja)",
+      "description_en": "Invoice line item"
+    },
+    "FaWierszZam662": {
+      "englishName": "OrderLine662",
+      "description_pl": "Wiersz zamówienia (art. 106b ust. 1 pkt 4)",
+      "description_en": "Order line (art. 106b sec. 1 pt 4)"
+    },
+    "Rozliczenie": {
+      "englishName": "Settlement",
+      "description_pl": "Dodatkowe rozliczenia na fakturze",
+      "description_en": "Additional settlements on invoice"
+    },
+    "Obciazenia": {
+      "englishName": "Surcharges",
+      "description_pl": "Obciążenia (kwoty doliczone)",
+      "description_en": "Surcharges (added amounts)"
+    },
+    "Odliczenia": {
+      "englishName": "Deductions",
+      "description_pl": "Odliczenia (kwoty odjęte)",
+      "description_en": "Deductions (subtracted amounts)"
+    },
+    "Platnosc": {
+      "englishName": "Payment",
+      "description_pl": "Warunki płatności",
+      "description_en": "Payment terms"
+    },
+    "RachunekBankowy": {
+      "englishName": "BankAccount",
+      "description_pl": "Dane rachunku bankowego",
+      "description_en": "Bank account data"
+    },
+    "Adnotacje": {
+      "englishName": "Annotations",
+      "description_pl": "Inne adnotacje na fakturze",
+      "description_en": "Other annotations on invoice"
+    },
+    "DaneIdentyfikacyjne": {
+      "englishName": "IdentificationData",
+      "description_pl": "Dane identyfikujące podmiot",
+      "description_en": "Entity identification data"
+    },
+    "Adres": {
+      "englishName": "Address",
+      "description_pl": "Adres podmiotu",
+      "description_en": "Entity address"
+    },
+    "AdresKoresp": {
+      "englishName": "CorrespondenceAddress",
+      "description_pl": "Adres korespondencyjny",
+      "description_en": "Correspondence address"
+    },
+    "DaneKontaktowe": {
+      "englishName": "ContactData",
+      "description_pl": "Dane kontaktowe",
+      "description_en": "Contact data"
+    },
+    "Zamowienie": {
+      "englishName": "Order",
+      "description_pl": "Zamówienie lub umowa",
+      "description_en": "Order or agreement"
+    },
+    "FakturaZaliczkowa": {
+      "englishName": "AdvanceInvoice",
+      "description_pl": "Dane faktury zaliczkowej",
+      "description_en": "Advance payment invoice data"
+    },
+    "DodatkowyOpis": {
+      "englishName": "AdditionalDescription",
+      "description_pl": "Dodatkowy opis faktury",
+      "description_en": "Additional invoice description"
+    },
+    "NrKSeF": {
+      "englishName": "KSeFNumber",
+      "description_pl": "Numer nadany fakturze w KSeF",
+      "description_en": "Number assigned to invoice in KSeF"
+    },
+    "NrKSeFZaliczki": {
+      "englishName": "AdvanceKSeFNumber",
+      "description_pl": "Numer KSeF faktury zaliczkowej",
+      "description_en": "KSeF number of advance invoice"
+    }
+  },
+
+  "addressFields": {
+    "KodKraju": {
+      "englishName": "CountryCode",
+      "description_pl": "Kod kraju",
+      "description_en": "Country code"
+    },
+    "Wojewodztwo": {
+      "englishName": "Province",
+      "description_pl": "Województwo",
+      "description_en": "Province/Region"
+    },
+    "Powiat": {
+      "englishName": "District",
+      "description_pl": "Powiat",
+      "description_en": "District"
+    },
+    "Gmina": {
+      "englishName": "Municipality",
+      "description_pl": "Gmina",
+      "description_en": "Municipality"
+    },
+    "Ulica": {
+      "englishName": "Street",
+      "description_pl": "Nazwa ulicy",
+      "description_en": "Street name"
+    },
+    "NrDomu": {
+      "englishName": "BuildingNumber",
+      "description_pl": "Numer budynku",
+      "description_en": "Building number"
+    },
+    "NrLokalu": {
+      "englishName": "ApartmentNumber",
+      "description_pl": "Numer lokalu",
+      "description_en": "Apartment number"
+    },
+    "Miejscowosc": {
+      "englishName": "City",
+      "description_pl": "Nazwa miejscowości",
+      "description_en": "City name"
+    },
+    "KodPocztowy": {
+      "englishName": "PostalCode",
+      "description_pl": "Kod pocztowy",
+      "description_en": "Postal code"
+    },
+    "Poczta": {
+      "englishName": "PostOffice",
+      "description_pl": "Nazwa urzędu pocztowego",
+      "description_en": "Post office name"
+    },
+    "GLN": {
+      "englishName": "GLN",
+      "description_pl": "Globalny Numer Lokalizacyjny",
+      "description_en": "Global Location Number"
+    }
+  },
+
+  "identificationFields": {
+    "NIP": {
+      "englishName": "TaxId",
+      "description_pl": "Numer Identyfikacji Podatkowej",
+      "description_en": "Tax Identification Number"
+    },
+    "NrVatUE": {
+      "englishName": "EUVatId",
+      "description_pl": "Numer identyfikacyjny VAT UE",
+      "description_en": "EU VAT identification number"
+    },
+    "IDWew": {
+      "englishName": "InternalId",
+      "description_pl": "Identyfikator wewnętrzny (dla podmiotów bez NIP)",
+      "description_en": "Internal identifier (for entities without NIP)"
+    },
+    "NrEORI": {
+      "englishName": "EORINumber",
+      "description_pl": "Numer EORI (Economic Operators Registration and Identification)",
+      "description_en": "EORI number (Economic Operators Registration and Identification)"
+    },
+    "REGON": {
+      "englishName": "REGON",
+      "description_pl": "Numer REGON",
+      "description_en": "REGON number (National Business Registry Number)"
+    },
+    "PESEL": {
+      "englishName": "PESEL",
+      "description_pl": "Numer PESEL",
+      "description_en": "PESEL number (Personal Identification Number)"
+    },
+    "PelnaNazwa": {
+      "englishName": "FullName",
+      "description_pl": "Pełna nazwa podmiotu",
+      "description_en": "Entity full name"
+    },
+    "ImiePierwsze": {
+      "englishName": "FirstName",
+      "description_pl": "Pierwsze imię",
+      "description_en": "First name"
+    },
+    "Nazwisko": {
+      "englishName": "LastName",
+      "description_pl": "Nazwisko",
+      "description_en": "Last name"
+    },
+    "DataUrodzenia": {
+      "englishName": "DateOfBirth",
+      "description_pl": "Data urodzenia",
+      "description_en": "Date of birth"
+    }
+  }
+}

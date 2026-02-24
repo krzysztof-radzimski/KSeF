@@ -1,0 +1,114 @@
+XSD_Field;EnglishName;Type;Description_PL;Description_EN;Required;Category
+P_1;InvoiceDate;TDataT;Data wystawienia;Invoice issue date;true;InvoiceHeader
+P_1M;IssuePlace;TZnakowy;Miejsce wystawienia faktury;Place of invoice issue;false;InvoiceHeader
+P_2;InvoiceNumber;TZnakowy;Kolejny numer faktury;Sequential invoice number;true;InvoiceHeader
+P_6;DeliveryDate;TDataT;Data dokonania/zakonczenia dostawy towarow lub wykonania uslugi;Date of delivery/service completion;false;InvoiceHeader
+P_6_Od;PeriodStartDate;TDataT;Data poczatkowa okresu;Start date of invoice period;false;InvoiceHeader
+P_6_Do;PeriodEndDate;TDataT;Data koncowa okresu;End date of invoice period;false;InvoiceHeader
+P_13_1;NetAmount23;TKwotowy;Suma wartosci sprzedazy netto 23%/22%;Sum of net sales at 23%/22%;false;VATSummary
+P_14_1;VatAmount23;TKwotowy;Kwota podatku 23%/22%;VAT amount at 23%/22%;false;VATSummary
+P_14_1W;VatAmount23ForeignCurrency;TKwotowy;Kwota VAT 23%/22% przeliczona (waluta obca);VAT 23%/22% converted (foreign currency);false;VATSummary
+P_13_2;NetAmount8;TKwotowy;Suma wartosci sprzedazy netto 8%/7%;Sum of net sales at 8%/7%;false;VATSummary
+P_14_2;VatAmount8;TKwotowy;Kwota podatku 8%/7%;VAT amount at 8%/7%;false;VATSummary
+P_14_2W;VatAmount8ForeignCurrency;TKwotowy;Kwota VAT 8%/7% przeliczona;VAT 8%/7% converted;false;VATSummary
+P_13_3;NetAmount5;TKwotowy;Suma wartosci sprzedazy netto 5%;Sum of net sales at 5%;false;VATSummary
+P_14_3;VatAmount5;TKwotowy;Kwota podatku 5%;VAT amount at 5%;false;VATSummary
+P_14_3W;VatAmount5ForeignCurrency;TKwotowy;Kwota VAT 5% przeliczona;VAT 5% converted;false;VATSummary
+P_13_4;NetAmountTaxi;TKwotowy;Suma netto - ryczalt dla taksowek;Net amount - taxi flat rate;false;VATSummary
+P_14_4;VatAmountTaxi;TKwotowy;Kwota podatku - ryczalt dla taksowek;VAT amount - taxi flat rate;false;VATSummary
+P_14_4W;VatAmountTaxiForeignCurrency;TKwotowy;Ryczalt dla taksowek przeliczony;Taxi flat rate converted;false;VATSummary
+P_13_5;NetAmountOSS;TKwotowy;Suma netto - procedura OSS;Net amount - OSS procedure;false;VATSummary
+P_14_5;VatAmountOSS;TKwotowy;Kwota VAT - procedura OSS;VAT amount - OSS procedure;false;VATSummary
+P_13_6_1;Amount0Domestic;TKwotowy;Suma sprzedazy 0% (krajowa);Sales at 0% (domestic);false;VATSummary
+P_13_6_2;Amount0IntraEU;TKwotowy;Suma sprzedazy 0% - WDT;Sales at 0% - intra-EU;false;VATSummary
+P_13_6_3;Amount0Export;TKwotowy;Suma sprzedazy 0% - eksport;Sales at 0% - export;false;VATSummary
+P_13_7;AmountExempt;TKwotowy;Suma sprzedazy zwolnionej;Tax-exempt sales sum;false;VATSummary
+P_13_8;AmountOutsideTerritory;TKwotowy;Suma sprzedazy poza terytorium kraju;Sales outside country territory;false;VATSummary
+P_13_9;AmountServices100;TKwotowy;Suma swiadczenia uslug (art. 100);Services sum (art. 100);false;VATSummary
+P_13_10;AmountReverseCharge;TKwotowy;Suma sprzedazy - odwrotne obciazenie;Reverse charge sales sum;false;VATSummary
+P_13_11;AmountMargin;TKwotowy;Suma sprzedazy - procedura marzy;Margin scheme sales sum;false;VATSummary
+P_15;TotalAmount;TKwotowy;Kwota naleznosci ogolem;Total amount due;true;InvoiceHeader
+P_16;MetalScrapFlag;TWybor1_2;Znacznik - metoda kasowa;Cash method flag;false;Annotations
+P_17;SelfBillingFlag;TWybor1_2;Znacznik samofakturowania;Self-billing flag;false;Annotations
+P_18;ReverseChargeFlag;TWybor1_2;Znacznik odwrotnego obciazenia;Reverse charge flag;false;Annotations
+P_18A;SplitPaymentFlag;TWybor1_2;Znacznik MPP;Split payment flag;false;Annotations
+P_19;ExportFlag;TWybor1;Znacznik eksportu;Export flag;false;Annotations
+P_19A;ExportCustomsOffice;TZnakowy;Urzad celny wyjscia z UE;Customs office leaving EU;false;Export
+P_19B;ExportCustomsDate;TZnakowy;Data opuszczenia UE;Date of leaving EU;false;Export
+P_19C;ExportCustomsDeclaration;TZnakowy;Nr zgloszenia celnego;Customs declaration number;false;Export
+P_19N;NoExportFlag;TWybor1;Znacznik braku informacji eksportowych;No export info flag;false;Export
+P_22;NewTransportFlag;TWybor1;Znacznik nowych srodkow transportu;New transport means flag;false;Transport
+P_22A;NewTransportFirstRegDate;TDataT;Data pierwszej rejestracji;First registration date;false;Transport
+P_22N;NoNewTransportFlag;TWybor1;Znacznik braku informacji o transporcie;No transport info flag;false;Transport
+P_23;SimplifiedInvoiceFlag;TWybor1_2;Znacznik faktury uproszczonej;Simplified invoice flag;false;Annotations
+P_PMarzy;MarginSchemeFlag;TWybor1;Znacznik procedury marzy;Margin scheme flag;false;MarginScheme
+P_PMarzy_2;MarginSchemeUsedGoods;TWybor1;Procedura marzy - towary uzywane;Margin scheme - used goods;false;MarginScheme
+P_PMarzy_3_1;MarginSchemeArt;TWybor1;Procedura marzy - dziela sztuki;Margin scheme - works of art;false;MarginScheme
+P_PMarzy_3_2;MarginSchemeCollectibles;TWybor1;Procedura marzy - przedmioty kolekcjonerskie;Margin scheme - collectibles;false;MarginScheme
+P_PMarzy_3_3;MarginSchemeAntiques;TWybor1;Procedura marzy - antyki;Margin scheme - antiques;false;MarginScheme
+P_PMarzyN;NoMarginSchemeFlag;TWybor1;Znacznik braku procedury marzy;No margin scheme flag;false;MarginScheme
+NrWierszaFa;LineNumber;TNaturalny;Kolejny numer wiersza;Sequential line number;true;InvoiceLine
+UU_ID;UniqueLineId;TZnakowy50;Uniwersalny unikalny numer wiersza;Universal unique line ID;false;InvoiceLine
+P_6A;LineDeliveryDate;TDataT;Data dostawy dla pozycji;Line delivery date;false;InvoiceLine
+P_7;ItemName;TZnakowy512;Nazwa towaru lub uslugi;Name of goods/services;false;InvoiceLine
+Indeks;ItemCode;TZnakowy50;Wewnetrzny kod towaru;Internal product code;false;InvoiceLine
+GTIN;GTIN;TZnakowy20;Globalny numer jednostki handlowej;Global Trade Item Number;false;InvoiceLine
+PKWiU;PKWiU;TZnakowy50;Symbol PKWiU;PKWiU symbol;false;InvoiceLine
+CN;CNCode;TZnakowy50;Symbol Nomenklatury Scalonej;Combined Nomenclature code;false;InvoiceLine
+PKOB;PKOB;TZnakowy50;Symbol PKOB;PKOB symbol;false;InvoiceLine
+P_8A;UnitOfMeasure;TZnakowy;Miara towaru/uslugi;Unit of measure;false;InvoiceLine
+P_8B;Quantity;TIlosci;Ilosc;Quantity;false;InvoiceLine
+P_9A;UnitPriceNet;TKwotowy2;Cena jednostkowa netto;Net unit price;false;InvoiceLine
+P_9B;UnitPriceGross;TKwotowy2;Cena jednostkowa brutto;Gross unit price;false;InvoiceLine
+P_10;Discount;TKwotowy2;Rabaty i opusty;Discounts;false;InvoiceLine
+P_11;NetValue;TKwotowy;Wartosc sprzedazy netto;Net sales value;false;InvoiceLine
+P_11A;GrossValue;TKwotowy;Wartosc sprzedazy brutto;Gross sales value;false;InvoiceLine
+P_11Vat;LineVatAmount;TKwotowy;Kwota VAT pozycji;Line VAT amount;false;InvoiceLine
+P_12;VatRate;TStawkaPodatku;Stawka podatku;VAT rate;false;InvoiceLine
+P_12_XII;VatRateOSS;TProcentowy;Stawka VAT OSS;OSS VAT rate;false;InvoiceLine
+P_12_Zal_15;Annex15Flag;TWybor1;Znacznik zalacznika 15;Annex 15 flag;false;InvoiceLine
+KwotaAkcyzy;ExciseDutyAmount;TKwotowy;Kwota akcyzy;Excise duty amount;false;InvoiceLine
+GTU;GTUCode;TGTU;Oznaczenie GTU;GTU code;false;InvoiceLine
+Procedura;ProcedureCode;TOznaczenieProcedury;Oznaczenie procedury;Procedure code;false;InvoiceLine
+KursWaluty;ExchangeRate;TIlosci;Kurs waluty;Exchange rate;false;InvoiceLine
+StanPrzed;BeforeCorrectionFlag;TWybor1;Znacznik stanu przed korekta;Before correction flag;false;InvoiceLine
+P_15ZK;CorrectionTotalAmount;TKwotowy;Kwota ogolem z faktury korygowanej;Total from corrected invoice;false;Correction
+P_6Z;CorrectedInvoiceDeliveryDate;TDataT;Data dostawy z faktury korygowanej;Delivery date from corrected invoice;false;Correction
+P_15Z;CorrectedInvoiceTotalAmount;TKwotowy;Kwota ogolem przed korekta;Total before correction;false;Correction
+P_7Z;CorrectedItemName;TZnakowy512;Nazwa towaru z pozycji korygowanej;Item name from corrected line;false;Correction
+P_8AZ;CorrectedUnitOfMeasure;TZnakowy;Miara z pozycji korygowanej;Unit from corrected line;false;Correction
+P_8BZ;CorrectedQuantity;TIlosci;Ilosc z pozycji korygowanej;Quantity from corrected line;false;Correction
+P_9AZ;CorrectedUnitPriceNet;TKwotowy2;Cena netto z pozycji korygowanej;Net price from corrected line;false;Correction
+P_11NettoZ;CorrectedNetValue;TKwotowy;Wartosc netto z pozycji korygowanej;Net value from corrected line;false;Correction
+P_11VatZ;CorrectedVatAmount;TKwotowy;Kwota VAT z pozycji korygowanej;VAT from corrected line;false;Correction
+P_12Z;CorrectedVatRate;TStawkaPodatku;Stawka podatku z pozycji korygowanej;VAT rate from corrected line;false;Correction
+P_12Z_XII;CorrectedVatRateOSS;TProcentowy;Stawka VAT OSS z pozycji korygowanej;OSS VAT rate from corrected line;false;Correction
+P_12Z_Zal_15;CorrectedAnnex15Flag;TWybor1;Znacznik zal. 15 z pozycji korygowanej;Annex 15 flag from corrected line;false;Correction
+Podmiot1;Seller;TPodmiot1;Dane podatnika (sprzedawcy);Taxpayer (seller) data;true;Entity
+Podmiot2;Buyer;TPodmiot2;Dane nabywcy;Buyer data;true;Entity
+Podmiot3;ThirdParty;TPodmiot3;Dane podmiotu trzeciego;Third party data;false;Entity
+Podmiot1K;OriginalSeller;TPodmiot1;Dane pierwotnego sprzedawcy;Original seller data;false;Entity
+Podmiot2K;OriginalBuyer;TPodmiot2;Dane pierwotnego nabywcy;Original buyer data;false;Entity
+PodmiotUpowazniony;AuthorizedEntity;Complex;Podmiot upowazniony;Authorized entity;false;Entity
+NIP;TaxId;TNrNIP;Numer Identyfikacji Podatkowej;Tax Identification Number;true;Identification
+NrVatUE;EUVatId;TNrVatUE;Numer VAT UE;EU VAT Number;false;Identification
+IDWew;InternalId;TNIPIdWew;Identyfikator wewnetrzny;Internal identifier;false;Identification
+NrEORI;EORINumber;TZnakowy;Numer EORI;EORI number;false;Identification
+REGON;REGON;TNrREGON;Numer REGON;REGON number;false;Identification
+PESEL;PESEL;TNrPESEL;Numer PESEL;PESEL number;false;Identification
+PelnaNazwa;FullName;token;Pelna nazwa podmiotu;Entity full name;false;Identification
+ImiePierwsze;FirstName;TImie;Pierwsze imie;First name;false;Identification
+Nazwisko;LastName;TNazwisko;Nazwisko;Last name;false;Identification
+DataUrodzenia;DateOfBirth;TData;Data urodzenia;Date of birth;false;Identification
+KodKraju;CountryCode;TKodKraju;Kod kraju;Country code;true;Address
+Wojewodztwo;Province;TJednAdmin;Wojewodztwo;Province;false;Address
+Powiat;District;TJednAdmin;Powiat;District;false;Address
+Gmina;Municipality;TJednAdmin;Gmina;Municipality;false;Address
+Ulica;Street;TUlica;Nazwa ulicy;Street name;false;Address
+NrDomu;BuildingNumber;TNrBudynku;Numer budynku;Building number;false;Address
+NrLokalu;ApartmentNumber;TNrLokalu;Numer lokalu;Apartment number;false;Address
+Miejscowosc;City;TMiejscowosc;Nazwa miejscowosci;City name;true;Address
+KodPocztowy;PostalCode;TKodPocztowy;Kod pocztowy;Postal code;false;Address
+Poczta;PostOffice;TMiejscowosc;Nazwa urzedu pocztowego;Post office name;false;Address
+KodWaluty;CurrencyCode;TKodWaluty;Kod waluty (ISO 4217);Currency code (ISO 4217);true;InvoiceHeader
+NrKSeF;KSeFNumber;TNumerKSeF;Numer nadany przez KSeF;KSeF assigned number;false;InvoiceHeader

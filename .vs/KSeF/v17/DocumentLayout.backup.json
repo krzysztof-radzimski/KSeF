@@ -1,0 +1,57 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projekty\\krzysztof-radzimski\\ksef\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C3D4E5F6-A7B8-9012-CDEF-123456789012}|KSeF.Api\\KSeF.Api.csproj|c:\\projekty\\krzysztof-radzimski\\ksef\\ksef.api\\services\\ksefsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C3D4E5F6-A7B8-9012-CDEF-123456789012}|KSeF.Api\\KSeF.Api.csproj|solutionrelative:ksef.api\\services\\ksefsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C3D4E5F6-A7B8-9012-CDEF-123456789012}|KSeF.Api\\KSeF.Api.csproj|c:\\projekty\\krzysztof-radzimski\\ksef\\ksef.api\\ksef.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C3D4E5F6-A7B8-9012-CDEF-123456789012}|KSeF.Api\\KSeF.Api.csproj|solutionrelative:ksef.api\\ksef.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 484,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{ef140051-51b8-4c40-979a-b151e140af7e}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "KsefSessionService.cs",
+              "DocumentMoniker": "C:\\Projekty\\krzysztof-radzimski\\ksef\\KSeF.Api\\Services\\KsefSessionService.cs",
+              "RelativeDocumentMoniker": "KSeF.Api\\Services\\KsefSessionService.cs",
+              "ToolTip": "C:\\Projekty\\krzysztof-radzimski\\ksef\\KSeF.Api\\Services\\KsefSessionService.cs",
+              "RelativeToolTip": "KSeF.Api\\Services\\KsefSessionService.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAUwDsAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-24T13:49:41.576Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "KSeF.Api.csproj",
+              "DocumentMoniker": "C:\\Projekty\\krzysztof-radzimski\\ksef\\KSeF.Api\\KSeF.Api.csproj",
+              "RelativeDocumentMoniker": "KSeF.Api\\KSeF.Api.csproj",
+              "ToolTip": "C:\\Projekty\\krzysztof-radzimski\\ksef\\KSeF.Api\\KSeF.Api.csproj",
+              "RelativeToolTip": "KSeF.Api\\KSeF.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-24T13:47:14.344Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

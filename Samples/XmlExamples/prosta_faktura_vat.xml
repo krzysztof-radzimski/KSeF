@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Przykładowa prosta faktura VAT zgodna ze schematem KSeF FA(3)
+  Ten plik przedstawia minimalną strukturę faktury VAT
+-->
+<Faktura xmlns="http://crd.gov.pl/wzor/2025/06/25/13775/"
+         xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/">
+
+  <!-- Nagłówek faktury -->
+  <Naglowek>
+    <KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</KodFormularza>
+    <WariantFormularza>1</WariantFormularza>
+    <DataWytworzeniaFa>2024-01-15T10:30:00</DataWytworzeniaFa>
+    <SystemInfo>KSeF.Invoice.Samples 1.0</SystemInfo>
+  </Naglowek>
+
+  <!-- Podmiot1 - Sprzedawca -->
+  <Podmiot1>
+    <DaneIdentyfikacyjne>
+      <NIP>1234567890</NIP>
+      <Nazwa>Firma ABC Sp. z o.o.</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Przykładowa 1</AdresL1>
+      <AdresL2>00-001 Warszawa</AdresL2>
+    </Adres>
+    <DaneKontaktowe>
+      <Email>biuro@firma-abc.pl</Email>
+      <Telefon>+48 22 111 22 33</Telefon>
+    </DaneKontaktowe>
+  </Podmiot1>
+
+  <!-- Podmiot2 - Nabywca -->
+  <Podmiot2>
+    <DaneIdentyfikacyjne>
+      <NIP>0987654321</NIP>
+      <Nazwa>Klient XYZ S.A.</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Kliencka 99</AdresL1>
+      <AdresL2>30-001 Kraków</AdresL2>
+    </Adres>
+  </Podmiot2>
+
+  <!-- Fa - Dane merytoryczne faktury -->
+  <Fa>
+    <!-- Podstawowe dane faktury -->
+    <KodWaluty>PLN</KodWaluty>
+    <P_1>2024-01-15</P_1>                    <!-- Data wystawienia -->
+    <P_2>FV/2024/001</P_2>                   <!-- Numer faktury -->
+    <P_6>2024-01-15</P_6>                    <!-- Data sprzedaży -->
+    <RodzajFaktury>VAT</RodzajFaktury>
+
+    <!-- Podsumowanie wartości -->
+    <P_13_1>1000.00</P_13_1>                 <!-- Netto 23% -->
+    <P_14_1>230.00</P_14_1>                  <!-- VAT 23% -->
+    <P_15>1230.00</P_15>                     <!-- Suma brutto -->
+
+    <!-- Adnotacje -->
+    <Adnotacje>
+      <P_16>2</P_16>                         <!-- Metoda kasowa: Nie -->
+      <P_17>2</P_17>                         <!-- Samofakturowanie: Nie -->
+      <P_18>2</P_18>                         <!-- Odwrotne obciążenie: Nie -->
+      <P_18A>2</P_18A>                       <!-- MPP: Nie -->
+      <Zwolnienie>
+        <P_19N>1</P_19N>                     <!-- Brak podstawy zwolnienia -->
+      </Zwolnienie>
+      <NoweSrodkiTransportu>
+        <P_22N>1</P_22N>                     <!-- Nie dotyczy nowych środków transportu -->
+      </NoweSrodkiTransportu>
+      <P_23>2</P_23>                         <!-- Wewnątrzwspólnotowa dostawa: Nie -->
+      <PMarzy>
+        <P_PMarzyN>1</P_PMarzyN>             <!-- Procedura marży: Nie -->
+      </PMarzy>
+    </Adnotacje>
+
+    <!-- Pozycja faktury -->
+    <FaWiersz>
+      <NrWierszaFa>1</NrWierszaFa>
+      <P_7>Usługa konsultingowa IT</P_7>     <!-- Nazwa towaru/usługi -->
+      <P_8A>szt.</P_8A>                       <!-- Jednostka miary -->
+      <P_8B>1</P_8B>                          <!-- Ilość -->
+      <P_9A>1000.00</P_9A>                    <!-- Cena jednostkowa netto -->
+      <P_11>1000.00</P_11>                    <!-- Wartość netto -->
+      <P_11A>1230.00</P_11A>                  <!-- Wartość brutto (opcjonalnie) -->
+      <P_12>23</P_12>                         <!-- Stawka VAT -->
+    </FaWiersz>
+
+    <!-- Informacje o płatności -->
+    <Platnosc>
+      <TerminPlatnosci>
+        <Termin>2024-01-30</Termin>
+      </TerminPlatnosci>
+      <FormaPlatnosci>6</FormaPlatnosci>      <!-- Przelew bankowy -->
+      <RachunekBankowy>
+        <NrRB>PL61109010140000071219812874</NrRB>
+      </RachunekBankowy>
+    </Platnosc>
+  </Fa>
+
+</Faktura>

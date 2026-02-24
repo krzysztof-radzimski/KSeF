@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Przykładowa faktura zaliczkowa zgodna ze schematem KSeF FA(3)
+  Ten plik przedstawia strukturę faktury dokumentującej otrzymanie zaliczki
+-->
+<Faktura xmlns="http://crd.gov.pl/wzor/2025/06/25/13775/"
+         xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/">
+
+  <Naglowek>
+    <KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</KodFormularza>
+    <WariantFormularza>1</WariantFormularza>
+    <DataWytworzeniaFa>2024-01-10T08:00:00</DataWytworzeniaFa>
+    <SystemInfo>KSeF.Invoice.Samples 1.0</SystemInfo>
+  </Naglowek>
+
+  <Podmiot1>
+    <DaneIdentyfikacyjne>
+      <NIP>1234567890</NIP>
+      <Nazwa>Firma Budowlana ABC Sp. z o.o.</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Budowlana 10</AdresL1>
+      <AdresL2>00-001 Warszawa</AdresL2>
+    </Adres>
+    <DaneKontaktowe>
+      <Email>biuro@budowlana-abc.pl</Email>
+      <Telefon>+48 22 999 88 77</Telefon>
+    </DaneKontaktowe>
+  </Podmiot1>
+
+  <Podmiot2>
+    <DaneIdentyfikacyjne>
+      <NIP>5555555555</NIP>
+      <Nazwa>Inwestor DEF S.A.</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Inwestorska 50</AdresL1>
+      <AdresL2>02-222 Warszawa</AdresL2>
+    </Adres>
+  </Podmiot2>
+
+  <Fa>
+    <KodWaluty>PLN</KodWaluty>
+    <P_1>2024-01-10</P_1>
+    <P_2>FV/2024/ZAL/001</P_2>
+
+    <!-- Dla faktury zaliczkowej może nie być daty sprzedaży -->
+    <!-- Zamiast P_6 można użyć okresu lub pozostawić puste -->
+
+    <RodzajFaktury>ZAL</RodzajFaktury>       <!-- Typ: Faktura zaliczkowa -->
+
+    <!-- Podsumowanie wartości zaliczki -->
+    <P_13_1>50000.00</P_13_1>                <!-- Netto 23% -->
+    <P_14_1>11500.00</P_14_1>                <!-- VAT 23% -->
+    <P_15>61500.00</P_15>                    <!-- Suma brutto zaliczki -->
+
+    <Adnotacje>
+      <P_16>2</P_16>
+      <P_17>2</P_17>
+      <P_18>2</P_18>
+      <P_18A>2</P_18A>
+      <Zwolnienie>
+        <P_19N>1</P_19N>
+      </Zwolnienie>
+      <NoweSrodkiTransportu>
+        <P_22N>1</P_22N>
+      </NoweSrodkiTransportu>
+      <P_23>2</P_23>
+      <PMarzy>
+        <P_PMarzyN>1</P_PMarzyN>
+      </PMarzy>
+    </Adnotacje>
+
+    <!-- Pozycja faktury zaliczkowej -->
+    <FaWiersz>
+      <NrWierszaFa>1</NrWierszaFa>
+      <P_7>Zaliczka na prace budowlane - Etap I (fundamenty)</P_7>
+      <P_8A>szt.</P_8A>
+      <P_8B>1</P_8B>
+      <P_9A>50000.00</P_9A>
+      <P_11>50000.00</P_11>
+      <P_12>23</P_12>
+    </FaWiersz>
+
+    <!-- Dodatkowe opisy -->
+    <DodatkowyOpis>
+      <Klucz>Numer zamówienia</Klucz>
+      <Wartosc>ZAM/2024/001</Wartosc>
+    </DodatkowyOpis>
+    <DodatkowyOpis>
+      <Klucz>Opis projektu</Klucz>
+      <Wartosc>Budowa domu jednorodzinnego - ul. Słoneczna 15, Warszawa</Wartosc>
+    </DodatkowyOpis>
+    <DodatkowyOpis>
+      <Klucz>Wartość całkowita umowy</Klucz>
+      <Wartosc>200 000 PLN netto</Wartosc>
+    </DodatkowyOpis>
+
+    <!-- Płatność -->
+    <Platnosc>
+      <TerminPlatnosci>
+        <Termin>2024-01-20</Termin>
+      </TerminPlatnosci>
+      <FormaPlatnosci>6</FormaPlatnosci>
+      <RachunekBankowy>
+        <NrRB>PL27114020040000320218427362</NrRB>
+        <NazwaBanku>mBank S.A.</NazwaBanku>
+      </RachunekBankowy>
+    </Platnosc>
+
+  </Fa>
+
+</Faktura>

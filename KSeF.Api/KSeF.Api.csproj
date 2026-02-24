@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>KSeF.Api</RootNamespace>
+		<AssemblyName>KSeF.Api</AssemblyName>
+		<Version>1.0.0</Version>
+		<Authors>KSeF Team</Authors>
+		<Description>Serwisy integracji z API Krajowego Systemu e-Faktur (KSeF) - wysyłanie i odbieranie faktur</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="KSeF.Client" Version="2.1.1" />
+		<PackageReference Include="KSeF.Client.ClientFactory" Version="2.1.1" />
+		<PackageReference Include="KSeF.Client.Core" Version="2.1.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.11" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.11" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.11" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\KSeF.Invoice\KSeF.Invoice.csproj" />
+	</ItemGroup>
+
+</Project>
