@@ -1,0 +1,3 @@
+[submodule "lib/ksef-client-csharp"]
+	path = lib/ksef-client-csharp
+	url = https://github.com/CIRFMF/ksef-client-csharp.git

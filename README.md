@@ -129,31 +129,28 @@ Pełna dokumentacja dostępna w katalogu [docs/](docs/):
 
 ## Instalacja
 
-### 1. Konfiguracja źródła pakietów GitHub Packages
+### 1. Klonowanie repozytorium z submodułem
 
-Pakiety `KSeF.Client` są dostępne w GitHub Packages organizacji CIRFMF. Wymagany jest Personal Access Token (PAT) z uprawnieniem `read:packages`.
+Projekt używa kodu źródłowego [ksef-client-csharp](https://github.com/CIRFMF/ksef-client-csharp) (v2.3.0) jako git submodule w katalogu `lib/ksef-client-csharp`. Dzięki temu nie potrzeba konfiguracji GitHub Packages ani tokenu PAT.
 
-**Windows (CMD):**
-```cmd
-dotnet nuget add source "https://nuget.pkg.github.com/CIRFMF/index.json" ^
-  --name github-cirf ^
-  --username token ^
-  --password TWOJ_PAT_TOKEN ^
-  --store-password-in-clear-text
-```
-
-**Linux/macOS (Bash):**
 ```bash
-dotnet nuget add source "https://nuget.pkg.github.com/CIRFMF/index.json" \
-  --name github-cirf \
-  --username token \
-  --password TWOJ_PAT_TOKEN \
-  --store-password-in-clear-text
+# Klonowanie z submodułem (zalecane)
+git clone --recurse-submodules https://github.com/krzysztof-radzimski/KSeF.git
+
+# Jeśli repozytorium zostało sklonowane bez submodułów
+git submodule init
+git submodule update
 ```
 
-> **Uwaga:** Alternatywnie możesz skopiować i dostosować plik `nuget.config` z repozytorium.
+### 2. Kompilacja
 
-### 2. Instalacja pakietów
+```bash
+dotnet build KSeF.sln
+```
+
+### 3. Użycie jako pakiet NuGet (opcjonalnie)
+
+Jeśli chcesz używać KSeF.Invoice lub KSeF.Api jako pakiet NuGet:
 
 ```bash
 # Modele faktur i walidacja
@@ -1027,10 +1024,8 @@ IKsefInvoiceStatusService    - Statusy faktur
 - **.NET 8.0** lub **.NET 9.0** lub nowszy
 - Windows, Linux lub macOS
 
-### Pakiety NuGet
-- `KSeF.Client` 1.0.0+ (z GitHub Packages CIRFMF) - klient HTTP KSeF
-- `KSeF.Client.Core` 1.0.0+ (z GitHub Packages CIRFMF) - modele odpowiedzi API
-- `KSeF.Client.ClientFactory` 1.0.0+ (z GitHub Packages CIRFMF) - fabryka klientów
+### Zależności
+- `ksef-client-csharp` 2.3.0 (git submodule w `lib/ksef-client-csharp`) - klient HTTP KSeF
 - `Microsoft.Extensions.DependencyInjection` 9.0+ - DI container
 
 ### Certyfikat (opcjonalnie)
@@ -1041,10 +1036,11 @@ IKsefInvoiceStatusService    - Statusy faktur
 
 Wkład w projekt jest mile widziany! Prosimy o:
 1. Forkowanie repozytorium
-2. Tworzenie brancha dla funkcjonalności (`git checkout -b feature/AmazingFeature`)
-3. Commit zmian (`git commit -m 'Add some AmazingFeature'`)
-4. Push do brancha (`git push origin feature/AmazingFeature`)
-5. Otwarcie Pull Request
+2. Klonowanie z submodułem: `git clone --recurse-submodules <url>`
+3. Tworzenie brancha dla funkcjonalności (`git checkout -b feature/AmazingFeature`)
+4. Commit zmian (`git commit -m 'Add some AmazingFeature'`)
+5. Push do brancha (`git push origin feature/AmazingFeature`)
+6. Otwarcie Pull Request
 
 ## Licencja
 

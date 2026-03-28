@@ -18,43 +18,25 @@ Biblioteka .NET do integracji z **Krajowym Systemem e-Faktur (KSeF)** - wysyłan
 
 ## Instalacja
 
-### 1. Konfiguracja źródła GitHub Packages
+### 1. Klonowanie repozytorium z submodułem
 
-Pakiety `KSeF.Client` są dostępne w GitHub Packages organizacji CIRFMF. Wymagany jest Personal Access Token (PAT) z uprawnieniem `read:packages`.
-
-**Windows (CMD):**
-```cmd
-dotnet nuget add source "https://nuget.pkg.github.com/CIRFMF/index.json" ^
-  --name github-cirf ^
-  --username token ^
-  --password TWOJ_PAT_TOKEN ^
-  --store-password-in-clear-text
-```
-
-**Linux/macOS (Bash):**
-```bash
-dotnet nuget add source "https://nuget.pkg.github.com/CIRFMF/index.json" \
-  --name github-cirf \
-  --username token \
-  --password TWOJ_PAT_TOKEN \
-  --store-password-in-clear-text
-```
-
-> **Alternatywa:** Możesz skopiować plik `nuget.config` z głównego katalogu repozytorium.
-
-### 2. Instalacja pakietu
+Projekt używa kodu źródłowego [ksef-client-csharp](https://github.com/CIRFMF/ksef-client-csharp) (v2.3.0) jako git submodule. Nie wymaga konfiguracji GitHub Packages ani tokenu PAT.
 
 ```bash
-dotnet add package KSeF.Api
+# Klonowanie z submodułem
+git clone --recurse-submodules https://github.com/krzysztof-radzimski/KSeF.git
+
+# Jeśli repozytorium sklonowano bez submodułów
+git submodule init && git submodule update
 ```
 
-Lub w pliku `.csproj`:
+### 2. Kompilacja
 
-```xml
-<PackageReference Include="KSeF.Api" Version="1.0.0" />
+```bash
+dotnet build KSeF.sln
 ```
 
-> **Uwaga:** Instalacja `KSeF.Api` automatycznie zainstaluje również `KSeF.Invoice` (modele i walidacja faktur).
+> **Uwaga:** `KSeF.Api` automatycznie referencuje `KSeF.Invoice` (modele i walidacja faktur) oraz projekty `KSeF.Client` z submodułu.
 
 ## Szybki start
 
@@ -567,11 +549,9 @@ Biblioteka **KSeF.Api** automatycznie instaluje **KSeF.Invoice** (modele i walid
 - **.NET 8.0** lub **.NET 9.0**
 - Windows, Linux lub macOS
 
-### Pakiety NuGet
-- `KSeF.Invoice` 1.0.0+ - modele i walidacja faktur
-- `KSeF.Client` 1.0.0+ (z GitHub Packages CIRFMF) - klient HTTP KSeF
-- `KSeF.Client.Core` 1.0.0+ - modele odpowiedzi API
-- `KSeF.Client.ClientFactory` 1.0.0+ - fabryka klientów
+### Zależności
+- `KSeF.Invoice` - modele i walidacja faktur (ProjectReference)
+- `ksef-client-csharp` 2.3.0 (git submodule w `lib/ksef-client-csharp`) - klient HTTP KSeF
 - `Microsoft.Extensions.DependencyInjection` 9.0+ - DI container
 
 ### Autoryzacja
