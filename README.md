@@ -1,4 +1,4 @@
-# KSeF - Krajowy System e-Faktur
+# KSeF - Wsparcie dla integratorów
 
 Kompletne rozwiązanie .NET do integracji z **Krajowym Systemem e-Faktur (KSeF)** - tworzenie, walidacja, wysyłanie i odbieranie faktur ustrukturyzowanych.
 
