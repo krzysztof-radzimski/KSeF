@@ -8,15 +8,15 @@ public static class KsefEnvironment
     /// <summary>
     /// Środowisko testowe (test)
     /// </summary>
-    public const string Test = "https://ksef-test.mf.gov.pl/api";
+    public const string Test = "https://api-test.ksef.mf.gov.pl";
 
     /// <summary>
     /// Środowisko demo
     /// </summary>
-    public const string Demo = "https://ksef-demo.mf.gov.pl/api";
+    public const string Demo = "https://api-demo.ksef.mf.gov.pl";
 
     /// <summary>
     /// Środowisko produkcyjne
     /// </summary>
-    public const string Production = "https://ksef.mf.gov.pl/api";
+    public const string Production = "https://api.ksef.mf.gov.pl";
 }

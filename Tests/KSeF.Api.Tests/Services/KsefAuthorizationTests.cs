@@ -148,7 +148,7 @@ public class KsefAuthorizationTests
     {
         // Arrange
         var options = CreateOptions(KsefEnvironment.Test);
-        options.BaseUrl.Should().Be("https://ksef-test.mf.gov.pl/api");
+        options.BaseUrl.Should().Be("https://api-test.ksef.mf.gov.pl");
 
         var service = CreateService(options);
         SetupSuccessfulAuth();
@@ -264,7 +264,7 @@ public class KsefAuthorizationTests
     {
         // Arrange
         var options = CreateOptions(KsefEnvironment.Demo);
-        options.BaseUrl.Should().Be("https://ksef-demo.mf.gov.pl/api");
+        options.BaseUrl.Should().Be("https://api-demo.ksef.mf.gov.pl");
 
         var service = CreateService(options);
         SetupSuccessfulAuth();
@@ -380,7 +380,7 @@ public class KsefAuthorizationTests
     {
         // Arrange
         var options = CreateOptions(KsefEnvironment.Production);
-        options.BaseUrl.Should().Be("https://ksef.mf.gov.pl/api");
+        options.BaseUrl.Should().Be("https://api.ksef.mf.gov.pl");
 
         var service = CreateService(options);
         SetupSuccessfulAuth();
@@ -624,19 +624,19 @@ public class KsefAuthorizationTests
     [Fact]
     public void KsefEnvironment_Test_HasCorrectUrl()
     {
-        KsefEnvironment.Test.Should().Be("https://ksef-test.mf.gov.pl/api");
+        KsefEnvironment.Test.Should().Be("https://api-test.ksef.mf.gov.pl");
     }
 
     [Fact]
     public void KsefEnvironment_Demo_HasCorrectUrl()
     {
-        KsefEnvironment.Demo.Should().Be("https://ksef-demo.mf.gov.pl/api");
+        KsefEnvironment.Demo.Should().Be("https://api-demo.ksef.mf.gov.pl");
     }
 
     [Fact]
     public void KsefEnvironment_Production_HasCorrectUrl()
     {
-        KsefEnvironment.Production.Should().Be("https://ksef.mf.gov.pl/api");
+        KsefEnvironment.Production.Should().Be("https://api.ksef.mf.gov.pl");
     }
 
     [Fact]
