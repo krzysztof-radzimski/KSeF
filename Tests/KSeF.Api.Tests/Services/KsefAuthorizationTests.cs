@@ -15,13 +15,15 @@ namespace KSeF.Api.Tests.Services;
 
 /// <summary>
 /// Testy autoryzacji KSeF dla trzech środowisk: testowego, demo i produkcyjnego.
-/// NIP: 9531943265
+/// NIP i token KSeF pobierane ze zmiennych środowiskowych KSEF_TEST_NIP i KSEF_TEST_TOKEN.
+/// Gdy zmienne nie są ustawione, używane są fikcyjne wartości testowe (testy mockowane).
 /// </summary>
 public class KsefAuthorizationTests
 {
-    private const string TestNip = "9531943265";
-    private const string TestKsefToken =
-        "20260330-EC-464FF7F000-C610698715-45|nip-9531943265|629ba33c2c9c4e06bd3a6f0ebc85a4b842db999a2ef64551b131853155cb24b6";
+    private static readonly string TestNip =
+        Environment.GetEnvironmentVariable("KSEF_TEST_NIP") ?? "0000000000";
+    private static readonly string TestKsefToken =
+        Environment.GetEnvironmentVariable("KSEF_TEST_TOKEN") ?? "test-token-placeholder|nip-0000000000|0000000000000000000000000000000000000000000000000000000000000000";
 
     private readonly Mock<IKSeFClient> _ksefClientMock;
     private readonly Mock<ICryptographyService> _cryptographyServiceMock;
