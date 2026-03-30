@@ -24,6 +24,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\KSeF.Api\KSeF.Api.csproj" />
+    <ProjectReference Include="..\..\lib\ksef-client-csharp\KSeF.Client\KSeF.Client.csproj" />
+    <ProjectReference Include="..\..\lib\ksef-client-csharp\KSeF.Client.Core\KSeF.Client.Core.csproj" />
+    <ProjectReference Include="..\..\lib\ksef-client-csharp\KSeF.Client.ClientFactory\KSeF.Client.ClientFactory.csproj" />
   </ItemGroup>
 
   <ItemGroup>
