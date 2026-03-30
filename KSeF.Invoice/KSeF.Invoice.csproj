@@ -7,21 +7,21 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>KSeF.Invoice</RootNamespace>
     <AssemblyName>KSeF.Invoice</AssemblyName>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>KSeF Team</Authors>
     <Description>Modele danych dla Krajowego Systemu e-Faktur (KSeF) - struktura FA(3)</Description>
 
     <!-- NuGet Package Properties -->
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>KSeF.Invoice</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/krzysztof-radzimski/KSeF</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/krzysztof-radzimski/KSeF</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>ksef;e-faktura;faktura;invoice;vat;fa3;poland;xml</PackageTags>
-    <PackageReleaseNotes>Pierwsza wersja biblioteki modeli danych faktur KSeF FA(3)</PackageReleaseNotes>
+    <PackageReleaseNotes>Dodanie licencji MIT, zależności aktualizowane automatycznie z KSeF.Api</PackageReleaseNotes>
     <Copyright>Copyright © 2026 KSeF Team</Copyright>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
