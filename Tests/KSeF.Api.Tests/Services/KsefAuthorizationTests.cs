@@ -7,6 +7,8 @@ using KSeF.Client.Core.Interfaces.Clients;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Authorization;
 using KSeF.Client.Core.Models.Sessions.OnlineSession;
+using KSeF.Client.DI;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -16,14 +18,67 @@ namespace KSeF.Api.Tests.Services;
 /// <summary>
 /// Testy autoryzacji KSeF dla trzech środowisk: testowego, demo i produkcyjnego.
 /// NIP i token KSeF pobierane ze zmiennych środowiskowych KSEF_TEST_NIP i KSEF_TEST_TOKEN.
-/// Gdy zmienne nie są ustawione, używane są fikcyjne wartości testowe (testy mockowane).
+/// Gdy zmienne nie są ustawione, ładowane są z pliku .env.example w katalogu testów.
 /// </summary>
 public class KsefAuthorizationTests
 {
-    private static readonly string TestNip =
-        Environment.GetEnvironmentVariable("KSEF_TEST_NIP") ?? "0000000000";
-    private static readonly string TestKsefToken =
-        Environment.GetEnvironmentVariable("KSEF_TEST_TOKEN") ?? "test-token-placeholder|nip-0000000000|0000000000000000000000000000000000000000000000000000000000000000";
+    private static readonly Dictionary<string, string> EnvExampleValues = LoadEnvExample();
+    private static readonly string TestNip = ResolveEnvValue("KSEF_TEST_NIP");
+    private static readonly string TestKsefToken = ResolveEnvValue("KSEF_TEST_TOKEN");
+
+    private static Dictionary<string, string> LoadEnvExample()
+    {
+        var values = new Dictionary<string, string>();
+
+        var directory = AppContext.BaseDirectory;
+        string? envExamplePath = null;
+
+        // Szukamy .env.example idąc w górę od bin/Debug/net9.0 do katalogu projektu testowego
+        while (directory != null)
+        {
+            var candidate = Path.Combine(directory, ".env.example");
+            if (File.Exists(candidate))
+            {
+                envExamplePath = candidate;
+                break;
+            }
+            directory = Path.GetDirectoryName(directory);
+        }
+
+        if (envExamplePath == null)
+            return values;
+
+        foreach (var line in File.ReadAllLines(envExamplePath))
+        {
+            var trimmed = line.Trim();
+            if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith('#'))
+                continue;
+
+            var separatorIndex = trimmed.IndexOf('=');
+            if (separatorIndex <= 0)
+                continue;
+
+            var key = trimmed[..separatorIndex].Trim();
+            var value = trimmed[(separatorIndex + 1)..].Trim();
+            values[key] = value;
+        }
+
+        return values;
+    }
+
+    private static string ResolveEnvValue(string key)
+    {
+        var envValue = Environment.GetEnvironmentVariable(key);
+        if (!string.IsNullOrEmpty(envValue))
+            return envValue;
+
+        if (EnvExampleValues.TryGetValue(key, out var exampleValue))
+            return exampleValue;
+
+        return key == "KSEF_TEST_NIP"
+            ? "0000000000"
+            : "test-token-placeholder|nip-0000000000|0000000000000000000000000000000000000000000000000000000000000000";
+    }
 
     private readonly Mock<IKSeFClient> _ksefClientMock;
     private readonly Mock<ICryptographyService> _cryptographyServiceMock;
@@ -659,6 +714,130 @@ public class KsefAuthorizationTests
         options.KsefToken.Should().Be(TestKsefToken);
         options.AuthMethod.Should().Be(KsefAuthMethod.Token);
         options.BaseUrl.Should().Be(KsefEnvironment.Test);
+    }
+
+    #endregion
+
+    #region Testy integracyjne - rzeczywiste połączenie z API KSeF
+
+    [Theory]
+    [Trait("Category", "Integration")]
+    [InlineData(KsefEnvironment.Test)]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public async Task Integration_ServerIsReachable_ReturnsSuccessStatusCode(string baseUrl)
+    {
+        // Arrange - prosty HTTP GET do serwera API KSeF
+        using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+
+        // Act
+        var response = await httpClient.GetAsync(baseUrl);
+
+        // Assert - serwer odpowiada (nawet 404 oznacza że serwer działa)
+        ((int)response.StatusCode).Should().BeGreaterThan(0,
+            $"Serwer KSeF {baseUrl} powinien odpowiadać na żądania HTTP");
+    }
+
+    [Theory]
+    [Trait("Category", "Integration")]
+    [InlineData(KsefEnvironment.Test)]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public async Task Integration_AuthChallenge_ReturnsValidResponse(string baseUrl)
+    {
+        // Arrange - tworzymy prawdziwy DI container z klientem KSeF
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddKSeFClient(options => { options.BaseUrl = baseUrl; });
+        services.AddCryptographyClient();
+
+        using var provider = services.BuildServiceProvider();
+        var authorizationClient = provider.GetRequiredService<IAuthorizationClient>();
+
+        // Act - GetAuthChallenge to pierwszy krok autoryzacji, nie wymaga tokenu
+        var challengeResponse = await authorizationClient.GetAuthChallengeAsync();
+
+        // Assert
+        challengeResponse.Should().NotBeNull();
+        challengeResponse.Challenge.Should().NotBeNullOrEmpty(
+            $"Serwer {baseUrl} powinien zwrócić challenge autoryzacyjny");
+        challengeResponse.Timestamp.Should().BeCloseTo(
+            DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5),
+            "Timestamp z serwera powinien być zbliżony do aktualnego czasu");
+    }
+
+    [Theory]
+    [Trait("Category", "Integration")]
+    [InlineData(KsefEnvironment.Test)]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public async Task Integration_CryptographyWarmup_LoadsCertificates(string baseUrl)
+    {
+        // Arrange - DI container z usługą kryptograficzną
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddKSeFClient(options => { options.BaseUrl = baseUrl; });
+        services.AddCryptographyClient();
+
+        using var provider = services.BuildServiceProvider();
+        var cryptographyService = provider.GetRequiredService<ICryptographyService>();
+
+        // Act & Assert - WarmupAsync pobiera certyfikaty publiczne z KSeF
+        // Jeśli serwer jest dostępny, inicjalizacja powinna się zakończyć bez błędu
+        var act = () => cryptographyService.WarmupAsync();
+        await act.Should().NotThrowAsync(
+            $"Inicjalizacja kryptografii z {baseUrl} powinna zakończyć się sukcesem");
+    }
+
+    [Theory]
+    [Trait("Category", "Integration")]
+    [InlineData(KsefEnvironment.Test)]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public async Task Integration_TokenAuthFlow_ChallengeAndEncrypt_Succeeds(string baseUrl)
+    {
+        // Arrange - pełny DI container z inicjalizacją kryptografii
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddKSeFClient(options => { options.BaseUrl = baseUrl; });
+        services.AddCryptographyClient();
+
+        using var provider = services.BuildServiceProvider();
+        var authCoordinator = provider.GetRequiredService<IAuthCoordinator>();
+        var cryptographyService = provider.GetRequiredService<ICryptographyService>();
+
+        // Inicjalizacja materiałów kryptograficznych (pobiera certyfikaty publiczne KSeF)
+        await cryptographyService.WarmupAsync();
+
+        // Act - pełna autoryzacja tokenem KSeF (challenge + encrypt + submit + get access token)
+        // Token z .env.example może nie być zarejestrowany we wszystkich środowiskach.
+        // Weryfikujemy, że flow autoryzacji działa (challenge + szyfrowanie + submit),
+        // nawet jeśli token jest odrzucony przez dane środowisko (status 450).
+        try
+        {
+            var authResponse = await authCoordinator.AuthKsefTokenAsync(
+                contextIdentifierType: AuthenticationTokenContextIdentifierType.Nip,
+                contextIdentifierValue: TestNip,
+                tokenKsef: TestKsefToken,
+                cryptographyService: cryptographyService,
+                encryptionMethod: EncryptionMethodEnum.Rsa);
+
+            // Assert - sukces autoryzacji (token jest ważny w tym środowisku)
+            authResponse.Should().NotBeNull();
+            authResponse.AccessToken.Should().NotBeNull();
+            authResponse.AccessToken.Token.Should().NotBeNullOrEmpty(
+                $"Autoryzacja tokenem na {baseUrl} powinna zwrócić access token");
+            authResponse.AccessToken.ValidUntil.Should().BeAfter(DateTime.UtcNow,
+                "Access token powinien mieć ważność w przyszłości");
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("450") || ex.Message.Contains("nie został znaleziony"))
+        {
+            // Token nie jest zarejestrowany w tym środowisku - to jest oczekiwane zachowanie.
+            // Ważne jest, że flow przeszedł poprawnie (challenge, szyfrowanie, submit)
+            // i serwer odpowiedział merytorycznym błędem (450), a nie błędem połączenia.
+            ex.Message.Should().Contain("nie został znaleziony",
+                $"Serwer {baseUrl} powinien odpowiedzieć merytorycznym błędem o nieznalezionym tokenie");
+        }
     }
 
     #endregion
