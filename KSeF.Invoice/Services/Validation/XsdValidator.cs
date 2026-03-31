@@ -283,7 +283,7 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
         var resourceNames = assembly.GetManifestResourceNames();
 
         // Załaduj schemat FA(3)
-        var fa3SchemaSet = LoadSchemaSet(assembly, "FA3.xsd", "StrukturyDanych.xsd");
+        var fa3SchemaSet = LoadSchemaSet(assembly, "FA3.xsd", "StrukturyDanych_v10-0E.xsd", "ElementarneTypyDanych_v10-0E.xsd", "KodyKrajow_v10-0E.xsd");
         if (fa3SchemaSet != null)
         {
             _schemaCache[SchemaVersion.FA3] = fa3SchemaSet;
