@@ -1,16 +1,19 @@
 # KSeF.Api.Tests
 
-Testy jednostkowe dla projektu **KSeF.Api**.
+Testy jednostkowe i integracyjne dla projektu **KSeF.Api**.
 
 ## Struktura testów
 
 ```
 KSeF.Api.Tests/
-└── Services/
-    ├── KsefSessionServiceTests.cs         - Testy zarządzania sesją
-    ├── KsefInvoiceSendServiceTests.cs     - Testy wysyłania faktur
-    ├── KsefInvoiceReceiveServiceTests.cs  - Testy pobierania faktur
-    └── KsefInvoiceStatusServiceTests.cs   - Testy sprawdzania statusów
+├── Services/
+│   ├── KsefSessionServiceTests.cs         - Testy zarządzania sesją (unit)
+│   ├── KsefInvoiceSendServiceTests.cs     - Testy wysyłania faktur (unit)
+│   ├── KsefInvoiceReceiveServiceTests.cs  - Testy pobierania faktur (unit)
+│   ├── KsefInvoiceStatusServiceTests.cs   - Testy sprawdzania statusów (unit)
+│   └── KsefAuthorizationTests.cs          - Testy autoryzacji dla 3 środowisk (integration)
+├── .env.example                           - Szablon zmiennych środowiskowych
+└── .env                                   - Lokalne dane uwierzytelniające (gitignored)
 ```
 
 ## Technologie
@@ -22,10 +25,22 @@ KSeF.Api.Tests/
 
 ## Uruchamianie testów
 
-### Wszystkie testy
+### Wszystkie testy (unit + integration)
 
 ```bash
 dotnet test
+```
+
+### Tylko testy jednostkowe (szybkie, bez połączenia z API)
+
+```bash
+dotnet test --filter "Category!=Integration"
+```
+
+### Tylko testy integracyjne (wymagają internetu i credentials)
+
+```bash
+dotnet test --filter "Category=Integration"
 ```
 
 ### Konkretny projekt
@@ -48,29 +63,37 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ## Testowane serwisy
 
-### KsefSessionService
+### KsefSessionService (unit)
 
 - ✅ Otwieranie sesji z autoryzacją tokenem
 - ✅ Zamykanie sesji
 - ✅ Odświeżanie tokenu dostępowego
 - ✅ Walidacja braku tokenu KSeF
 
-### KsefInvoiceSendService
+### KsefInvoiceSendService (unit)
 
 - ✅ Wysyłanie faktury z walidacją
 - ✅ Walidacja typu faktury (VAT, KOR, ZAL, ROZ, UPR)
 - ✅ Obsługa błędów walidacji
 
-### KsefInvoiceReceiveService
+### KsefInvoiceReceiveService (unit)
 
 - ✅ Pobieranie faktury po numerze KSeF
 - ✅ Używanie istniejącej sesji
 - ✅ Obsługa błędów deserializacji XML
 
-### KsefInvoiceStatusService
+### KsefInvoiceStatusService (unit)
 
 - ✅ Sprawdzanie statusu faktury
 - ✅ Używanie tokenu z sesji
+
+### KsefAuthorizationTests (integration)
+
+- ✅ Autoryzacja tokenem KSeF dla 3 środowisk (test, demo, prod)
+- ✅ Pobieranie challenge dla 3 środowisk
+- ✅ Szyfrowanie tokenu dla 3 środowisk
+- ✅ Otwieranie sesji online dla 3 środowisk
+- ✅ Walidacja konfiguracji i credentials
 
 ## Wzorce testowe
 
@@ -131,9 +154,47 @@ _ksefClientMock.Verify(
 4. Użyj FluentAssertions do asercji
 5. Zweryfikuj mocki jeśli wymagane
 
+## Konfiguracja testów integracyjnych
+
+### Zmienne środowiskowe
+
+Testy integracyjne wymagają danych uwierzytelniających dla trzech środowisk KSeF:
+
+- `KSEF_TEST_NIP` / `KSEF_TEST_TOKEN` - środowisko testowe (https://ksef-test.mf.gov.pl/api)
+- `KSEF_DEMO_NIP` / `KSEF_DEMO_TOKEN` - środowisko demo (https://ksef-demo.mf.gov.pl/api)
+- `KSEF_PROD_NIP` / `KSEF_PROD_TOKEN` - środowisko produkcyjne (https://ksef.mf.gov.pl/api)
+
+### Konfiguracja lokalna
+
+1. Skopiuj `.env.example` jako `.env` w katalogu `Tests/KSeF.Api.Tests/`
+2. Wypełnij plik `.env` własnymi danymi uwierzytelniającymi
+3. Plik `.env` jest automatycznie ignorowany przez git
+
+```bash
+# Przykład .env
+KSEF_TEST_NIP=9999999999
+KSEF_TEST_TOKEN=20260331-XX-XXXXXXXXXX-YYYYYYYYYY-ZZ|nip-9999999999|...
+KSEF_DEMO_NIP=9999999999
+KSEF_DEMO_TOKEN=20260331-XX-XXXXXXXXXX-YYYYYYYYYY-ZZ|nip-9999999999|...
+KSEF_PROD_NIP=9999999999
+KSEF_PROD_TOKEN=20260331-XX-XXXXXXXXXX-YYYYYYYYYY-ZZ|nip-9999999999|...
+```
+
+### Fallback do .env.example
+
+Gdy zmienne środowiskowe nie są ustawione, testy automatycznie ładują wartości z `.env.example`. Umożliwia to uruchomienie testów bez dodatkowej konfiguracji (z fikcyjnymi danymi).
+
 ## Uwagi
 
-- Testy używają mocków IKSeFClient z pakietów CIRFMF/ksef-client-csharp
+### Testy jednostkowe
+- Używają mocków IKSeFClient z pakietów CIRFMF/ksef-client-csharp
 - Nie wymagają rzeczywistego połączenia z KSeF API
-- Szybkie wykonanie (< 1s dla wszystkich testów)
+- Szybkie wykonanie (< 1s)
 - 100% niezależne od środowiska zewnętrznego
+
+### Testy integracyjne
+- Oznaczone `[Trait("Category", "Integration")]`
+- Wymagają połączenia z internetem i poprawnych credentials
+- Trwają ~3-4 sekundy
+- Testują rzeczywistą komunikację z KSeF API
+- **UWAGA:** Błąd autoryzacji oznacza test failed (nie są łapane wyjątki)
