@@ -72,6 +72,14 @@ public class BuyerIdentification
     /// </summary>
     [XmlElement("Nazwa")]
     public string? Name { get; set; }
+
+    public bool ShouldSerializeNip() => !string.IsNullOrEmpty(Nip);
+    public bool ShouldSerializeEUCountryCode() => EUCountryCode.HasValue;
+    public bool ShouldSerializeVatNumberEU() => !string.IsNullOrEmpty(VatNumberEU);
+    public bool ShouldSerializeCountryCode() => !string.IsNullOrEmpty(CountryCode);
+    public bool ShouldSerializeOtherTaxId() => !string.IsNullOrEmpty(OtherTaxId);
+    public bool ShouldSerializeNoIdentifier() => NoIdentifier.HasValue;
+    public bool ShouldSerializeName() => !string.IsNullOrEmpty(Name);
 }
 
 /// <summary>
@@ -127,4 +135,13 @@ public class ThirdPartyIdentification
     /// </summary>
     [XmlElement("Nazwa")]
     public string? Name { get; set; }
+
+    public bool ShouldSerializeNip() => !string.IsNullOrEmpty(Nip);
+    public bool ShouldSerializeInternalId() => !string.IsNullOrEmpty(InternalId);
+    public bool ShouldSerializeEUCountryCode() => EUCountryCode.HasValue;
+    public bool ShouldSerializeVatNumberEU() => !string.IsNullOrEmpty(VatNumberEU);
+    public bool ShouldSerializeCountryCode() => !string.IsNullOrEmpty(CountryCode);
+    public bool ShouldSerializeOtherTaxId() => !string.IsNullOrEmpty(OtherTaxId);
+    public bool ShouldSerializeNoIdentifier() => NoIdentifier.HasValue;
+    public bool ShouldSerializeName() => !string.IsNullOrEmpty(Name);
 }

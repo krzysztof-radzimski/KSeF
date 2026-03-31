@@ -302,7 +302,6 @@ public class NullHandlingTests
         buyer.HasCorrespondenceAddress.Should().BeFalse();
         buyer.HasContactData.Should().BeFalse();
         buyer.IsJST.Should().BeFalse();
-        buyer.IsVATGroup.Should().BeFalse();
     }
 
     #endregion
@@ -430,8 +429,8 @@ public class NullHandlingTests
             SelfBilling = AnnotationValue.Yes,
             ReverseCharge = AnnotationValue.Yes,
             SplitPayment = AnnotationValue.Yes,
-            Exemption = new VatExemption { Reason = "Test reason" },
-            NewTransportMeans = new NewTransportMeans { IsNewTransportMeans = true }
+            Exemption = new VatExemption { IsExempt = true, P_19 = 1, DirectiveBasis = "Test reason" },
+            NewTransportMeans = new NewTransportMeans { HasTransportMeans = true, P_22 = 1, P_42_5 = 2 }
         };
 
         // Assert
@@ -551,7 +550,7 @@ public class NullHandlingTests
             VatAmount23 = null,
             VatAmount8 = null,
             VatAmount5 = null,
-            VatAmount4 = null
+            VatAmountTaxi = null
         };
 
         // Assert

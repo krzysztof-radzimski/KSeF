@@ -127,16 +127,27 @@ public class BuyerBuilder
     /// </summary>
     public BuyerBuilder AsLocalGovernmentUnit()
     {
-        _buyer.IsLocalGovernmentUnit = 1;
+        _buyer.Jst = 1;
         return this;
     }
 
     /// <summary>
-    /// Oznacza nabywcę jako grupę VAT
+    /// Oznacza nabywcę jako członka grupy VAT (GV=1)
+    /// Wymaga wypełnienia Podmiot3 z rolą 10
     /// </summary>
-    public BuyerBuilder AsVatGroup()
+    public BuyerBuilder AsVatGroupMember()
     {
-        _buyer.IsVatGroup = 1;
+        _buyer.Gv = 1;
+        return this;
+    }
+
+    /// <summary>
+    /// Ustawia unikalny klucz powiązania danych nabywcy (IDNabywcy)
+    /// Używany gdy dane nabywcy na fakturze korygującej zmieniły się
+    /// </summary>
+    public BuyerBuilder WithBuyerIdentityKey(string identityKey)
+    {
+        _buyer.BuyerIdentityKey = identityKey;
         return this;
     }
 

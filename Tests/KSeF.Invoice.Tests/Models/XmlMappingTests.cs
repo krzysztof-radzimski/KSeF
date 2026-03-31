@@ -146,7 +146,7 @@ public class XmlMappingTests
 
         // Assert
         xDoc.Root!.Name.LocalName.Should().Be("FaWiersz");
-        xDoc.Root.Element(XName.Get("NrWiersza", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
+        xDoc.Root.Element(XName.Get("NrWierszaFa", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
         xDoc.Root.Element(XName.Get("P_7", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
         xDoc.Root.Element(XName.Get("P_8A", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
         xDoc.Root.Element(XName.Get("P_8B", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
@@ -176,8 +176,10 @@ public class XmlMappingTests
 
         // Assert
         xDoc.Root!.Name.LocalName.Should().Be("Podmiot1");
-        xDoc.Root.Element(XName.Get("NIP", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
-        xDoc.Root.Element(XName.Get("Nazwa", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
+        var daneIdentyfikacyjne = xDoc.Root.Element(XName.Get("DaneIdentyfikacyjne", xDoc.Root.Name.NamespaceName));
+        daneIdentyfikacyjne.Should().NotBeNull();
+        daneIdentyfikacyjne!.Element(XName.Get("NIP", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
+        daneIdentyfikacyjne.Element(XName.Get("Nazwa", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
         xDoc.Root.Element(XName.Get("Adres", xDoc.Root.Name.NamespaceName)).Should().NotBeNull();
     }
 

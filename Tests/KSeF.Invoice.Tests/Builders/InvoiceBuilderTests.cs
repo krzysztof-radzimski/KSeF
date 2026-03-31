@@ -250,27 +250,9 @@ public class InvoiceBuilderTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsLocalGovernmentUnit.Should().Be(1);
+        invoice.Buyer.IsJST.Should().BeTrue();
     }
 
-    [Fact]
-    public void WithBuyer_AsVatGroup_ShouldSetVatGroupFlag()
-    {
-        // Arrange & Act
-        var invoice = InvoiceBuilder.Create()
-            .WithSeller(s => s.WithTaxId("1234567890").WithName("Seller"))
-            .WithBuyer(b => b
-                .WithTaxId("0987654321")
-                .WithName("Grupa VAT Test")
-                .AsVatGroup())
-            .WithInvoiceDetails(d => d
-                .WithIssueDate(2024, 1, 15)
-                .WithInvoiceNumber("FV/001/2024"))
-            .Build();
-
-        // Assert
-        invoice.Buyer.IsVatGroup.Should().Be(1);
-    }
 
     #endregion
 

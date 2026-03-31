@@ -9,18 +9,34 @@ namespace KSeF.Invoice.Models.Common;
 public class SalePeriod
 {
     /// <summary>
-    /// Data początkowa okresu rozliczeniowego
-    /// Format: YYYY-MM-DD
-    /// Wymagane pole elementu OkresFa
+    /// Data początkowa okresu rozliczeniowego - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("OkresOd")]
+    public string PeriodFromString
+    {
+        get => PeriodFrom.ToString("yyyy-MM-dd");
+        set => PeriodFrom = string.IsNullOrEmpty(value) ? default : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data początkowa okresu rozliczeniowego
+    /// </summary>
+    [XmlIgnore]
     public DateOnly PeriodFrom { get; set; }
 
     /// <summary>
-    /// Data końcowa okresu rozliczeniowego
-    /// Format: YYYY-MM-DD
-    /// Wymagane pole elementu OkresFa
+    /// Data końcowa okresu rozliczeniowego - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("OkresDo")]
+    public string PeriodToString
+    {
+        get => PeriodTo.ToString("yyyy-MM-dd");
+        set => PeriodTo = string.IsNullOrEmpty(value) ? default : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data końcowa okresu rozliczeniowego
+    /// </summary>
+    [XmlIgnore]
     public DateOnly PeriodTo { get; set; }
 }

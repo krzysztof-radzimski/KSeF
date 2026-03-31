@@ -160,8 +160,8 @@ public class VatSummaryCalculationTests
             .Build();
 
         // Assert
-        invoice.InvoiceData.NetAmount4.Should().Be(1000.00m);
-        invoice.InvoiceData.VatAmount4.Should().Be(40.00m);
+        invoice.InvoiceData.NetAmountTaxi.Should().Be(1000.00m);
+        invoice.InvoiceData.VatAmountTaxi.Should().Be(40.00m);
         invoice.InvoiceData.TotalAmount.Should().Be(1040.00m);
     }
 
@@ -188,8 +188,8 @@ public class VatSummaryCalculationTests
             .Build();
 
         // Assert - Rate3 agreguje się z Rate4
-        invoice.InvoiceData.NetAmount4.Should().Be(1500.00m);
-        invoice.InvoiceData.VatAmount4.Should().Be(55.00m);
+        invoice.InvoiceData.NetAmountTaxi.Should().Be(1500.00m);
+        invoice.InvoiceData.VatAmountTaxi.Should().Be(55.00m);
         invoice.InvoiceData.TotalAmount.Should().Be(1555.00m);
     }
 

@@ -219,8 +219,10 @@ public class InvoiceDetailsBuilder
     {
         _invoiceData.Annotations.Exemption = new VatExemption
         {
-            Reason = reason,
-            DirectiveBasis = directiveBasis
+            IsExempt = true,
+            P_19 = 1,
+            DirectiveBasis = reason,
+            EuDirectiveBasis = directiveBasis
         };
         return this;
     }
@@ -335,8 +337,10 @@ public class InvoiceAnnotationsBuilder
     {
         _annotations.Exemption = new VatExemption
         {
-            Reason = reason,
-            DirectiveBasis = directiveBasis,
+            IsExempt = true,
+            P_19 = 1,
+            DirectiveBasis = reason,
+            EuDirectiveBasis = directiveBasis,
             OtherLegalBasis = otherLegalBasis
         };
         return this;

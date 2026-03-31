@@ -6,128 +6,123 @@ namespace KSeF.Invoice.Models.Entities;
 
 /// <summary>
 /// Podmiot trzeci występujący na fakturze (Podmiot3)
-/// Odpowiednik elementu Podmiot3 w schemacie KSeF
-/// Może to być m.in. faktor, odbiorca, podmiot pierwotny, dodatkowy nabywca, wystawca faktury, płatnik
+/// Odpowiednik elementu Podmiot3 w schemacie KSeF FA(3)
+/// Kolejność: IDNabywcy?, NrEORI?, DaneIdentyfikacyjne, Adres?, AdresKoresp?, DaneKontaktowe*, Rola|RolaInna+OpisRoli, Udzial?, NrKlienta?
 /// </summary>
 [XmlRoot("Podmiot3")]
 public class ThirdParty
 {
     /// <summary>
-    /// Numer Identyfikacji Podatkowej (NIP)
-    /// Format: 10 cyfr bez kresek
+    /// Numer EORI podmiotu trzeciego (opcjonalny)
     /// </summary>
-    [XmlElement("NIP")]
-    public string? TaxId { get; set; }
+    [XmlElement("NrEORI", Order = 0)]
+    public string? EoriNumber { get; set; }
 
     /// <summary>
-    /// Identyfikator wewnętrzny z NIP
-    /// Format: NIP-XXXXX (gdzie XXXXX to 5 cyfr)
-    /// Używany np. dla jednostek organizacyjnych JST
+    /// Dane identyfikacyjne podmiotu trzeciego (DaneIdentyfikacyjne)
+    /// Typ TPodmiot3 w schemacie
+    /// Pole obowiązkowe
     /// </summary>
-    [XmlElement("IDWew")]
-    public string? InternalId { get; set; }
-
-    /// <summary>
-    /// Kod kraju UE (prefiks VAT) dla podmiotów z UE
-    /// </summary>
-    [XmlElement("KodUE")]
-    public EUCountryCode? EuCountryCode { get; set; }
-
-    /// <summary>
-    /// Numer Identyfikacyjny VAT kontrahenta UE
-    /// Używany razem z EuCountryCode dla kontrahentów z UE
-    /// </summary>
-    [XmlElement("NrVatUE")]
-    public string? EuVatId { get; set; }
-
-    /// <summary>
-    /// Kod kraju nadania identyfikatora podatkowego (dla podmiotów spoza UE)
-    /// </summary>
-    [XmlElement("KodKraju")]
-    public string? OtherIdCountryCode { get; set; }
-
-    /// <summary>
-    /// Identyfikator podatkowy inny (dla podmiotów zagranicznych spoza UE)
-    /// </summary>
-    [XmlElement("NrID")]
-    public string? OtherId { get; set; }
-
-    /// <summary>
-    /// Podmiot nie posiada identyfikatora podatkowego
-    /// Wartość 1 oznacza brak identyfikatora
-    /// </summary>
-    [XmlElement("BrakID")]
-    public int? NoIdentifier { get; set; }
-
-    /// <summary>
-    /// Imię i nazwisko lub pełna nazwa firmy podmiotu trzeciego
-    /// Maksymalnie 512 znaków
-    /// </summary>
-    [XmlElement("Nazwa")]
-    public string? Name { get; set; }
+    [XmlElement("DaneIdentyfikacyjne", Order = 1)]
+    public ThirdPartyIdentification Identification { get; set; } = new ThirdPartyIdentification();
 
     /// <summary>
     /// Adres podmiotu trzeciego
     /// </summary>
-    [XmlElement("Adres")]
+    [XmlElement("Adres", Order = 2)]
     public Address? Address { get; set; }
 
     /// <summary>
     /// Rola podmiotu trzeciego na fakturze
-    /// Określa w jakiej roli występuje podmiot (faktor, odbiorca, podmiot pierwotny itp.)
     /// </summary>
-    [XmlElement("Rola")]
+    [XmlElement("Rola", Order = 3)]
     public SubjectRole Role { get; set; }
 
     /// <summary>
     /// Opis roli w przypadku wyboru roli "Inny"
-    /// Dodatkowy opis wyjaśniający rolę podmiotu
-    /// Maksymalnie 256 znaków
     /// </summary>
-    [XmlElement("OpisRoli")]
+    [XmlElement("OpisRoli", Order = 4)]
     public string? RoleDescription { get; set; }
 
     /// <summary>
     /// Udział procentowy podmiotu (dla roli AdditionalBuyer)
-    /// Używany gdy faktura dotyczy kilku nabywców z określonymi udziałami
-    /// Wartość od 0.01 do 100.00
     /// </summary>
-    [XmlElement("Udzial")]
+    [XmlElement("Udzial", Order = 5)]
     public decimal? SharePercentage { get; set; }
 
-    /// <summary>
-    /// Sprawdza czy podmiot ma NIP polski
-    /// </summary>
+    // Convenience accessors delegating to Identification
+
+    [XmlIgnore]
+    public string? TaxId
+    {
+        get => Identification.Nip;
+        set => Identification.Nip = value;
+    }
+
+    [XmlIgnore]
+    public string? InternalId
+    {
+        get => Identification.InternalId;
+        set => Identification.InternalId = value;
+    }
+
+    [XmlIgnore]
+    public EUCountryCode? EuCountryCode
+    {
+        get => Identification.EUCountryCode;
+        set => Identification.EUCountryCode = value;
+    }
+
+    [XmlIgnore]
+    public string? EuVatId
+    {
+        get => Identification.VatNumberEU;
+        set => Identification.VatNumberEU = value;
+    }
+
+    [XmlIgnore]
+    public string? OtherIdCountryCode
+    {
+        get => Identification.CountryCode;
+        set => Identification.CountryCode = value;
+    }
+
+    [XmlIgnore]
+    public string? OtherId
+    {
+        get => Identification.OtherTaxId;
+        set => Identification.OtherTaxId = value;
+    }
+
+    [XmlIgnore]
+    public int? NoIdentifier
+    {
+        get => Identification.NoIdentifier;
+        set => Identification.NoIdentifier = value;
+    }
+
+    [XmlIgnore]
+    public string? Name
+    {
+        get => Identification.Name;
+        set => Identification.Name = value;
+    }
+
     [XmlIgnore]
     public bool HasPolishTaxId => !string.IsNullOrEmpty(TaxId);
 
-    /// <summary>
-    /// Sprawdza czy podmiot ma identyfikator wewnętrzny
-    /// </summary>
     [XmlIgnore]
     public bool HasInternalId => !string.IsNullOrEmpty(InternalId);
 
-    /// <summary>
-    /// Sprawdza czy podmiot ma VAT UE
-    /// </summary>
     [XmlIgnore]
     public bool HasEuVatId => EuCountryCode.HasValue && !string.IsNullOrEmpty(EuVatId);
 
-    /// <summary>
-    /// Sprawdza czy podmiot ma inny identyfikator (zagraniczny spoza UE)
-    /// </summary>
     [XmlIgnore]
     public bool HasOtherId => !string.IsNullOrEmpty(OtherIdCountryCode) && !string.IsNullOrEmpty(OtherId);
 
-    /// <summary>
-    /// Sprawdza czy podmiot nie posiada żadnego identyfikatora
-    /// </summary>
     [XmlIgnore]
     public bool HasNoIdentifier => NoIdentifier == 1;
 
-    /// <summary>
-    /// Sprawdza czy określono udział procentowy
-    /// </summary>
     [XmlIgnore]
     public bool HasSharePercentage => SharePercentage.HasValue;
 }

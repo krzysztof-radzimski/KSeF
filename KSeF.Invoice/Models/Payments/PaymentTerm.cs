@@ -9,10 +9,19 @@ namespace KSeF.Invoice.Models.Payments;
 public class PaymentTerm
 {
     /// <summary>
-    /// Termin płatności - data (Termin)
-    /// Format: YYYY-MM-DD
+    /// Termin płatności - data (Termin) - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("Termin")]
+    public string? DueDateString
+    {
+        get => DueDate?.ToString("yyyy-MM-dd");
+        set => DueDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Termin płatności - data (Termin)
+    /// </summary>
+    [XmlIgnore]
     public DateOnly? DueDate { get; set; }
 
     /// <summary>

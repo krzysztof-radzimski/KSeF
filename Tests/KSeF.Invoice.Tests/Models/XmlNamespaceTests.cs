@@ -98,8 +98,8 @@ public class XmlNamespaceTests
         var xDoc = XDocument.Parse(xml);
         XNamespace ns = ExpectedKSeFNamespace;
 
-        // Assert - Check nested elements
-        var nip = xDoc.Root!.Element(ns + "Podmiot1")?.Element(ns + "NIP");
+        // Assert - Check nested elements (NIP is inside DaneIdentyfikacyjne)
+        var nip = xDoc.Root!.Element(ns + "Podmiot1")?.Element(ns + "DaneIdentyfikacyjne")?.Element(ns + "NIP");
         nip.Should().NotBeNull();
         nip!.Name.NamespaceName.Should().Be(ExpectedKSeFNamespace);
 
@@ -154,12 +154,16 @@ public class XmlNamespaceTests
         <DataWytworzeniaFa>2024-01-15T10:00:00</DataWytworzeniaFa>
     </Naglowek>
     <Podmiot1>
-        <NIP>1234567890</NIP>
-        <Nazwa>Test Seller</Nazwa>
+        <DaneIdentyfikacyjne>
+            <NIP>1234567890</NIP>
+            <Nazwa>Test Seller</Nazwa>
+        </DaneIdentyfikacyjne>
     </Podmiot1>
     <Podmiot2>
-        <NIP>0987654321</NIP>
-        <Nazwa>Test Buyer</Nazwa>
+        <DaneIdentyfikacyjne>
+            <NIP>0987654321</NIP>
+            <Nazwa>Test Buyer</Nazwa>
+        </DaneIdentyfikacyjne>
     </Podmiot2>
     <Fa>
         <KodWaluty>PLN</KodWaluty>

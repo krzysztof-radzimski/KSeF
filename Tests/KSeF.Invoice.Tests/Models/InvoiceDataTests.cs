@@ -208,8 +208,7 @@ public class InvoiceDataTests
             VatAmount23 = 230.00m,
             VatAmount8 = 40.00m,
             VatAmount5 = 12.50m,
-            VatAmount4 = 4.00m,
-            VatAmountTaxi = 5.00m,
+            VatAmountTaxi = 9.00m,
             VatAmountOSS = 3.00m,
             MarginVatAmount = 2.00m
         };
@@ -227,7 +226,7 @@ public class InvoiceDataTests
             VatAmount23 = 230.00m,
             VatAmount8 = null,
             VatAmount5 = 25.00m,
-            VatAmount4 = null
+            VatAmountTaxi = null
         };
 
         // Assert

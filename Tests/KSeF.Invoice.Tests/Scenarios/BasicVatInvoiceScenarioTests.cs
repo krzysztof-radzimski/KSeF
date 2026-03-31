@@ -456,7 +456,7 @@ public class BasicVatInvoiceScenarioTests
 
         // Assert
         invoice.InvoiceData.Annotations.Exemption.Should().NotBeNull();
-        invoice.InvoiceData.Annotations.Exemption!.Reason.Should().Contain("Art. 43");
+        invoice.InvoiceData.Annotations.Exemption!.DirectiveBasis.Should().Contain("Art. 43");
         invoice.InvoiceData.ExemptAmount.Should().Be(500.00m);
     }
 

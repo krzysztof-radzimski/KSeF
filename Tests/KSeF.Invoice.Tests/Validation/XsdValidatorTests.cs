@@ -286,6 +286,31 @@ public class XsdValidatorTests
         result.Should().BeOfType<ValidationResult>();
     }
 
+    [Fact]
+    public void Validate_MinimalInvoice_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+
+        // Act - first verify schemas are loaded
+        var schemas = _validator.AvailableSchemas;
+        schemas.Should().NotBeEmpty("XSD schemas should be available");
+
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert - output errors for diagnostic
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed with errors:\n{errorMessages}\n\nGenerated XML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+    }
+
     #endregion
 
     #region Testy formatowania i kodowania
@@ -399,20 +424,19 @@ public class XsdValidatorTests
         {
             Header = new InvoiceHeader
             {
-                FormCode = new FormCodeElement
-                {
-                    Value = "FA",
-                    SystemCode = "FA (3)",
-                    SchemaVersion = "1-2E"
-                },
-                FormVariant = 1,
                 CreationDateTime = DateTime.Now,
                 SystemInfo = "Test System"
             },
             Seller = new Seller
             {
                 TaxId = "5261040828",
-                Name = "Test Sprzedawca Sp. z o.o."
+                Name = "Test Sprzedawca Sp. z o.o.",
+                Address = new Address
+                {
+                    CountryCode = "PL",
+                    AddressLine1 = "ul. Testowa 1",
+                    AddressLine2 = "00-001 Warszawa"
+                }
             },
             Buyer = new Buyer
             {
@@ -428,12 +452,6 @@ public class XsdValidatorTests
                 NetAmount23 = 100.00m,
                 VatAmount23 = 23.00m,
                 TotalAmount = 123.00m,
-                Annotations = new InvoiceAnnotations
-                {
-                    SelfBilling = AnnotationValue.No,
-                    ReverseCharge = AnnotationValue.No,
-                    SplitPayment = AnnotationValue.No
-                },
                 LineItems = new List<InvoiceLineItem>
                 {
                     new InvoiceLineItem

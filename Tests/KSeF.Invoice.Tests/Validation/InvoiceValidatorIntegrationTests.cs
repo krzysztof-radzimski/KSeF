@@ -657,7 +657,7 @@ public class InvoiceValidatorIntegrationTests
                 NetAmount5 = 100.00m,
                 VatAmount5 = 5.00m,
                 NetAmount4 = 100.00m,
-                VatAmount4 = 4.00m,
+                VatAmountTaxi = 4.00m,
                 NetAmount0 = 100.00m,
                 ExemptAmount = 100.00m,
                 TotalAmount = 740.00m, // 600 netto + 140 VAT

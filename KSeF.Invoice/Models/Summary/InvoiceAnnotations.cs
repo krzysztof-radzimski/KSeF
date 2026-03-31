@@ -5,322 +5,289 @@ namespace KSeF.Invoice.Models.Summary;
 /// <summary>
 /// Adnotacje faktury - specjalne oznaczenia i procedury stosowane na fakturze
 /// Odpowiednik elementu Adnotacje w schemacie FA(3)
-/// Zawiera informacje o szczególnych procedurach podatkowych i transakcyjnych
+/// Wszystkie pola są obowiązkowe w schemacie
 /// </summary>
 [XmlType("Adnotacje")]
 public class InvoiceAnnotations
 {
-    #region Metoda kasowa (P_16)
-
     /// <summary>
     /// Metoda kasowa (P_16)
-    /// Wartość 1 - faktura wystawiona przez podatnika stosującego metodę kasową
-    /// zgodnie z art. 21 ustawy o VAT
-    /// Wartość 2 - faktura nie dotyczy metody kasowej
-    /// Pole obowiązkowe
+    /// Wartość 1 - tak, wartość 2 - nie
     /// </summary>
-    /// <remarks>
-    /// Metoda kasowa polega na rozliczaniu VAT w momencie otrzymania zapłaty,
-    /// a nie w momencie wystawienia faktury. Dotyczy głównie małych podatników.
-    /// </remarks>
     [XmlElement("P_16")]
     public AnnotationValue CashMethod { get; set; } = AnnotationValue.No;
 
-    #endregion
-
-    #region Samofakturowanie (P_17)
-
     /// <summary>
     /// Samofakturowanie (P_17)
-    /// Wartość 1 - faktura wystawiona przez nabywcę w imieniu sprzedawcy (self-billing)
-    /// zgodnie z art. 106d ust. 1 ustawy o VAT
-    /// Wartość 2 - faktura nie jest wystawiona w trybie samofakturowania
-    /// Pole obowiązkowe
+    /// Wartość 1 - tak, wartość 2 - nie
     /// </summary>
-    /// <remarks>
-    /// Samofakturowanie to procedura, w której nabywca wystawia fakturę w imieniu
-    /// i na rzecz sprzedawcy, na podstawie uprzedniego porozumienia stron.
-    /// </remarks>
     [XmlElement("P_17")]
     public AnnotationValue SelfBilling { get; set; } = AnnotationValue.No;
 
-    #endregion
-
-    #region Odwrotne obciążenie (P_18)
-
     /// <summary>
     /// Odwrotne obciążenie (P_18)
-    /// Wartość 1 - transakcja objęta mechanizmem odwrotnego obciążenia
-    /// zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy o VAT
-    /// Wartość 2 - transakcja nie jest objęta odwrotnym obciążeniem
-    /// Pole obowiązkowe
+    /// Wartość 1 - tak, wartość 2 - nie
     /// </summary>
-    /// <remarks>
-    /// Odwrotne obciążenie (reverse charge) oznacza, że VAT rozlicza nabywca,
-    /// a nie sprzedawca. Dotyczy m.in. usług budowlanych i niektórych towarów.
-    /// </remarks>
     [XmlElement("P_18")]
     public AnnotationValue ReverseCharge { get; set; } = AnnotationValue.No;
 
-    #endregion
-
-    #region Mechanizm podzielonej płatności (P_18A)
-
     /// <summary>
     /// Mechanizm podzielonej płatności - split payment (P_18A)
-    /// Wartość 1 - transakcja objęta obowiązkowym mechanizmem podzielonej płatności
-    /// zgodnie z art. 108a ust. 1a ustawy o VAT
-    /// Wartość 2 - transakcja nie podlega obowiązkowemu MPP
-    /// Pole obowiązkowe
+    /// Wartość 1 - tak, wartość 2 - nie
     /// </summary>
-    /// <remarks>
-    /// Split payment (MPP) polega na rozdzieleniu płatności - kwota netto trafia
-    /// na rachunek bieżący, a kwota VAT na specjalny rachunek VAT.
-    /// Obowiązkowe dla transakcji powyżej 15 000 zł dotyczących towarów/usług
-    /// z załącznika nr 15 do ustawy o VAT.
-    /// </remarks>
     [XmlElement("P_18A")]
     public AnnotationValue SplitPayment { get; set; } = AnnotationValue.No;
 
-    #endregion
-
-    #region Zwolnienie z VAT (Zwolnienie)
-
     /// <summary>
-    /// Informacja o podstawie zwolnienia z VAT (Zwolnienie)
-    /// Wskazuje podstawę prawną zwolnienia z podatku VAT
-    /// Element opcjonalny - wypełniany gdy faktura zawiera pozycje zwolnione z VAT
+    /// Informacja o zwolnieniu z VAT (Zwolnienie)
+    /// Pole obowiązkowe - domyślnie brak zwolnienia (P_19N=1)
     /// </summary>
-    /// <remarks>
-    /// Wymagane gdy na fakturze występują pozycje ze stawką ZW (zwolniona).
-    /// Określa przepis ustawy lub dyrektywy, na podstawie którego zastosowano zwolnienie.
-    /// </remarks>
     [XmlElement("Zwolnienie")]
-    public VatExemption? Exemption { get; set; }
-
-    #endregion
-
-    #region Nowe środki transportu (NoweSrodkiTransportu)
+    public VatExemption Exemption { get; set; } = new VatExemption();
 
     /// <summary>
     /// Informacja o nowych środkach transportu (NoweSrodkiTransportu)
-    /// Dotyczy wewnątrzwspólnotowej dostawy nowych środków transportu
-    /// zgodnie z art. 106e ust. 3 ustawy o VAT
-    /// Element opcjonalny - wypełniany gdy faktura dotyczy nowego środka transportu
+    /// Pole obowiązkowe - domyślnie brak (P_22N=1)
     /// </summary>
-    /// <remarks>
-    /// Nowy środek transportu to pojazd mechaniczny, statek lub samolot,
-    /// który spełnia określone warunki dotyczące przebiegu/godzin użytkowania
-    /// i okresu od pierwszej rejestracji.
-    /// </remarks>
     [XmlElement("NoweSrodkiTransportu")]
-    public NewTransportMeans? NewTransportMeans { get; set; }
+    public NewTransportMeans NewTransportMeans { get; set; } = new NewTransportMeans();
 
-    #endregion
+    /// <summary>
+    /// Procedura uproszczona (P_23)
+    /// Wartość 1 - tak, wartość 2 - nie
+    /// </summary>
+    [XmlElement("P_23")]
+    public AnnotationValue SimplifiedProcedure { get; set; } = AnnotationValue.No;
+
+    /// <summary>
+    /// Procedury marży (PMarzy)
+    /// Pole obowiązkowe - domyślnie brak procedury marży (P_PMarzyN=1)
+    /// </summary>
+    [XmlElement("PMarzy")]
+    public MarginProcedures MarginProcedures { get; set; } = new MarginProcedures();
 
     #region Właściwości pomocnicze
 
-    /// <summary>
-    /// Sprawdza czy faktura dotyczy metody kasowej
-    /// </summary>
     [XmlIgnore]
     public bool IsCashMethod => CashMethod == AnnotationValue.Yes;
 
-    /// <summary>
-    /// Sprawdza czy faktura jest wystawiona w trybie samofakturowania
-    /// </summary>
     [XmlIgnore]
     public bool IsSelfBilling => SelfBilling == AnnotationValue.Yes;
 
-    /// <summary>
-    /// Sprawdza czy transakcja jest objęta odwrotnym obciążeniem
-    /// </summary>
     [XmlIgnore]
     public bool IsReverseCharge => ReverseCharge == AnnotationValue.Yes;
 
-    /// <summary>
-    /// Sprawdza czy transakcja podlega obowiązkowemu split payment
-    /// </summary>
     [XmlIgnore]
     public bool IsSplitPayment => SplitPayment == AnnotationValue.Yes;
 
-    /// <summary>
-    /// Sprawdza czy faktura zawiera informację o zwolnieniu z VAT
-    /// </summary>
     [XmlIgnore]
-    public bool HasExemption => Exemption != null;
+    public bool HasExemption => Exemption != null && Exemption.IsExempt;
 
-    /// <summary>
-    /// Sprawdza czy faktura dotyczy nowego środka transportu
-    /// </summary>
     [XmlIgnore]
-    public bool HasNewTransportMeans => NewTransportMeans != null;
+    public bool HasNewTransportMeans => NewTransportMeans != null && NewTransportMeans.HasTransportMeans;
 
     #endregion
 }
 
 /// <summary>
-/// Wartość adnotacji (P_16, P_17, P_18, P_18A)
-/// Określa czy dana adnotacja ma zastosowanie do faktury
+/// Wartość adnotacji (P_16, P_17, P_18, P_18A, P_23)
 /// </summary>
 public enum AnnotationValue
 {
     /// <summary>
-    /// Wartość 1 - Tak, adnotacja ma zastosowanie
+    /// Wartość 1 - Tak
     /// </summary>
     [XmlEnum("1")]
     Yes = 1,
 
     /// <summary>
-    /// Wartość 2 - Nie, adnotacja nie ma zastosowania
+    /// Wartość 2 - Nie
     /// </summary>
     [XmlEnum("2")]
     No = 2
 }
 
 /// <summary>
-/// Informacja o podstawie zwolnienia z VAT
-/// Odpowiednik elementu Zwolnienie w schemacie FA(3)
+/// Informacja o zwolnieniu z VAT (Zwolnienie)
+/// Schemat: choice(P_19 + choice(P_19A|P_19B|P_19C) | P_19N)
 /// </summary>
 [XmlType("Zwolnienie")]
 public class VatExemption
 {
     /// <summary>
-    /// Przyczyna zwolnienia z VAT (P_19)
-    /// Opis przepisu ustawy albo aktu wydanego na podstawie ustawy,
-    /// zgodnie z którym podatnik stosuje zwolnienie od podatku
-    /// Zgodnie z art. 106e ust. 1 pkt 19 ustawy o VAT
-    /// Maksymalnie 256 znaków
-    /// Pole obowiązkowe w ramach elementu Zwolnienie
+    /// Znacznik zwolnienia z VAT (P_19) - wartość 1 = zwolniony
+    /// Serializowany tylko gdy IsExempt = true
     /// </summary>
-    /// <remarks>
-    /// Przykładowe wartości:
-    /// - "art. 43 ust. 1 pkt 2 ustawy o VAT" - towary używane
-    /// - "art. 43 ust. 1 pkt 10 ustawy o VAT" - nieruchomości
-    /// - "art. 43 ust. 1 pkt 29 ustawy o VAT" - usługi szkoleniowe
-    /// </remarks>
     [XmlElement("P_19")]
-    public string Reason { get; set; } = string.Empty;
+    public int P_19 { get; set; }
+
+    public bool ShouldSerializeP_19() => IsExempt;
 
     /// <summary>
-    /// Wskazanie przepisu dyrektywy jako podstawy zwolnienia (P_19A)
-    /// Przepis dyrektywy 2006/112/WE, który zwalnia od podatku taką dostawę
-    /// towarów lub takie świadczenie usług
-    /// Pole opcjonalne - stosowane gdy podstawą zwolnienia jest dyrektywa
+    /// Przepis ustawy (P_19A) - podstawa zwolnienia z ustawy krajowej
     /// </summary>
-    /// <remarks>
-    /// Wypełniane gdy podstawą zwolnienia jest bezpośrednio przepis dyrektywy VAT,
-    /// a nie przepis krajowy implementujący dyrektywę.
-    /// </remarks>
     [XmlElement("P_19A")]
     public string? DirectiveBasis { get; set; }
 
-    /// <summary>
-    /// Wskazanie innej podstawy prawnej zwolnienia (P_19B)
-    /// Inna podstawa prawna wskazująca na to, że dostawa towarów
-    /// lub świadczenie usług korzysta ze zwolnienia
-    /// Pole opcjonalne - stosowane gdy podstawą zwolnienia jest inny akt prawny
-    /// </summary>
-    /// <remarks>
-    /// Stosowane gdy zwolnienie wynika z aktów innych niż ustawa o VAT
-    /// lub dyrektywa VAT, np. umów międzynarodowych.
-    /// </remarks>
-    [XmlElement("P_19B")]
-    public string? OtherLegalBasis { get; set; }
+    public bool ShouldSerializeDirectiveBasis() => IsExempt && !string.IsNullOrEmpty(DirectiveBasis);
 
     /// <summary>
-    /// Wskazanie przepisu ustawy lub aktu krajowego jako podstawy zwolnienia (P_19C)
-    /// Przepis ustawy albo aktu wydanego na podstawie ustawy uprawniający
-    /// do stosowania zwolnienia
-    /// Pole opcjonalne - alternatywa dla P_19
+    /// Przepis dyrektywy (P_19B) - podstawa zwolnienia z dyrektywy UE
+    /// </summary>
+    [XmlElement("P_19B")]
+    public string? EuDirectiveBasis { get; set; }
+
+    public bool ShouldSerializeEuDirectiveBasis() => IsExempt && !string.IsNullOrEmpty(EuDirectiveBasis);
+
+    /// <summary>
+    /// Inna podstawa prawna (P_19C)
     /// </summary>
     [XmlElement("P_19C")]
-    public string? NationalLegalBasis { get; set; }
+    public string? OtherLegalBasis { get; set; }
+
+    public bool ShouldSerializeOtherLegalBasis() => IsExempt && !string.IsNullOrEmpty(OtherLegalBasis);
+
+    /// <summary>
+    /// Brak zwolnienia (P_19N) - wartość 1 = brak zwolnienia
+    /// Serializowany tylko gdy IsExempt = false
+    /// </summary>
+    [XmlElement("P_19N")]
+    public int P_19N { get; set; } = 1;
+
+    public bool ShouldSerializeP_19N() => !IsExempt;
+
+    /// <summary>
+    /// Czy faktura zawiera zwolnienie z VAT
+    /// </summary>
+    [XmlIgnore]
+    public bool IsExempt { get; set; }
+
+    /// <summary>
+    /// Convenience: ustawia zwolnienie z podaną podstawą prawną ustawy
+    /// </summary>
+    public void SetExemption(string legalBasis)
+    {
+        IsExempt = true;
+        P_19 = 1;
+        DirectiveBasis = legalBasis;
+    }
 }
 
 /// <summary>
-/// Informacja o nowym środku transportu
-/// Odpowiednik elementu NoweSrodkiTransportu w schemacie FA(3)
-/// Dane wymagane przy wewnątrzwspólnotowej dostawie nowych środków transportu
+/// Informacja o nowych środkach transportu (NoweSrodkiTransportu)
+/// Schemat: choice(P_22+P_42_5+NowySrodekTransportu* | P_22N)
 /// </summary>
 [XmlType("NoweSrodkiTransportu")]
 public class NewTransportMeans
 {
     /// <summary>
-    /// Znacznik nowego środka transportu (P_22)
-    /// Wartość true oznacza, że faktura dokumentuje dostawę nowego środka transportu
-    /// Pole obowiązkowe w ramach elementu NoweSrodkiTransportu
+    /// Znacznik WDT nowych środków transportu (P_22) - wartość 1 = tak
     /// </summary>
     [XmlElement("P_22")]
-    public bool IsNewTransportMeans { get; set; }
+    public int P_22 { get; set; }
+
+    public bool ShouldSerializeP_22() => HasTransportMeans;
 
     /// <summary>
-    /// Data dopuszczenia nowego środka transportu do użytku (P_42_5)
-    /// Data pierwszej rejestracji lub pierwszego dopuszczenia do ruchu
-    /// Format: YYYY-MM-DD
-    /// Pole opcjonalne - wymagane dla pojazdów lądowych
+    /// Obowiązek z art. 42 ust. 5 (P_42_5)
+    /// Wartość 1 = tak, 2 = nie
     /// </summary>
-    /// <remarks>
-    /// Dotyczy pojazdów lądowych napędzanych silnikiem o pojemności skokowej
-    /// większej niż 48 cm³ lub o mocy większej niż 7,2 kW.
-    /// </remarks>
     [XmlElement("P_42_5")]
-    public DateOnly? FirstRegistrationDate { get; set; }
+    public int P_42_5 { get; set; } = 2;
+
+    public bool ShouldSerializeP_42_5() => HasTransportMeans;
 
     /// <summary>
-    /// Przebieg pojazdu (P_42_6)
-    /// Liczba przejechanych kilometrów przez pojazd lądowy
-    /// Wyrażona jako liczba całkowita
-    /// Pole opcjonalne - wymagane dla pojazdów lądowych
+    /// Brak WDT nowych środków transportu (P_22N) - wartość 1 = brak
     /// </summary>
-    [XmlElement("P_42_6")]
-    public int? Mileage { get; set; }
+    [XmlElement("P_22N")]
+    public int P_22N { get; set; } = 1;
+
+    public bool ShouldSerializeP_22N() => !HasTransportMeans;
 
     /// <summary>
-    /// Liczba godzin używania statku (P_42_7)
-    /// Liczba godzin, przez które jednostka pływająca była używana
-    /// Wyrażona jako liczba całkowita
-    /// Pole opcjonalne - wymagane dla jednostek pływających
-    /// </summary>
-    /// <remarks>
-    /// Dotyczy jednostek pływających o długości większej niż 7,5 m
-    /// (z wyjątkiem jednostek do żeglugi przybrzeżnej do celów handlowych).
-    /// </remarks>
-    [XmlElement("P_42_7")]
-    public int? BoatOperatingHours { get; set; }
-
-    /// <summary>
-    /// Liczba godzin używania statku powietrznego (P_42_8)
-    /// Liczba godzin, przez które statek powietrzny był używany
-    /// Wyrażona jako liczba całkowita
-    /// Pole opcjonalne - wymagane dla statków powietrznych
-    /// </summary>
-    /// <remarks>
-    /// Dotyczy statków powietrznych o masie startowej większej niż 1550 kg
-    /// (z wyjątkiem używanych przez przewoźników lotniczych do celów zarobkowych).
-    /// </remarks>
-    [XmlElement("P_42_8")]
-    public int? AircraftOperatingHours { get; set; }
-
-    #region Właściwości pomocnicze
-
-    /// <summary>
-    /// Sprawdza czy dane dotyczą pojazdu lądowego
+    /// Czy faktura dotyczy nowych środków transportu
     /// </summary>
     [XmlIgnore]
-    public bool IsLandVehicle => FirstRegistrationDate.HasValue || Mileage.HasValue;
+    public bool HasTransportMeans { get; set; }
+}
+
+/// <summary>
+/// Procedury marży (PMarzy)
+/// Schemat: choice(P_PMarzy + choice(P_PMarzy_2|P_PMarzy_3_1|P_PMarzy_3_2|P_PMarzy_3_3) | P_PMarzyN)
+/// </summary>
+[XmlType("PMarzy")]
+public class MarginProcedures
+{
+    /// <summary>
+    /// Znacznik procedury marży (P_PMarzy) - wartość 1 = tak
+    /// </summary>
+    [XmlElement("P_PMarzy")]
+    public int P_PMarzy { get; set; }
+
+    public bool ShouldSerializeP_PMarzy() => HasMarginProcedure;
 
     /// <summary>
-    /// Sprawdza czy dane dotyczą jednostki pływającej
+    /// Procedura marży biur podróży (P_PMarzy_2) - wartość 1 = tak
     /// </summary>
-    [XmlIgnore]
-    public bool IsWatercraft => BoatOperatingHours.HasValue;
+    [XmlElement("P_PMarzy_2")]
+    public int P_PMarzy_2 { get; set; }
+
+    public bool ShouldSerializeP_PMarzy_2() => HasMarginProcedure && MarginType == MarginProcedureType.TravelAgency;
 
     /// <summary>
-    /// Sprawdza czy dane dotyczą statku powietrznego
+    /// Procedura marży - towary używane (P_PMarzy_3_1) - wartość 1 = tak
+    /// </summary>
+    [XmlElement("P_PMarzy_3_1")]
+    public int P_PMarzy_3_1 { get; set; }
+
+    public bool ShouldSerializeP_PMarzy_3_1() => HasMarginProcedure && MarginType == MarginProcedureType.UsedGoods;
+
+    /// <summary>
+    /// Procedura marży - dzieła sztuki (P_PMarzy_3_2) - wartość 1 = tak
+    /// </summary>
+    [XmlElement("P_PMarzy_3_2")]
+    public int P_PMarzy_3_2 { get; set; }
+
+    public bool ShouldSerializeP_PMarzy_3_2() => HasMarginProcedure && MarginType == MarginProcedureType.ArtWorks;
+
+    /// <summary>
+    /// Procedura marży - przedmioty kolekcjonerskie i antyki (P_PMarzy_3_3) - wartość 1 = tak
+    /// </summary>
+    [XmlElement("P_PMarzy_3_3")]
+    public int P_PMarzy_3_3 { get; set; }
+
+    public bool ShouldSerializeP_PMarzy_3_3() => HasMarginProcedure && MarginType == MarginProcedureType.Collectibles;
+
+    /// <summary>
+    /// Brak procedury marży (P_PMarzyN) - wartość 1 = brak
+    /// </summary>
+    [XmlElement("P_PMarzyN")]
+    public int P_PMarzyN { get; set; } = 1;
+
+    public bool ShouldSerializeP_PMarzyN() => !HasMarginProcedure;
+
+    /// <summary>
+    /// Czy stosowana jest procedura marży
     /// </summary>
     [XmlIgnore]
-    public bool IsAircraft => AircraftOperatingHours.HasValue;
+    public bool HasMarginProcedure { get; set; }
 
-    #endregion
+    /// <summary>
+    /// Typ procedury marży
+    /// </summary>
+    [XmlIgnore]
+    public MarginProcedureType MarginType { get; set; }
+}
+
+/// <summary>
+/// Typ procedury marży
+/// </summary>
+public enum MarginProcedureType
+{
+    None = 0,
+    TravelAgency = 1,
+    UsedGoods = 2,
+    ArtWorks = 3,
+    Collectibles = 4
 }

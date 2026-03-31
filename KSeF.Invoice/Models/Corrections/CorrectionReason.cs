@@ -26,11 +26,21 @@ public class CorrectionReason
     public CorrectionType? CorrectionType { get; set; }
 
     /// <summary>
+    /// Data ujęcia korekty - proxy string dla serializacji XML
+    /// </summary>
+    [XmlElement("DataUjeciaKorekty")]
+    public string? CorrectionRecordDateString
+    {
+        get => CorrectionRecordDate?.ToString("yyyy-MM-dd");
+        set => CorrectionRecordDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
     /// Data ujęcia korekty (DataUjeciaKorekty)
     /// Data, w której korekta powinna być ujęta w ewidencji
     /// Stosowane gdy typ korekty to OtherDate (3)
     /// </summary>
-    [XmlElement("DataUjeciaKorekty")]
+    [XmlIgnore]
     public DateOnly? CorrectionRecordDate { get; set; }
 
     #region Właściwości pomocnicze

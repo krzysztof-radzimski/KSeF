@@ -14,11 +14,11 @@ public class InvoiceLineItem
     #region Identyfikacja pozycji
 
     /// <summary>
-    /// Numer wiersza faktury (NrWiersza)
+    /// Kolejny numer wiersza faktury (NrWierszaFa)
     /// Kolejny numer pozycji na fakturze, zaczynając od 1
     /// Pole obowiązkowe
     /// </summary>
-    [XmlElement("NrWiersza")]
+    [XmlElement("NrWierszaFa")]
     public int LineNumber { get; set; }
 
     #endregion
@@ -152,12 +152,22 @@ public class InvoiceLineItem
 
     /// <summary>
     /// Data dokonania lub zakończenia dostawy towarów lub wykonania usługi
-    /// dla danej pozycji faktury (P_6A)
-    /// Stosowana gdy różne pozycje mają różne daty sprzedaży
-    /// Format: YYYY-MM-DD
-    /// Pole opcjonalne
+    /// dla danej pozycji faktury (P_6A) - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("P_6A")]
+    public string? SaleDateString
+    {
+        get => SaleDate?.ToString("yyyy-MM-dd");
+        set => SaleDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data dokonania lub zakończenia dostawy towarów lub wykonania usługi
+    /// dla danej pozycji faktury (P_6A)
+    /// Stosowana gdy różne pozycje mają różne daty sprzedaży
+    /// Pole opcjonalne
+    /// </summary>
+    [XmlIgnore]
     public DateOnly? SaleDate { get; set; }
 
     #endregion
@@ -187,6 +197,23 @@ public class InvoiceLineItem
     /// </summary>
     [XmlElement("CN")]
     public string? CnCode { get; set; }
+
+    #endregion
+
+    #region ShouldSerialize - prevents xsi:nil="true" for optional elements
+
+    public bool ShouldSerializeUnit() => !string.IsNullOrEmpty(Unit);
+    public bool ShouldSerializeQuantity() => Quantity.HasValue;
+    public bool ShouldSerializeUnitNetPrice() => UnitNetPrice.HasValue;
+    public bool ShouldSerializeUnitGrossPrice() => UnitGrossPrice.HasValue;
+    public bool ShouldSerializeDiscount() => Discount.HasValue;
+    public bool ShouldSerializeNetAmount() => NetAmount.HasValue;
+    public bool ShouldSerializeVatAmount() => VatAmount.HasValue;
+    public bool ShouldSerializeGrossAmount() => GrossAmount.HasValue;
+    public bool ShouldSerializeSaleDateString() => SaleDate.HasValue;
+    public bool ShouldSerializeGtinCode() => !string.IsNullOrEmpty(GtinCode);
+    public bool ShouldSerializePkwiuCode() => !string.IsNullOrEmpty(PkwiuCode);
+    public bool ShouldSerializeCnCode() => !string.IsNullOrEmpty(CnCode);
 
     #endregion
 

@@ -6,143 +6,177 @@ namespace KSeF.Invoice.Models.Entities;
 
 /// <summary>
 /// Podmiot będący nabywcą (Podmiot2)
-/// Odpowiednik elementu Podmiot2 w schemacie KSeF
+/// Odpowiednik elementu Podmiot2 w schemacie KSeF FA(3)
+/// Kolejność elementów: NrEORI?, DaneIdentyfikacyjne, Adres?, AdresKoresp?, DaneKontaktowe*, NrKlienta?, IDNabywcy?, JST, GV
 /// </summary>
 [XmlRoot("Podmiot2")]
 public class Buyer
 {
     /// <summary>
-    /// Numer Identyfikacji Podatkowej (NIP) nabywcy
-    /// Format: 10 cyfr bez kresek
-    /// Używany dla podmiotów polskich
+    /// Numer EORI nabywcy towarów (opcjonalny)
     /// </summary>
-    [XmlElement("NIP")]
-    public string? TaxId { get; set; }
+    [XmlElement("NrEORI", Order = 0)]
+    public string? EoriNumber { get; set; }
 
     /// <summary>
-    /// Kod kraju UE (prefiks VAT) dla nabywców z UE
+    /// Dane identyfikacyjne nabywcy (DaneIdentyfikacyjne)
+    /// Zawiera identyfikator nabywcy (NIP, KodUE+NrVatUE, KodKraju+NrID lub BrakID) i opcjonalnie Nazwę
+    /// Typ TPodmiot2 w schemacie
+    /// Pole obowiązkowe
     /// </summary>
-    [XmlElement("KodUE")]
-    public EUCountryCode? EuCountryCode { get; set; }
-
-    /// <summary>
-    /// Numer Identyfikacyjny VAT kontrahenta UE
-    /// Używany razem z EuCountryCode dla kontrahentów z UE
-    /// </summary>
-    [XmlElement("NrVatUE")]
-    public string? EuVatId { get; set; }
-
-    /// <summary>
-    /// Kod kraju nadania identyfikatora podatkowego (dla podmiotów spoza UE)
-    /// </summary>
-    [XmlElement("KodKraju")]
-    public string? OtherIdCountryCode { get; set; }
-
-    /// <summary>
-    /// Identyfikator podatkowy inny (dla podmiotów zagranicznych spoza UE)
-    /// </summary>
-    [XmlElement("NrID")]
-    public string? OtherId { get; set; }
-
-    /// <summary>
-    /// Podmiot nie posiada identyfikatora podatkowego
-    /// Wartość 1 oznacza brak identyfikatora
-    /// </summary>
-    [XmlElement("BrakID")]
-    public int? NoIdentifier { get; set; }
-
-    /// <summary>
-    /// Imię i nazwisko lub pełna nazwa firmy nabywcy
-    /// Opcjonalne dla przypadków określonych w art. 106e ust. 5 pkt 3 ustawy
-    /// Maksymalnie 512 znaków
-    /// </summary>
-    [XmlElement("Nazwa")]
-    public string? Name { get; set; }
+    [XmlElement("DaneIdentyfikacyjne", Order = 1)]
+    public BuyerIdentification Identification { get; set; } = new BuyerIdentification();
 
     /// <summary>
     /// Adres nabywcy (adres podstawowy)
     /// </summary>
-    [XmlElement("Adres")]
+    [XmlElement("Adres", Order = 2)]
     public Address? Address { get; set; }
 
     /// <summary>
     /// Adres korespondencyjny nabywcy (opcjonalny)
     /// </summary>
-    [XmlElement("AdresKoresp")]
+    [XmlElement("AdresKoresp", Order = 3)]
     public Address? CorrespondenceAddress { get; set; }
 
     /// <summary>
     /// Dane kontaktowe nabywcy (email, telefon)
     /// </summary>
-    [XmlElement("DaneKontaktowe")]
+    [XmlElement("DaneKontaktowe", Order = 4)]
     public ContactData? ContactData { get; set; }
 
     /// <summary>
     /// Numer klienta nadany przez sprzedawcę (opcjonalny)
-    /// Wewnętrzny identyfikator nabywcy w systemie sprzedawcy
     /// </summary>
-    [XmlElement("NrKlienta")]
+    [XmlElement("NrKlienta", Order = 5)]
     public string? CustomerNumber { get; set; }
 
     /// <summary>
-    /// Znacznik wskazujący, że nabywca jest jednostką samorządu terytorialnego (JST)
-    /// Wartość 1 oznacza, że nabywca jest JST
+    /// Unikalny klucz powiązania danych nabywcy na fakturach korygujących (IDNabywcy)
+    /// Używany gdy dane nabywcy na fakturze korygującej zmieniły się
+    /// Maksymalnie 32 znaki
     /// </summary>
-    [XmlElement("IDNabywcy")]
-    public int? IsLocalGovernmentUnit { get; set; }
+    [XmlElement("IDNabywcy", Order = 6)]
+    public string? BuyerIdentityKey { get; set; }
 
     /// <summary>
-    /// Znacznik wskazujący, że nabywca jest grupą VAT
-    /// Wartość 1 oznacza, że nabywca jest grupą VAT
+    /// Znacznik jednostki podrzędnej JST (JST)
+    /// Wartość 1 - faktura dotyczy jednostki podrzędnej JST
+    /// Wartość 2 - faktura nie dotyczy jednostki podrzędnej JST
+    /// Pole obowiązkowe
     /// </summary>
-    [XmlElement("GrupaVAT")]
-    public int? IsVatGroup { get; set; }
+    [XmlElement("JST", Order = 7)]
+    public int Jst { get; set; } = 2;
 
     /// <summary>
-    /// Sprawdza czy nabywca ma NIP polski
+    /// Znacznik członka grupy VAT (GV)
+    /// Wartość 1 - faktura dotyczy członka grupy VAT (wymaga wypełnienia Podmiot3 z rolą 10)
+    /// Wartość 2 - faktura nie dotyczy członka grupy VAT
+    /// Pole obowiązkowe
     /// </summary>
+    [XmlElement("GV", Order = 8)]
+    public int Gv { get; set; } = 2;
+
+    public bool ShouldSerializeEoriNumber() => !string.IsNullOrEmpty(EoriNumber);
+    public bool ShouldSerializeAddress() => Address != null;
+    public bool ShouldSerializeCorrespondenceAddress() => CorrespondenceAddress != null;
+    public bool ShouldSerializeContactData() => ContactData != null;
+    public bool ShouldSerializeCustomerNumber() => !string.IsNullOrEmpty(CustomerNumber);
+    public bool ShouldSerializeBuyerIdentityKey() => !string.IsNullOrEmpty(BuyerIdentityKey);
+
+    // Convenience accessors delegating to Identification
+
+    /// <summary>
+    /// NIP nabywcy - convenience accessor do Identification.Nip
+    /// </summary>
+    [XmlIgnore]
+    public string? TaxId
+    {
+        get => Identification.Nip;
+        set => Identification.Nip = value;
+    }
+
+    /// <summary>
+    /// Kod kraju UE - convenience accessor do Identification.EUCountryCode
+    /// </summary>
+    [XmlIgnore]
+    public EUCountryCode? EuCountryCode
+    {
+        get => Identification.EUCountryCode;
+        set => Identification.EUCountryCode = value;
+    }
+
+    /// <summary>
+    /// Numer VAT UE - convenience accessor do Identification.VatNumberEU
+    /// </summary>
+    [XmlIgnore]
+    public string? EuVatId
+    {
+        get => Identification.VatNumberEU;
+        set => Identification.VatNumberEU = value;
+    }
+
+    /// <summary>
+    /// Kod kraju identyfikatora spoza UE - convenience accessor do Identification.CountryCode
+    /// </summary>
+    [XmlIgnore]
+    public string? OtherIdCountryCode
+    {
+        get => Identification.CountryCode;
+        set => Identification.CountryCode = value;
+    }
+
+    /// <summary>
+    /// Identyfikator podatkowy inny - convenience accessor do Identification.OtherTaxId
+    /// </summary>
+    [XmlIgnore]
+    public string? OtherId
+    {
+        get => Identification.OtherTaxId;
+        set => Identification.OtherTaxId = value;
+    }
+
+    /// <summary>
+    /// Brak identyfikatora - convenience accessor do Identification.NoIdentifier
+    /// </summary>
+    [XmlIgnore]
+    public int? NoIdentifier
+    {
+        get => Identification.NoIdentifier;
+        set => Identification.NoIdentifier = value;
+    }
+
+    /// <summary>
+    /// Nazwa nabywcy - convenience accessor do Identification.Name
+    /// </summary>
+    [XmlIgnore]
+    public string? Name
+    {
+        get => Identification.Name;
+        set => Identification.Name = value;
+    }
+
     [XmlIgnore]
     public bool HasPolishTaxId => !string.IsNullOrEmpty(TaxId);
 
-    /// <summary>
-    /// Sprawdza czy nabywca ma VAT UE
-    /// </summary>
     [XmlIgnore]
     public bool HasEuVatId => EuCountryCode.HasValue && !string.IsNullOrEmpty(EuVatId);
 
-    /// <summary>
-    /// Sprawdza czy nabywca ma inny identyfikator (zagraniczny spoza UE)
-    /// </summary>
     [XmlIgnore]
     public bool HasOtherId => !string.IsNullOrEmpty(OtherIdCountryCode) && !string.IsNullOrEmpty(OtherId);
 
-    /// <summary>
-    /// Sprawdza czy nabywca nie posiada żadnego identyfikatora
-    /// </summary>
     [XmlIgnore]
     public bool HasNoIdentifier => NoIdentifier == 1;
 
-    /// <summary>
-    /// Sprawdza czy adres korespondencyjny jest zdefiniowany
-    /// </summary>
     [XmlIgnore]
     public bool HasCorrespondenceAddress => CorrespondenceAddress != null;
 
-    /// <summary>
-    /// Sprawdza czy dane kontaktowe są zdefiniowane
-    /// </summary>
     [XmlIgnore]
     public bool HasContactData => ContactData != null;
 
-    /// <summary>
-    /// Sprawdza czy nabywca jest jednostką samorządu terytorialnego
-    /// </summary>
     [XmlIgnore]
-    public bool IsJST => IsLocalGovernmentUnit == 1;
+    public bool IsJST => Jst == 1;
 
-    /// <summary>
-    /// Sprawdza czy nabywca jest grupą VAT
-    /// </summary>
     [XmlIgnore]
-    public bool IsVATGroup => IsVatGroup == 1;
+    public bool IsVatGroupMember => Gv == 1;
 }

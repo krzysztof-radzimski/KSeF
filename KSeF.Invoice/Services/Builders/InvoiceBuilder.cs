@@ -266,15 +266,15 @@ public class InvoiceBuilder
                     break;
 
                 case VatRate.Rate4:
-                    invoiceData.NetAmount4 = netSum;
-                    invoiceData.VatAmount4 = vatSum;
+                    invoiceData.NetAmountTaxi = netSum;
+                    invoiceData.VatAmountTaxi = vatSum;
                     totalAmount += netSum + vatSum;
                     break;
 
                 case VatRate.Rate3:
-                    // Stawka 3% - używamy pól dla 4%
-                    invoiceData.NetAmount4 = (invoiceData.NetAmount4 ?? 0) + netSum;
-                    invoiceData.VatAmount4 = (invoiceData.VatAmount4 ?? 0) + vatSum;
+                    // Stawka 3% - mapujemy na pola ryczałtu taksówek
+                    invoiceData.NetAmountTaxi = (invoiceData.NetAmountTaxi ?? 0) + netSum;
+                    invoiceData.VatAmountTaxi = (invoiceData.VatAmountTaxi ?? 0) + vatSum;
                     totalAmount += netSum + vatSum;
                     break;
 

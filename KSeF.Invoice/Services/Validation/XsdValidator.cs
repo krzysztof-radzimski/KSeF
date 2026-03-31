@@ -282,8 +282,9 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
         var assembly = typeof(XsdValidator).Assembly;
         var resourceNames = assembly.GetManifestResourceNames();
 
-        // Załaduj schemat FA(3)
-        var fa3SchemaSet = LoadSchemaSet(assembly, "FA3.xsd", "StrukturyDanych_v10-0E.xsd", "ElementarneTypyDanych_v10-0E.xsd", "KodyKrajow_v10-0E.xsd");
+        // Załaduj schemat FA(3) - tylko główny plik, importowane schematy
+        // zostaną załadowane automatycznie przez EmbeddedResourceResolver
+        var fa3SchemaSet = LoadSchemaSet(assembly, "FA3.xsd");
         if (fa3SchemaSet != null)
         {
             _schemaCache[SchemaVersion.FA3] = fa3SchemaSet;
@@ -301,10 +302,15 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
     {
         try
         {
+            var resolver = new EmbeddedResourceResolver(assembly);
             var schemaSet = new XmlSchemaSet();
+            schemaSet.XmlResolver = resolver;
 
-            // Resolver do obsługi importów z zasobów
-            schemaSet.XmlResolver = new EmbeddedResourceResolver(assembly);
+            var readerSettings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Ignore,
+                XmlResolver = resolver
+            };
 
             foreach (var fileName in schemaFileNames)
             {
@@ -318,7 +324,7 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
                 if (stream == null)
                     continue;
 
-                using var reader = XmlReader.Create(stream);
+                using var reader = XmlReader.Create(stream, readerSettings);
                 var schema = XmlSchema.Read(reader, (sender, e) =>
                 {
                     // Ignoruj ostrzeżenia podczas ładowania schematu
@@ -340,9 +346,9 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
             schemaSet.Compile();
             return schemaSet;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return null;
+            throw new InvalidOperationException($"Błąd ładowania schematów XSD: {ex.Message}", ex);
         }
     }
 

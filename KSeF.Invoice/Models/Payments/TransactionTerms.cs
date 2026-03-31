@@ -31,9 +31,19 @@ public class TransactionTerms
     public string? OrderNumber { get; set; }
 
     /// <summary>
-    /// Data zamówienia lub umowy (DataZamowienia)
+    /// Data zamówienia lub umowy - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("DataZamowienia")]
+    public string? OrderDateString
+    {
+        get => OrderDate?.ToString("yyyy-MM-dd");
+        set => OrderDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data zamówienia lub umowy (DataZamowienia)
+    /// </summary>
+    [XmlIgnore]
     public DateOnly? OrderDate { get; set; }
 
     /// <summary>

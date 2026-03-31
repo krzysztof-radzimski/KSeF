@@ -27,11 +27,21 @@ public class InvoiceData
     public CurrencyCode CurrencyCode { get; set; } = CurrencyCode.PLN;
 
     /// <summary>
-    /// Data wystawienia faktury (P_1)
+    /// Data wystawienia faktury (P_1) - proxy string dla serializacji XML
     /// Format: YYYY-MM-DD
-    /// Pole obowiązkowe zgodnie z art. 106e ust. 1 pkt 1 ustawy o VAT
     /// </summary>
     [XmlElement("P_1", Order = 1)]
+    public string IssueDateString
+    {
+        get => IssueDate.ToString("yyyy-MM-dd");
+        set => IssueDate = string.IsNullOrEmpty(value) ? default : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data wystawienia faktury (P_1)
+    /// Pole obowiązkowe zgodnie z art. 106e ust. 1 pkt 1 ustawy o VAT
+    /// </summary>
+    [XmlIgnore]
     public DateOnly IssueDate { get; set; }
 
     /// <summary>
@@ -61,13 +71,22 @@ public class InvoiceData
     public List<string>? WarehouseDocuments { get; set; }
 
     /// <summary>
-    /// Data dokonania lub zakończenia dostawy towarów lub wykonania usługi (P_6)
-    /// Data sprzedaży - jeżeli taka data jest określona i różni się od daty wystawienia faktury
+    /// Data sprzedaży (P_6) - proxy string dla serializacji XML
     /// Format: YYYY-MM-DD
+    /// </summary>
+    [XmlElement("P_6", Order = 5)]
+    public string? SaleDateString
+    {
+        get => SaleDate?.ToString("yyyy-MM-dd");
+        set => SaleDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data dokonania lub zakończenia dostawy towarów lub wykonania usługi (P_6)
     /// Pole opcjonalne zgodnie z art. 106e ust. 1 pkt 6 ustawy o VAT
     /// Alternatywa dla OkresFa
     /// </summary>
-    [XmlElement("P_6", Order = 5)]
+    [XmlIgnore]
     public DateOnly? SaleDate { get; set; }
 
     /// <summary>
@@ -211,29 +230,17 @@ public class InvoiceData
     public decimal? NotTaxableAmount { get; set; }
 
     /// <summary>
-    /// Suma wartości objętych stawką 4% (P_13_11)
+    /// Suma wartości sprzedaży w procedurze marży (P_13_11)
     /// </summary>
     [XmlElement("P_13_11", Order = 28)]
     public decimal? NetAmount4 { get; set; }
-
-    /// <summary>
-    /// Kwota podatku VAT ze stawką 4% (P_14_11)
-    /// </summary>
-    [XmlElement("P_14_11", Order = 29)]
-    public decimal? VatAmount4 { get; set; }
-
-    /// <summary>
-    /// Kwota podatku VAT ze stawką 4% przeliczona na PLN (P_14_11W)
-    /// </summary>
-    [XmlElement("P_14_11W", Order = 30)]
-    public decimal? VatAmount4InPLN { get; set; }
 
     /// <summary>
     /// Kwota należności ogółem - wartość brutto faktury (P_15)
     /// Łączna kwota do zapłaty
     /// Pole obowiązkowe zgodnie z art. 106e ust. 1 pkt 15 ustawy o VAT
     /// </summary>
-    [XmlElement("P_15", Order = 31)]
+    [XmlElement("P_15", Order = 29)]
     public decimal TotalAmount { get; set; }
 
     #endregion
@@ -245,7 +252,7 @@ public class InvoiceData
     /// Specjalne oznaczenia i procedury podatkowe
     /// Pole obowiązkowe
     /// </summary>
-    [XmlElement("Adnotacje", Order = 32)]
+    [XmlElement("Adnotacje", Order = 30)]
     public InvoiceAnnotations Annotations { get; set; } = new InvoiceAnnotations();
 
     #endregion
@@ -257,7 +264,7 @@ public class InvoiceData
     /// Określa typ faktury: VAT (podstawowa), KOR (korygująca),
     /// ZAL (zaliczkowa), ROZ (rozliczeniowa), UPR (uproszczona)
     /// </summary>
-    [XmlElement("RodzajFaktury", Order = 33)]
+    [XmlElement("RodzajFaktury", Order = 31)]
     public InvoiceType InvoiceType { get; set; } = InvoiceType.VAT;
 
     #endregion
@@ -270,14 +277,14 @@ public class InvoiceData
     /// Wymagane dla faktur korygujących
     /// Maksymalnie 256 znaków
     /// </summary>
-    [XmlElement("PrzyczynaKorekty", Order = 34)]
+    [XmlElement("PrzyczynaKorekty", Order = 32)]
     public string? CorrectionReason { get; set; }
 
     /// <summary>
     /// Typ korekty (TypKorekty)
     /// Określa typ korekty: 1 - korekta wartości, 2 - korekta danych, 3 - oba typy
     /// </summary>
-    [XmlElement("TypKorekty", Order = 35)]
+    [XmlElement("TypKorekty", Order = 33)]
     public int? CorrectionType { get; set; }
 
     /// <summary>
@@ -285,21 +292,21 @@ public class InvoiceData
     /// Informacje o fakturze pierwotnej będącej przedmiotem korekty
     /// Wymagane dla faktur korygujących
     /// </summary>
-    [XmlElement("DaneFaKorygowanej", Order = 36)]
+    [XmlElement("DaneFaKorygowanej", Order = 34)]
     public CorrectedInvoiceData? CorrectedInvoiceData { get; set; }
 
     /// <summary>
     /// Numer KSeF faktury korygującej poprzednią korektę (NrKSeFN)
     /// Stosowane w przypadku kolejnych korekt faktury
     /// </summary>
-    [XmlElement("NrKSeFN", Order = 37)]
+    [XmlElement("NrKSeFN", Order = 35)]
     public string? PreviousCorrectionKSeFNumber { get; set; }
 
     /// <summary>
     /// Okres, którego dotyczy korekta (OkresFaKorygowanej)
     /// Data "od" - "do" dla faktur z okresem, które są korygowane
     /// </summary>
-    [XmlElement("OkresFaKorygowanej", Order = 38)]
+    [XmlElement("OkresFaKorygowanej", Order = 36)]
     public SalePeriod? CorrectedInvoicePeriod { get; set; }
 
     #endregion
@@ -310,7 +317,7 @@ public class InvoiceData
     /// Lista wcześniejszych faktur zaliczkowych (ZalszczkaCzesciowa)
     /// Dane dotyczące wcześniejszych faktur zaliczkowych przy fakturze końcowej/rozliczeniowej
     /// </summary>
-    [XmlElement("ZaliczkaCalosciowa", Order = 39)]
+    [XmlElement("ZaliczkaCalosciowa", Order = 37)]
     public List<AdvancePaymentData>? AdvancePayments { get; set; }
 
     #endregion
@@ -322,7 +329,7 @@ public class InvoiceData
     /// Zawiera szczegółowe dane o towarach i usługach
     /// Może zawierać do 10000 pozycji
     /// </summary>
-    [XmlElement("FaWiersz", Order = 40)]
+    [XmlElement("FaWiersz", Order = 38)]
     public List<InvoiceLineItem>? LineItems { get; set; }
 
     #endregion
@@ -334,7 +341,7 @@ public class InvoiceData
     /// Zawiera terminy płatności, formy płatności i rachunki bankowe
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("Platnosc", Order = 41)]
+    [XmlElement("Platnosc", Order = 39)]
     public Payment? Payment { get; set; }
 
     #endregion
@@ -346,7 +353,7 @@ public class InvoiceData
     /// Zawiera informacje o warunkach dostawy i transportu
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("WarunkiTransakcji", Order = 42)]
+    [XmlElement("WarunkiTransakcji", Order = 40)]
     public TransactionTerms? TransactionTerms { get; set; }
 
     #endregion
@@ -358,15 +365,57 @@ public class InvoiceData
     /// Dodatkowe informacje tekstowe w formie klucz-wartość
     /// Pole opcjonalne - do 100 wpisów
     /// </summary>
-    [XmlElement("DodatkowyOpis", Order = 43)]
+    [XmlElement("DodatkowyOpis", Order = 41)]
     public List<KeyValue>? AdditionalDescription { get; set; }
 
     /// <summary>
     /// Numer faktury zaliczkowej dla faktury rozliczeniowej (NrFaZal662)
     /// Numer faktury zaliczkowej, której dotyczy faktura rozliczeniowa
     /// </summary>
-    [XmlElement("NrFaZaliczkowej", Order = 44)]
+    [XmlElement("NrFaZaliczkowej", Order = 42)]
     public List<string>? AdvanceInvoiceNumbers { get; set; }
+
+    #endregion
+
+    #region ShouldSerialize - prevents xsi:nil="true" for optional elements
+
+    public bool ShouldSerializeIssuePlace() => !string.IsNullOrEmpty(IssuePlace);
+    public bool ShouldSerializeSaleDateString() => SaleDate.HasValue;
+    public bool ShouldSerializeSalePeriod() => SalePeriod != null;
+    public bool ShouldSerializeWarehouseDocuments() => WarehouseDocuments != null && WarehouseDocuments.Count > 0;
+    public bool ShouldSerializeNetAmount23() => NetAmount23.HasValue;
+    public bool ShouldSerializeVatAmount23() => VatAmount23.HasValue;
+    public bool ShouldSerializeVatAmount23InPLN() => VatAmount23InPLN.HasValue;
+    public bool ShouldSerializeNetAmount8() => NetAmount8.HasValue;
+    public bool ShouldSerializeVatAmount8() => VatAmount8.HasValue;
+    public bool ShouldSerializeVatAmount8InPLN() => VatAmount8InPLN.HasValue;
+    public bool ShouldSerializeNetAmount5() => NetAmount5.HasValue;
+    public bool ShouldSerializeVatAmount5() => VatAmount5.HasValue;
+    public bool ShouldSerializeVatAmount5InPLN() => VatAmount5InPLN.HasValue;
+    public bool ShouldSerializeNetAmountTaxi() => NetAmountTaxi.HasValue;
+    public bool ShouldSerializeVatAmountTaxi() => VatAmountTaxi.HasValue;
+    public bool ShouldSerializeVatAmountTaxiInPLN() => VatAmountTaxiInPLN.HasValue;
+    public bool ShouldSerializeNetAmountOSS() => NetAmountOSS.HasValue;
+    public bool ShouldSerializeVatAmountOSS() => VatAmountOSS.HasValue;
+    public bool ShouldSerializeNetAmount0() => NetAmount0.HasValue;
+    public bool ShouldSerializeNetAmountWdt() => NetAmountWdt.HasValue;
+    public bool ShouldSerializeNetAmountExport() => NetAmountExport.HasValue;
+    public bool ShouldSerializeExemptAmount() => ExemptAmount.HasValue;
+    public bool ShouldSerializeMarginAmount() => MarginAmount.HasValue;
+    public bool ShouldSerializeMarginVatAmount() => MarginVatAmount.HasValue;
+    public bool ShouldSerializeNotTaxableAmount() => NotTaxableAmount.HasValue;
+    public bool ShouldSerializeNetAmount4() => NetAmount4.HasValue;
+    public bool ShouldSerializeCorrectionReason() => !string.IsNullOrEmpty(CorrectionReason);
+    public bool ShouldSerializeCorrectionType() => CorrectionType.HasValue;
+    public bool ShouldSerializeCorrectedInvoiceData() => CorrectedInvoiceData != null;
+    public bool ShouldSerializePreviousCorrectionKSeFNumber() => !string.IsNullOrEmpty(PreviousCorrectionKSeFNumber);
+    public bool ShouldSerializeCorrectedInvoicePeriod() => CorrectedInvoicePeriod != null;
+    public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;
+    public bool ShouldSerializeLineItems() => LineItems != null && LineItems.Count > 0;
+    public bool ShouldSerializePayment() => Payment != null;
+    public bool ShouldSerializeTransactionTerms() => TransactionTerms != null;
+    public bool ShouldSerializeAdditionalDescription() => AdditionalDescription != null && AdditionalDescription.Count > 0;
+    public bool ShouldSerializeAdvanceInvoiceNumbers() => AdvanceInvoiceNumbers != null && AdvanceInvoiceNumbers.Count > 0;
 
     #endregion
 
@@ -431,7 +480,7 @@ public class InvoiceData
     /// </summary>
     [XmlIgnore]
     public decimal TotalVatAmount =>
-        (VatAmount23 ?? 0) + (VatAmount8 ?? 0) + (VatAmount5 ?? 0) + (VatAmount4 ?? 0) +
+        (VatAmount23 ?? 0) + (VatAmount8 ?? 0) + (VatAmount5 ?? 0) +
         (VatAmountTaxi ?? 0) + (VatAmountOSS ?? 0) + (MarginVatAmount ?? 0);
 
     #endregion
@@ -457,9 +506,19 @@ public class AdvancePaymentData
     public string? InvoiceNumber { get; set; }
 
     /// <summary>
-    /// Data wystawienia faktury zaliczkowej
+    /// Data wystawienia faktury zaliczkowej - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("DataFaZaliczkowej")]
+    public string? IssueDateString
+    {
+        get => IssueDate?.ToString("yyyy-MM-dd");
+        set => IssueDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data wystawienia faktury zaliczkowej
+    /// </summary>
+    [XmlIgnore]
     public DateOnly? IssueDate { get; set; }
 
     /// <summary>

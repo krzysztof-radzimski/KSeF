@@ -18,11 +18,20 @@ public class CorrectedInvoiceData
     public string CorrectedInvoiceNumber { get; set; } = string.Empty;
 
     /// <summary>
-    /// Data wystawienia faktury korygowanej (DataWystFaKorygowanej)
-    /// Data wystawienia faktury pierwotnej
-    /// Format: YYYY-MM-DD
+    /// Data wystawienia faktury korygowanej - proxy string dla serializacji XML
     /// </summary>
     [XmlElement("DataWystFaKorygowanej")]
+    public string CorrectedInvoiceIssueDateString
+    {
+        get => CorrectedInvoiceIssueDate.ToString("yyyy-MM-dd");
+        set => CorrectedInvoiceIssueDate = string.IsNullOrEmpty(value) ? default : DateOnly.Parse(value);
+    }
+
+    /// <summary>
+    /// Data wystawienia faktury korygowanej (DataWystFaKorygowanej)
+    /// Data wystawienia faktury pierwotnej
+    /// </summary>
+    [XmlIgnore]
     public DateOnly CorrectedInvoiceIssueDate { get; set; }
 
     /// <summary>

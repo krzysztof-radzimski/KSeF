@@ -472,7 +472,7 @@ public class InvoiceValidator : IInvoiceValidator
         ValidateRateSummary(sumsByRate, VatRate.Rate23, invoiceData.NetAmount23, invoiceData.VatAmount23, "23%", result);
         ValidateRateSummary(sumsByRate, VatRate.Rate8, invoiceData.NetAmount8, invoiceData.VatAmount8, "8%", result);
         ValidateRateSummary(sumsByRate, VatRate.Rate5, invoiceData.NetAmount5, invoiceData.VatAmount5, "5%", result);
-        ValidateRateSummary(sumsByRate, VatRate.Rate4, invoiceData.NetAmount4, invoiceData.VatAmount4, "4%", result);
+        ValidateRateSummary(sumsByRate, VatRate.Rate4, invoiceData.NetAmountTaxi, invoiceData.VatAmountTaxi, "4%", result);
 
         // Sprawdź sumę całkowitą
         var calculatedTotal = invoiceData.TotalNetAmount + invoiceData.TotalVatAmount;

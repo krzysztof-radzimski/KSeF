@@ -52,7 +52,8 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsLocalGovernmentUnit.Should().Be(1);
+        invoice.Buyer.IsJST.Should().BeTrue();
+        invoice.Buyer.Jst.Should().Be(1);
         invoice.Buyer.TaxId.Should().Be("5252248481");
         invoice.Buyer.Name.Should().Contain("Gmina");
         invoice.InvoiceData.TotalAmount.Should().Be(36900.00m);
@@ -131,7 +132,7 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsLocalGovernmentUnit.Should().Be(1);
+        invoice.Buyer.IsJST.Should().BeTrue();
         invoice.Recipients![0].Role.Should().Be(SubjectRole.LocalGovernmentRecipient);
     }
 
@@ -191,8 +192,7 @@ public class JstAndVatGroupInvoiceScenarioTests
                 .WithAddress(a => a
                     .WithCountryCode("PL")
                     .WithAddressLine1("ul. Korporacyjna 100")
-                    .WithAddressLine2("00-001 Warszawa"))
-                .AsVatGroup())
+                    .WithAddressLine2("00-001 Warszawa")))
             .WithInvoiceDetails(d => d
                 .WithIssueDate(2024, 1, 15)
                 .WithInvoiceNumber("FV/GV/001/2024"))
@@ -204,7 +204,6 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsVatGroup.Should().Be(1);
         invoice.Buyer.TaxId.Should().Be("9999999999");
         invoice.Buyer.Name.Should().Contain("Grupa VAT");
     }
@@ -254,8 +253,7 @@ public class JstAndVatGroupInvoiceScenarioTests
                 .WithName("Dostawca Sp. z o.o."))
             .WithBuyer(b => b
                 .WithTaxId("9999999999")
-                .WithName("Grupa VAT Holding ABC")
-                .AsVatGroup())
+                .WithName("Grupa VAT Holding ABC"))
             // Członek grupy VAT jako odbiorca
             .AddRecipient(r => r
                 .WithInternalId("9999999999-DYSTR")
@@ -276,7 +274,6 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsVatGroup.Should().Be(1);
         invoice.Recipients![0].Role.Should().Be(SubjectRole.VatGroupMemberRecipient);
     }
 
@@ -291,8 +288,7 @@ public class JstAndVatGroupInvoiceScenarioTests
                 .WithName("Grupa VAT Holding XYZ"))
             .WithBuyer(b => b
                 .WithTaxId("9999999999")
-                .WithName("Grupa VAT Holding XYZ")
-                .AsVatGroup())
+                .WithName("Grupa VAT Holding XYZ"))
             // Członek wystawiający
             .AddRecipient(r => r
                 .WithInternalId("9999999999-PROD")
@@ -334,8 +330,7 @@ public class JstAndVatGroupInvoiceScenarioTests
                 .WithName("Gmina Miasto Warszawa"))
             .WithBuyer(b => b
                 .WithTaxId("9999999999")
-                .WithName("Grupa VAT Deweloper Holding")
-                .AsVatGroup())
+                .WithName("Grupa VAT Deweloper Holding"))
             .AddRecipient(r => r
                 .WithInternalId("5252248481-ZGN")
                 .WithName("Zakład Gospodarowania Nieruchomościami")
@@ -355,7 +350,6 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsVatGroup.Should().Be(1);
         invoice.Recipients.Should().HaveCount(2);
         invoice.Recipients!.Should().Contain(r => r.Role == SubjectRole.LocalGovernmentIssuer);
         invoice.Recipients.Should().Contain(r => r.Role == SubjectRole.VatGroupMemberRecipient);
@@ -392,7 +386,7 @@ public class JstAndVatGroupInvoiceScenarioTests
             .Build();
 
         // Assert
-        invoice.Buyer.IsLocalGovernmentUnit.Should().Be(1);
+        invoice.Buyer.IsJST.Should().BeTrue();
         invoice.Recipients.Should().HaveCount(2);
         invoice.Recipients!.Should().Contain(r => r.Role == SubjectRole.VatGroupMemberIssuer);
         invoice.Recipients.Should().Contain(r => r.Role == SubjectRole.LocalGovernmentRecipient);
@@ -474,8 +468,7 @@ public class JstAndVatGroupInvoiceScenarioTests
             .WithSeller(s => s.WithTaxId("1234567890").WithName("Sprzedawca"))
             .WithBuyer(b => b
                 .WithTaxId("9999999999")
-                .WithName("Grupa VAT XYZ")
-                .AsVatGroup())
+                .WithName("Grupa VAT XYZ"))
             .WithInvoiceDetails(d => d
                 .WithIssueDate(2024, 1, 15)
                 .WithInvoiceNumber("FV/GV/001/2024"))
@@ -519,7 +512,7 @@ public class JstAndVatGroupInvoiceScenarioTests
 
         // Assert
         deserializedInvoice.Should().NotBeNull();
-        deserializedInvoice!.Buyer.IsLocalGovernmentUnit.Should().Be(1);
+        deserializedInvoice!.Buyer.IsJST.Should().BeTrue();
     }
 
     [Fact]
@@ -530,8 +523,7 @@ public class JstAndVatGroupInvoiceScenarioTests
             .WithSeller(s => s.WithTaxId("1234567890").WithName("Sprzedawca"))
             .WithBuyer(b => b
                 .WithTaxId("9999999999")
-                .WithName("Grupa VAT")
-                .AsVatGroup())
+                .WithName("Grupa VAT"))
             .WithInvoiceDetails(d => d
                 .WithIssueDate(2024, 1, 15)
                 .WithInvoiceNumber("FV/001/2024"))
@@ -547,7 +539,7 @@ public class JstAndVatGroupInvoiceScenarioTests
 
         // Assert
         deserializedInvoice.Should().NotBeNull();
-        deserializedInvoice!.Buyer.IsVatGroup.Should().Be(1);
+        deserializedInvoice!.Buyer.TaxId.Should().Be("9999999999");
     }
 
     #endregion
