@@ -17,14 +17,20 @@ namespace KSeF.Api.Tests.Services;
 
 /// <summary>
 /// Testy autoryzacji KSeF dla trzech środowisk: testowego, demo i produkcyjnego.
-/// NIP i token KSeF pobierane ze zmiennych środowiskowych KSEF_TEST_NIP i KSEF_TEST_TOKEN.
+/// NIP i token KSeF pobierane ze zmiennych środowiskowych per środowisko:
+/// KSEF_TEST_NIP/KSEF_TEST_TOKEN, KSEF_DEMO_NIP/KSEF_DEMO_TOKEN, KSEF_PROD_NIP/KSEF_PROD_TOKEN.
 /// Gdy zmienne nie są ustawione, ładowane są z pliku .env.example w katalogu testów.
 /// </summary>
 public class KsefAuthorizationTests
 {
     private static readonly Dictionary<string, string> EnvExampleValues = LoadEnvExample();
+
     private static readonly string TestNip = ResolveEnvValue("KSEF_TEST_NIP");
     private static readonly string TestKsefToken = ResolveEnvValue("KSEF_TEST_TOKEN");
+    private static readonly string DemoNip = ResolveEnvValue("KSEF_DEMO_NIP");
+    private static readonly string DemoKsefToken = ResolveEnvValue("KSEF_DEMO_TOKEN");
+    private static readonly string ProdNip = ResolveEnvValue("KSEF_PROD_NIP");
+    private static readonly string ProdKsefToken = ResolveEnvValue("KSEF_PROD_TOKEN");
 
     private static Dictionary<string, string> LoadEnvExample()
     {
@@ -72,12 +78,23 @@ public class KsefAuthorizationTests
         if (!string.IsNullOrEmpty(envValue))
             return envValue;
 
-        if (EnvExampleValues.TryGetValue(key, out var exampleValue))
+        if (EnvExampleValues.TryGetValue(key, out var exampleValue) && !string.IsNullOrEmpty(exampleValue))
             return exampleValue;
 
-        return key == "KSEF_TEST_NIP"
+        return key.EndsWith("_NIP")
             ? "0000000000"
             : "test-token-placeholder|nip-0000000000|0000000000000000000000000000000000000000000000000000000000000000";
+    }
+
+    private static (string Nip, string Token) GetCredentialsForEnvironment(string baseUrl)
+    {
+        return baseUrl switch
+        {
+            KsefEnvironment.Test => (TestNip, TestKsefToken),
+            KsefEnvironment.Demo => (DemoNip, DemoKsefToken),
+            KsefEnvironment.Production => (ProdNip, ProdKsefToken),
+            _ => (TestNip, TestKsefToken)
+        };
     }
 
     private readonly Mock<IKSeFClient> _ksefClientMock;
@@ -108,16 +125,17 @@ public class KsefAuthorizationTests
 
     private KsefApiOptions CreateOptions(string baseUrl)
     {
+        var (nip, token) = GetCredentialsForEnvironment(baseUrl);
         return new KsefApiOptions
         {
-            Nip = TestNip,
-            KsefToken = TestKsefToken,
+            Nip = nip,
+            KsefToken = token,
             AuthMethod = KsefAuthMethod.Token,
             BaseUrl = baseUrl
         };
     }
 
-    private void SetupSuccessfulAuth()
+    private void SetupSuccessfulAuth(string nip, string token)
     {
         var authResponse = new AuthenticationOperationStatusResponse
         {
@@ -136,8 +154,8 @@ public class KsefAuthorizationTests
         _authCoordinatorMock
             .Setup(x => x.AuthKsefTokenAsync(
                 AuthenticationTokenContextIdentifierType.Nip,
-                TestNip,
-                TestKsefToken,
+                nip,
+                token,
                 _cryptographyServiceMock.Object,
                 EncryptionMethodEnum.ECDsa,
                 null!,
@@ -166,7 +184,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Test);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(TestNip, TestKsefToken);
 
         // Act
         await service.OpenSessionAsync();
@@ -188,7 +206,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Test);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(TestNip, TestKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -208,7 +226,7 @@ public class KsefAuthorizationTests
         options.BaseUrl.Should().Be("https://api-test.ksef.mf.gov.pl");
 
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(TestNip, TestKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -282,7 +300,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Demo);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(DemoNip, DemoKsefToken);
 
         // Act
         await service.OpenSessionAsync();
@@ -290,8 +308,8 @@ public class KsefAuthorizationTests
         // Assert
         _authCoordinatorMock.Verify(x => x.AuthKsefTokenAsync(
             AuthenticationTokenContextIdentifierType.Nip,
-            TestNip,
-            TestKsefToken,
+            DemoNip,
+            DemoKsefToken,
             _cryptographyServiceMock.Object,
             EncryptionMethodEnum.ECDsa,
             null!,
@@ -304,7 +322,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Demo);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(DemoNip, DemoKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -324,7 +342,7 @@ public class KsefAuthorizationTests
         options.BaseUrl.Should().Be("https://api-demo.ksef.mf.gov.pl");
 
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(DemoNip, DemoKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -398,7 +416,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Production);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(ProdNip, ProdKsefToken);
 
         // Act
         await service.OpenSessionAsync();
@@ -406,8 +424,8 @@ public class KsefAuthorizationTests
         // Assert
         _authCoordinatorMock.Verify(x => x.AuthKsefTokenAsync(
             AuthenticationTokenContextIdentifierType.Nip,
-            TestNip,
-            TestKsefToken,
+            ProdNip,
+            ProdKsefToken,
             _cryptographyServiceMock.Object,
             EncryptionMethodEnum.ECDsa,
             null!,
@@ -420,7 +438,7 @@ public class KsefAuthorizationTests
         // Arrange
         var options = CreateOptions(KsefEnvironment.Production);
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(ProdNip, ProdKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -440,7 +458,7 @@ public class KsefAuthorizationTests
         options.BaseUrl.Should().Be("https://api.ksef.mf.gov.pl");
 
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(ProdNip, ProdKsefToken);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -515,11 +533,12 @@ public class KsefAuthorizationTests
     public async Task Auth_AllEnvironments_UseTokenAuthMethod(string baseUrl)
     {
         // Arrange
+        var (nip, token) = GetCredentialsForEnvironment(baseUrl);
         var options = CreateOptions(baseUrl);
         options.AuthMethod.Should().Be(KsefAuthMethod.Token);
 
         var service = CreateService(options);
-        SetupSuccessfulAuth();
+        SetupSuccessfulAuth(nip, token);
 
         // Act
         var result = await service.OpenSessionAsync();
@@ -528,8 +547,8 @@ public class KsefAuthorizationTests
         result.Should().NotBeNull();
         _authCoordinatorMock.Verify(x => x.AuthKsefTokenAsync(
             AuthenticationTokenContextIdentifierType.Nip,
-            TestNip,
-            TestKsefToken,
+            nip,
+            token,
             It.IsAny<ICryptographyService>(),
             EncryptionMethodEnum.ECDsa,
             null!,
@@ -543,6 +562,7 @@ public class KsefAuthorizationTests
     public async Task Auth_AllEnvironments_WithEmptyNip_OpensSessionSuccessfully(string baseUrl)
     {
         // Arrange - NIP jest wymagany, ale walidacja odbywa się po stronie API
+        var (_, token) = GetCredentialsForEnvironment(baseUrl);
         var options = CreateOptions(baseUrl);
         options.Nip = string.Empty;
         var service = CreateService(options);
@@ -565,7 +585,7 @@ public class KsefAuthorizationTests
             .Setup(x => x.AuthKsefTokenAsync(
                 AuthenticationTokenContextIdentifierType.Nip,
                 string.Empty,
-                TestKsefToken,
+                token,
                 _cryptographyServiceMock.Object,
                 EncryptionMethodEnum.ECDsa,
                 null!,
@@ -588,7 +608,7 @@ public class KsefAuthorizationTests
         _authCoordinatorMock.Verify(x => x.AuthKsefTokenAsync(
             AuthenticationTokenContextIdentifierType.Nip,
             string.Empty,
-            TestKsefToken,
+            token,
             It.IsAny<ICryptographyService>(),
             It.IsAny<EncryptionMethodEnum>(),
             null!,
@@ -703,17 +723,21 @@ public class KsefAuthorizationTests
         options.BaseUrl.Should().Be(KsefEnvironment.Test);
     }
 
-    [Fact]
-    public void KsefApiOptions_WithTestCredentials_HasCorrectValues()
+    [Theory]
+    [InlineData(KsefEnvironment.Test)]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public void KsefApiOptions_WithCredentials_HasCorrectValues(string baseUrl)
     {
         // Arrange & Act
-        var options = CreateOptions(KsefEnvironment.Test);
+        var (expectedNip, expectedToken) = GetCredentialsForEnvironment(baseUrl);
+        var options = CreateOptions(baseUrl);
 
         // Assert
-        options.Nip.Should().Be(TestNip);
-        options.KsefToken.Should().Be(TestKsefToken);
+        options.Nip.Should().Be(expectedNip);
+        options.KsefToken.Should().Be(expectedToken);
         options.AuthMethod.Should().Be(KsefAuthMethod.Token);
-        options.BaseUrl.Should().Be(KsefEnvironment.Test);
+        options.BaseUrl.Should().Be(baseUrl);
     }
 
     #endregion
@@ -797,6 +821,7 @@ public class KsefAuthorizationTests
     public async Task Integration_TokenAuthFlow_ChallengeAndEncrypt_Succeeds(string baseUrl)
     {
         // Arrange - pełny DI container z inicjalizacją kryptografii
+        var (nip, token) = GetCredentialsForEnvironment(baseUrl);
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddKSeFClient(options => { options.BaseUrl = baseUrl; });
@@ -810,34 +835,21 @@ public class KsefAuthorizationTests
         await cryptographyService.WarmupAsync();
 
         // Act - pełna autoryzacja tokenem KSeF (challenge + encrypt + submit + get access token)
-        // Token z .env.example może nie być zarejestrowany we wszystkich środowiskach.
-        // Weryfikujemy, że flow autoryzacji działa (challenge + szyfrowanie + submit),
-        // nawet jeśli token jest odrzucony przez dane środowisko (status 450).
-        try
-        {
-            var authResponse = await authCoordinator.AuthKsefTokenAsync(
-                contextIdentifierType: AuthenticationTokenContextIdentifierType.Nip,
-                contextIdentifierValue: TestNip,
-                tokenKsef: TestKsefToken,
-                cryptographyService: cryptographyService,
-                encryptionMethod: EncryptionMethodEnum.Rsa);
+        // Jeśli autoryzacja się nie powiedzie, test powinien zakończyć się błędem (failed).
+        var authResponse = await authCoordinator.AuthKsefTokenAsync(
+            contextIdentifierType: AuthenticationTokenContextIdentifierType.Nip,
+            contextIdentifierValue: nip,
+            tokenKsef: token,
+            cryptographyService: cryptographyService,
+            encryptionMethod: EncryptionMethodEnum.Rsa);
 
-            // Assert - sukces autoryzacji (token jest ważny w tym środowisku)
-            authResponse.Should().NotBeNull();
-            authResponse.AccessToken.Should().NotBeNull();
-            authResponse.AccessToken.Token.Should().NotBeNullOrEmpty(
-                $"Autoryzacja tokenem na {baseUrl} powinna zwrócić access token");
-            authResponse.AccessToken.ValidUntil.Should().BeAfter(DateTime.UtcNow,
-                "Access token powinien mieć ważność w przyszłości");
-        }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("450") || ex.Message.Contains("nie został znaleziony"))
-        {
-            // Token nie jest zarejestrowany w tym środowisku - to jest oczekiwane zachowanie.
-            // Ważne jest, że flow przeszedł poprawnie (challenge, szyfrowanie, submit)
-            // i serwer odpowiedział merytorycznym błędem (450), a nie błędem połączenia.
-            ex.Message.Should().Contain("nie został znaleziony",
-                $"Serwer {baseUrl} powinien odpowiedzieć merytorycznym błędem o nieznalezionym tokenie");
-        }
+        // Assert - sukces autoryzacji (token jest ważny w tym środowisku)
+        authResponse.Should().NotBeNull();
+        authResponse.AccessToken.Should().NotBeNull();
+        authResponse.AccessToken.Token.Should().NotBeNullOrEmpty(
+            $"Autoryzacja tokenem na {baseUrl} powinna zwrócić access token");
+        authResponse.AccessToken.ValidUntil.Should().BeAfter(DateTime.UtcNow,
+            "Access token powinien mieć ważność w przyszłości");
     }
 
     #endregion
