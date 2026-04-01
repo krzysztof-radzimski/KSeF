@@ -70,7 +70,7 @@ public class KsefSessionServiceTests
                 _options.Nip,
                 _options.KsefToken,
                 _cryptographyServiceMock.Object,
-                EncryptionMethodEnum.ECDsa,
+                EncryptionMethodEnum.Rsa,
                 null!,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);

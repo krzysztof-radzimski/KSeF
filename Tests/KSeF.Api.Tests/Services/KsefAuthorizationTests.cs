@@ -157,7 +157,7 @@ public class KsefAuthorizationTests
                 nip,
                 token,
                 _cryptographyServiceMock.Object,
-                EncryptionMethodEnum.ECDsa,
+                EncryptionMethodEnum.Rsa,
                 null!,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);
@@ -195,7 +195,7 @@ public class KsefAuthorizationTests
             TestNip,
             TestKsefToken,
             _cryptographyServiceMock.Object,
-            EncryptionMethodEnum.ECDsa,
+            EncryptionMethodEnum.Rsa,
             null!,
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -311,7 +311,7 @@ public class KsefAuthorizationTests
             DemoNip,
             DemoKsefToken,
             _cryptographyServiceMock.Object,
-            EncryptionMethodEnum.ECDsa,
+            EncryptionMethodEnum.Rsa,
             null!,
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -427,7 +427,7 @@ public class KsefAuthorizationTests
             ProdNip,
             ProdKsefToken,
             _cryptographyServiceMock.Object,
-            EncryptionMethodEnum.ECDsa,
+            EncryptionMethodEnum.Rsa,
             null!,
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -550,7 +550,7 @@ public class KsefAuthorizationTests
             nip,
             token,
             It.IsAny<ICryptographyService>(),
-            EncryptionMethodEnum.ECDsa,
+            EncryptionMethodEnum.Rsa,
             null!,
             It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -587,7 +587,7 @@ public class KsefAuthorizationTests
                 string.Empty,
                 token,
                 _cryptographyServiceMock.Object,
-                EncryptionMethodEnum.ECDsa,
+                EncryptionMethodEnum.Rsa,
                 null!,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);

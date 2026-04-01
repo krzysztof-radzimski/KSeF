@@ -162,7 +162,7 @@ public class KsefSessionService : IKsefSessionService
             contextIdentifierValue: _options.Nip,
             tokenKsef: _options.KsefToken,
             cryptographyService: _cryptographyService,
-            encryptionMethod: EncryptionMethodEnum.ECDsa,
+            encryptionMethod: EncryptionMethodEnum.Rsa,
             authorizationPolicy: null!,
             cancellationToken: cancellationToken);
     }
