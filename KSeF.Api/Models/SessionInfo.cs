@@ -1,3 +1,5 @@
+using KSeF.Client.Core.Models.Sessions;
+
 namespace KSeF.Api.Models;
 
 /// <summary>
@@ -24,6 +26,11 @@ public class SessionInfo
     /// Data wygaśnięcia tokenu dostępowego
     /// </summary>
     public DateTime? ExpiresAt { get; set; }
+
+    /// <summary>
+    /// Dane szyfrowania sesji (klucz AES + IV) używane do szyfrowania faktur w ramach sesji
+    /// </summary>
+    public EncryptionData? EncryptionData { get; set; }
 
     /// <summary>
     /// Czy sesja jest aktywna

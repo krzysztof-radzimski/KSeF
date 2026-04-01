@@ -1,9 +1,11 @@
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;
+using KSeF.Client.Api.Builders.Online;
 using KSeF.Client.Core.Interfaces;
 using KSeF.Client.Core.Interfaces.Clients;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Authorization;
+using KSeF.Client.Core.Models.Invoices;
 using KSeF.Client.Core.Models.Sessions.OnlineSession;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -62,8 +64,21 @@ public class KsefSessionService : IKsefSessionService
             var accessTokenInfo = authResponse.AccessToken;
             var refreshTokenInfo = authResponse.RefreshToken;
 
-            // 2. Otwarcie sesji interaktywnej
-            var openSessionRequest = new OpenOnlineSessionRequest();
+            // 2. Generowanie danych szyfrowania sesji (klucz AES-256 + IV)
+            var encryptionData = _cryptographyService.GetEncryptionData();
+
+            // 3. Otwarcie sesji interaktywnej z wymaganymi polami formCode i encryption
+            var openSessionRequest = OpenOnlineSessionRequestBuilder
+                .Create()
+                .WithFormCode(
+                    systemCode: SystemCodeHelper.GetSystemCode(SystemCode.FA3),
+                    schemaVersion: SystemCodeHelper.GetSchemaVersion(SystemCode.FA3),
+                    value: SystemCodeHelper.GetValue(SystemCode.FA3))
+                .WithEncryption(
+                    encryptedSymmetricKey: encryptionData.EncryptionInfo.EncryptedSymmetricKey,
+                    initializationVector: encryptionData.EncryptionInfo.InitializationVector)
+                .Build();
+
             var sessionResponse = await _ksefClient.OpenOnlineSessionAsync(
                 openSessionRequest,
                 accessTokenInfo.Token,
@@ -73,7 +88,8 @@ public class KsefSessionService : IKsefSessionService
             {
                 SessionReference = sessionResponse.ReferenceNumber,
                 AccessToken = accessTokenInfo.Token,
-                RefreshToken = refreshTokenInfo?.Token
+                RefreshToken = refreshTokenInfo?.Token,
+                EncryptionData = encryptionData
             };
 
             _logger.LogInformation("Sesja interaktywna otwarta. Ref: {SessionRef}", sessionInfo.SessionReference);

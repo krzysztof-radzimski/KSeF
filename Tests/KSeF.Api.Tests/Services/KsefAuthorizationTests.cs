@@ -6,6 +6,9 @@ using KSeF.Client.Core.Interfaces;
 using KSeF.Client.Core.Interfaces.Clients;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Authorization;
+using KSeF.Client.Api.Builders.Online;
+using KSeF.Client.Core.Models.Invoices;
+using KSeF.Client.Core.Models.Sessions;
 using KSeF.Client.Core.Models.Sessions.OnlineSession;
 using KSeF.Client.DI;
 using Microsoft.Extensions.DependencyInjection;
@@ -161,6 +164,19 @@ public class KsefAuthorizationTests
                 null!,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);
+
+        _cryptographyServiceMock
+            .Setup(x => x.GetEncryptionData())
+            .Returns(new EncryptionData
+            {
+                CipherKey = new byte[32],
+                CipherIv = new byte[16],
+                EncryptionInfo = new EncryptionInfo
+                {
+                    EncryptedSymmetricKey = Convert.ToBase64String(new byte[32]),
+                    InitializationVector = Convert.ToBase64String(new byte[16])
+                }
+            });
 
         var sessionResponse = new OpenOnlineSessionResponse
         {
@@ -592,6 +608,19 @@ public class KsefAuthorizationTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);
 
+        _cryptographyServiceMock
+            .Setup(x => x.GetEncryptionData())
+            .Returns(new EncryptionData
+            {
+                CipherKey = new byte[32],
+                CipherIv = new byte[16],
+                EncryptionInfo = new EncryptionInfo
+                {
+                    EncryptedSymmetricKey = Convert.ToBase64String(new byte[32]),
+                    InitializationVector = Convert.ToBase64String(new byte[16])
+                }
+            });
+
         _ksefClientMock
             .Setup(x => x.OpenOnlineSessionAsync(
                 It.IsAny<OpenOnlineSessionRequest>(),
@@ -850,6 +879,74 @@ public class KsefAuthorizationTests
             $"Autoryzacja tokenem na {baseUrl} powinna zwrócić access token");
         authResponse.AccessToken.ValidUntil.Should().BeAfter(DateTime.UtcNow,
             "Access token powinien mieć ważność w przyszłości");
+    }
+
+    [Theory]
+    [Trait("Category", "Integration")]
+    [InlineData(KsefEnvironment.Demo)]
+    [InlineData(KsefEnvironment.Production)]
+    public async Task Integration_FullSessionFlow_OpenAndClose_Succeeds(string baseUrl)
+    {
+        // Arrange - pełny DI container
+        var (nip, token) = GetCredentialsForEnvironment(baseUrl);
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddKSeFClient(options => { options.BaseUrl = baseUrl; });
+        services.AddCryptographyClient();
+
+        using var provider = services.BuildServiceProvider();
+        var ksefClient = provider.GetRequiredService<IKSeFClient>();
+        var authCoordinator = provider.GetRequiredService<IAuthCoordinator>();
+        var cryptographyService = provider.GetRequiredService<ICryptographyService>();
+
+        // 1. Inicjalizacja materiałów kryptograficznych
+        await cryptographyService.WarmupAsync();
+
+        // 2. Autoryzacja tokenem KSeF
+        var authResponse = await authCoordinator.AuthKsefTokenAsync(
+            contextIdentifierType: AuthenticationTokenContextIdentifierType.Nip,
+            contextIdentifierValue: nip,
+            tokenKsef: token,
+            cryptographyService: cryptographyService,
+            encryptionMethod: EncryptionMethodEnum.Rsa);
+
+        authResponse.Should().NotBeNull();
+        authResponse.AccessToken.Should().NotBeNull();
+        authResponse.AccessToken.Token.Should().NotBeNullOrEmpty(
+            $"Autoryzacja tokenem na {baseUrl} powinna zwrócić access token");
+
+        // 3. Generowanie danych szyfrowania sesji
+        var encryptionData = cryptographyService.GetEncryptionData();
+        encryptionData.Should().NotBeNull();
+        encryptionData.EncryptionInfo.EncryptedSymmetricKey.Should().NotBeNullOrEmpty();
+        encryptionData.EncryptionInfo.InitializationVector.Should().NotBeNullOrEmpty();
+
+        // 4. Otwarcie sesji interaktywnej z FormCode i Encryption
+        var openSessionRequest = OpenOnlineSessionRequestBuilder
+            .Create()
+            .WithFormCode(
+                systemCode: SystemCodeHelper.GetSystemCode(SystemCode.FA3),
+                schemaVersion: SystemCodeHelper.GetSchemaVersion(SystemCode.FA3),
+                value: SystemCodeHelper.GetValue(SystemCode.FA3))
+            .WithEncryption(
+                encryptedSymmetricKey: encryptionData.EncryptionInfo.EncryptedSymmetricKey,
+                initializationVector: encryptionData.EncryptionInfo.InitializationVector)
+            .Build();
+
+        var sessionResponse = await ksefClient.OpenOnlineSessionAsync(
+            openSessionRequest,
+            authResponse.AccessToken.Token);
+
+        sessionResponse.Should().NotBeNull();
+        sessionResponse.ReferenceNumber.Should().NotBeNullOrEmpty(
+            $"Otwarcie sesji na {baseUrl} powinno zwrócić numer referencyjny");
+
+        // 5. Zamknięcie sesji
+        var closeAct = () => ksefClient.CloseOnlineSessionAsync(
+            sessionResponse.ReferenceNumber,
+            authResponse.AccessToken.Token);
+        await closeAct.Should().NotThrowAsync(
+            $"Zamknięcie sesji na {baseUrl} powinno zakończyć się sukcesem");
     }
 
     #endregion

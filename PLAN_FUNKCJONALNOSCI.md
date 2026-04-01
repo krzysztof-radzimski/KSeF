@@ -115,3 +115,75 @@ git commit -m "Update ksef-client-csharp submodule to vX.Y.Z"
 
 **Kopiowanie kodu źródłowego bez submodule** - odrzucone, bo utrudnia śledzenie zmian upstream i aktualizację.
 **Lokalne źródło NuGet (nupkg)** - odrzucone, bo nie rozwiązuje problemu wersjonowania i wymaga ręcznego budowania pakietów.
+
+---
+
+## F-020: Naprawa autoryzacji i otwierania sesji KSeF (demo + produkcja)
+
+### Kontekst
+
+Autoryzacja tokenem KSeF powtarzalnie napotykała problemy — naprawienie jednego błędu powodowało kolejny.
+Zidentyfikowano dwa oddzielne bugi w `KsefSessionService.OpenSessionAsync()`:
+
+1. **ECDSA vs RSA** — domyślny `EncryptionMethodEnum` w `AuthCoordinator.AuthKsefTokenAsync()` to `ECDsa`,
+   ale certyfikaty publiczne KSeF zawierają klucze RSA. `KsefSessionService` poprawnie nadpisuje na `Rsa`,
+   jednak starsze wersje submodule w projektach konsumenckich (np. medops) mogą nie mieć tej poprawki.
+
+2. **Puste formCode i encryption** — `OpenSessionAsync()` tworzył `new OpenOnlineSessionRequest()` (pusty obiekt),
+   zamiast używać `OpenOnlineSessionRequestBuilder` z wymaganymi polami: `FormCode` (systemCode, schemaVersion, value)
+   i `Encryption` (encryptedSymmetricKey, initializationVector). KSeF API zwracało błąd 21405:
+   `'formCode' must not be empty.; 'encryption' must not be empty.`
+
+### Analiza (log z LegalInsightCRM z 2026-04-01)
+
+| Czas | Błąd | Przyczyna |
+|------|------|-----------|
+| 13:19:07 | `Nie znaleziono klucza ECDSA.` | Stary kod próbował ECDSA na certyfikacie RSA |
+| 13:54:05 | `21405: 'formCode' must not be empty.; 'encryption' must not be empty.` | Po naprawie ECDSA→RSA brakujące pola w żądaniu |
+
+### Plan implementacji
+
+- [x] F-020.1 Analiza logów i identyfikacja obu problemów [DONE: 2026-04-01, Claude]
+- [x] F-020.2 Analiza kodu CryptographyService — flow szyfrowania RSA vs ECDSA [DONE: 2026-04-01, Claude]
+- [x] F-020.3 Analiza dokumentacji KSeF API v2 — wymagane pola OpenOnlineSession [DONE: 2026-04-01, Claude]
+- [x] F-020.4 Rozszerzenie `SessionInfo` o `EncryptionData` (klucz AES + IV sesji) [DONE: 2026-04-01, Claude]
+- [x] F-020.5 Naprawa `KsefSessionService.OpenSessionAsync()` — użycie `OpenOnlineSessionRequestBuilder` [DONE: 2026-04-01, Claude]
+  - Generowanie `EncryptionData` przez `CryptographyService.GetEncryptionData()`
+  - Budowanie requestu z `FormCode` (FA3) i `Encryption` (encryptedSymmetricKey + IV)
+  - Przechowywanie `EncryptionData` w `SessionInfo` do szyfrowania faktur
+- [x] F-020.6 Naprawa `KsefInvoiceSendService` — użycie `EncryptionData` z sesji zamiast generowania nowego [DONE: 2026-04-01, Claude]
+- [x] F-020.7 Aktualizacja testów jednostkowych — mockowanie `GetEncryptionData()` [DONE: 2026-04-01, Claude]
+- [x] F-020.8 Dodanie testu integracyjnego `Integration_FullSessionFlow_OpenAndClose_Succeeds` [DONE: 2026-04-01, Claude]
+  - Pełny flow: WarmupAsync → AuthKsefTokenAsync → GetEncryptionData → OpenOnlineSession → CloseSession
+  - Testowany na demo i produkcji
+- [x] F-020.9 Weryfikacja autoryzacji na obu środowiskach [DONE: 2026-04-01, Claude]
+  - Demo (`api-demo.ksef.mf.gov.pl`): autoryzacja + sesja — **OK**
+  - Produkcja (`api.ksef.mf.gov.pl`): autoryzacja + sesja — **OK**
+
+### Wyniki testów integracyjnych
+
+| Środowisko | Auth | Open Session | Close Session | Wynik |
+|------------|------|-------------|---------------|-------|
+| Demo (TR) | OK (427ms) | OK | OK | **PASS** |
+| Produkcja (PRD) | OK (495ms) | OK | OK | **PASS** |
+| Test (TE) | FAIL (brak tokenu) | — | — | Brak tokenu testowego |
+
+### Zmienione pliki
+
+- `KSeF.Api/Models/SessionInfo.cs` — dodano `EncryptionData` property
+- `KSeF.Api/Services/KsefSessionService.cs` — użycie buildera z FormCode + Encryption
+- `KSeF.Api/Services/KsefInvoiceSendService.cs` — użycie EncryptionData z sesji
+- `Tests/KSeF.Api.Tests/Services/KsefSessionServiceTests.cs` — mockowanie GetEncryptionData
+- `Tests/KSeF.Api.Tests/Services/KsefAuthorizationTests.cs` — nowy test integracyjny + mockowanie
+
+### Poprawny flow autoryzacji i sesji (referencja)
+
+```
+1. CryptographyService.WarmupAsync()           — pobiera certyfikaty publiczne z KSeF
+2. AuthCoordinator.AuthKsefTokenAsync(RSA)      — szyfruje token RSA-OAEP, uzyskuje accessToken
+3. CryptographyService.GetEncryptionData()      — generuje AES-256 key+IV, szyfruje key RSA
+4. OpenOnlineSessionRequestBuilder              — buduje request z FormCode(FA3) + Encryption
+5. KSeFClient.OpenOnlineSessionAsync()          — otwiera sesję
+6. [wysyłanie faktur szyfrowanych AES-256-CBC z kluczem z kroku 3]
+7. KSeFClient.CloseOnlineSessionAsync()         — zamyka sesję
+```

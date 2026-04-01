@@ -108,7 +108,10 @@ public class KsefInvoiceSendService : IKsefInvoiceSendService
                 invoice.InvoiceData?.InvoiceNumber, invoiceBytes.Length);
 
             // 3. Szyfrowanie AES i przygotowanie metadanych
-            var encryptionData = _cryptographyService.GetEncryptionData();
+            // Używamy danych szyfrowania z sesji (klucz i IV użyte przy otwarciu sesji)
+            var encryptionData = sessionInfo.EncryptionData
+                ?? throw new InvalidOperationException(
+                    "Brak danych szyfrowania w sesji. Sesja musi być otwarta przez OpenSessionAsync.");
             var encryptedInvoice = _cryptographyService.EncryptBytesWithAES256(
                 invoiceBytes, encryptionData.CipherKey, encryptionData.CipherIv);
             var fileMetadata = _cryptographyService.GetMetaData(invoiceBytes);

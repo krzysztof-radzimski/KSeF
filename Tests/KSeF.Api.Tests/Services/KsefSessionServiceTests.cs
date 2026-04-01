@@ -6,6 +6,7 @@ using KSeF.Client.Core.Interfaces;
 using KSeF.Client.Core.Interfaces.Clients;
 using KSeF.Client.Core.Interfaces.Services;
 using KSeF.Client.Core.Models.Authorization;
+using KSeF.Client.Core.Models.Sessions;
 using KSeF.Client.Core.Models.Sessions.OnlineSession;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -64,6 +65,17 @@ public class KsefSessionServiceTests
             ReferenceNumber = "session-123"
         };
 
+        var encryptionData = new EncryptionData
+        {
+            CipherKey = new byte[32],
+            CipherIv = new byte[16],
+            EncryptionInfo = new EncryptionInfo
+            {
+                EncryptedSymmetricKey = Convert.ToBase64String(new byte[32]),
+                InitializationVector = Convert.ToBase64String(new byte[16])
+            }
+        };
+
         _authCoordinatorMock
             .Setup(x => x.AuthKsefTokenAsync(
                 AuthenticationTokenContextIdentifierType.Nip,
@@ -74,6 +86,10 @@ public class KsefSessionServiceTests
                 null!,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(authResponse);
+
+        _cryptographyServiceMock
+            .Setup(x => x.GetEncryptionData())
+            .Returns(encryptionData);
 
         _ksefClientMock
             .Setup(x => x.OpenOnlineSessionAsync(
@@ -91,6 +107,8 @@ public class KsefSessionServiceTests
         result.SessionReference.Should().Be("session-123");
         result.AccessToken.Should().Be("access-token");
         result.RefreshToken.Should().Be("refresh-token");
+        result.EncryptionData.Should().NotBeNull();
+        result.EncryptionData.Should().BeSameAs(encryptionData);
 
         _authCoordinatorMock.Verify(x => x.AuthKsefTokenAsync(
             It.IsAny<AuthenticationTokenContextIdentifierType>(),
@@ -101,8 +119,14 @@ public class KsefSessionServiceTests
             null!,
             It.IsAny<CancellationToken>()), Times.Once);
 
+        _cryptographyServiceMock.Verify(x => x.GetEncryptionData(), Times.Once);
+
         _ksefClientMock.Verify(x => x.OpenOnlineSessionAsync(
-            It.IsAny<OpenOnlineSessionRequest>(),
+            It.Is<OpenOnlineSessionRequest>(r =>
+                r.FormCode != null &&
+                r.FormCode.SystemCode == "FA (3)" &&
+                r.Encryption != null &&
+                !string.IsNullOrEmpty(r.Encryption.EncryptedSymmetricKey)),
             It.IsAny<string>(),
             It.IsAny<string>(),
             It.IsAny<CancellationToken>()), Times.Once);
