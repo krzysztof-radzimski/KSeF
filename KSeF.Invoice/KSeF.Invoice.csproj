@@ -1,43 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>KSeF.Invoice</RootNamespace>
-    <AssemblyName>KSeF.Invoice</AssemblyName>
-    <Version>1.0.1</Version>
-    <Authors>KSeF Team</Authors>
-    <Description>Modele danych dla Krajowego Systemu e-Faktur (KSeF) - struktura FA(3)</Description>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>KSeF.Invoice</RootNamespace>
+		<AssemblyName>KSeF.Invoice</AssemblyName>
+		<Version>1.0.1</Version>
+		<Authors>KSeF Team</Authors>
+		<Description>Modele danych dla Krajowego Systemu e-Faktur (KSeF) - struktura FA(3)</Description>
 
-    <!-- NuGet Package Properties -->
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageId>KSeF.Invoice</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/krzysztof-radzimski/KSeF</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/krzysztof-radzimski/KSeF</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>ksef;e-faktura;faktura;invoice;vat;fa3;poland;xml</PackageTags>
-    <PackageReleaseNotes>Dodanie licencji MIT, zależności aktualizowane automatycznie z KSeF.Api</PackageReleaseNotes>
-    <Copyright>Copyright © 2026 KSeF Team</Copyright>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
+		<!-- NuGet Package Properties -->
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageId>KSeF.Invoice</PackageId>
+		<PackageVersion>1.0.1</PackageVersion>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/krzysztof-radzimski/KSeF</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/krzysztof-radzimski/KSeF</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>ksef;e-faktura;faktura;invoice;vat;fa3;poland;xml</PackageTags>
+		<PackageReleaseNotes>Dodanie licencji MIT, zależności aktualizowane automatycznie z KSeF.Api</PackageReleaseNotes>
+		<Copyright>Copyright © 2026 KSeF Team</Copyright>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Schemas\*.xsd" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Schemas\*.xsd" />
+	</ItemGroup>
 
 </Project>
