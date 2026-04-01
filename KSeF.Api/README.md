@@ -4,7 +4,7 @@ Biblioteka .NET do integracji z **Krajowym Systemem e-Faktur (KSeF)** - wysyłan
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](../LICENSE)
-[![Target Framework](https://img.shields.io/badge/Framework-net8.0%20%7C%20net9.0-purple)](https://dotnet.microsoft.com/)
+[![Target Framework](https://img.shields.io/badge/Framework-netstandard2.0%20%7C%20net8.0%20%7C%20net9.0%20%7C%20net10.0-purple)](https://dotnet.microsoft.com/)
 
 ## Opis
 
@@ -546,13 +546,14 @@ Biblioteka **KSeF.Api** automatycznie instaluje **KSeF.Invoice** (modele i walid
 ## Wymagania
 
 ### Runtime
-- **.NET 8.0** lub **.NET 9.0**
+- **.NET Standard 2.0** (dla .NET Framework 4.6.2+, .NET Core 2.0+)
+- **.NET 8.0**, **.NET 9.0**, **.NET 10.0** lub nowszy
 - Windows, Linux lub macOS
 
 ### Zależności
 - `KSeF.Invoice` - modele i walidacja faktur (ProjectReference)
 - `ksef-client-csharp` 2.3.0 (git submodule w `lib/ksef-client-csharp`) - klient HTTP KSeF
-- `Microsoft.Extensions.DependencyInjection` 9.0+ - DI container
+- `Microsoft.Extensions.DependencyInjection` (wersje 8.0+/9.0+/10.0+ w zależności od target framework) - DI container
 
 ### Autoryzacja
 - Token KSeF (do środowisk testowych)

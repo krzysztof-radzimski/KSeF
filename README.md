@@ -4,7 +4,7 @@ Kompletne rozwiązanie .NET do integracji z **Krajowym Systemem e-Faktur (KSeF)*
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Target Framework](https://img.shields.io/badge/Framework-net8.0%20%7C%20net9.0-purple)](https://dotnet.microsoft.com/)
+[![Target Framework](https://img.shields.io/badge/Framework-netstandard2.0%20%7C%20net8.0%20%7C%20net9.0%20%7C%20net10.0-purple)](https://dotnet.microsoft.com/)
 
 ## Funkcjonalności
 
@@ -79,8 +79,8 @@ public class InvoiceController
 
 | Projekt | Opis | Framework |
 |---------|------|-----------|
-| **KSeF.Invoice** | Modele danych, Fluent API, walidacja biznesowa/XSD, serializacja XML | net8.0, net9.0 |
-| **KSeF.Api** | Serwisy integracji z API KSeF - wysyłanie i odbieranie faktur | net8.0, net9.0 |
+| **KSeF.Invoice** | Modele danych, Fluent API, walidacja biznesowa/XSD, serializacja XML | netstandard2.0, net8.0, net9.0, net10.0 |
+| **KSeF.Api** | Serwisy integracji z API KSeF - wysyłanie i odbieranie faktur | netstandard2.0, net8.0, net9.0, net10.0 |
 | **KSeF.Invoice.Tests** | Testy jednostkowe dla KSeF.Invoice (xUnit, FluentAssertions) | net9.0 |
 | **KSeF.Api.Tests** | Testy jednostkowe dla KSeF.Api (xUnit, Moq, FluentAssertions) | net9.0 |
 | **KSeF.Sample** | Przykłady użycia KSeF.Invoice i KSeF.Api | net9.0 |
@@ -1021,7 +1021,8 @@ IKsefInvoiceStatusService    - Statusy faktur
 ## Wymagania
 
 ### Runtime
-- **.NET 8.0** lub **.NET 9.0** lub nowszy
+- **.NET Standard 2.0** (dla .NET Framework 4.6.2+, .NET Core 2.0+)
+- **.NET 8.0**, **.NET 9.0**, **.NET 10.0** lub nowszy
 - Windows, Linux lub macOS
 
 ### Zależności

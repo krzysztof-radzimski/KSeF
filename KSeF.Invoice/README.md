@@ -4,7 +4,7 @@ Biblioteka .NET do tworzenia, walidacji i serializacji faktur ustrukturyzowanych
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green)](../LICENSE)
-[![Target Framework](https://img.shields.io/badge/Framework-net8.0%20%7C%20net9.0-purple)](https://dotnet.microsoft.com/)
+[![Target Framework](https://img.shields.io/badge/Framework-netstandard2.0%20%7C%20net8.0%20%7C%20net9.0%20%7C%20net10.0-purple)](https://dotnet.microsoft.com/)
 
 ## Opis
 
@@ -382,8 +382,9 @@ Zobacz [KSeF.Api/README.md](../KSeF.Api/README.md) dla szczegółów.
 
 ## Wymagania
 
-- **.NET 8.0** lub **.NET 9.0**
-- `Microsoft.Extensions.DependencyInjection` 9.0+
+- **.NET Standard 2.0** (dla .NET Framework 4.6.2+, .NET Core 2.0+)
+- **.NET 8.0**, **.NET 9.0**, **.NET 10.0** lub nowszy
+- `Microsoft.Extensions.DependencyInjection` (wersje 8.0+/9.0+/10.0+ w zależności od target framework)
 
 ## Licencja
 
