@@ -139,7 +139,11 @@ public static class KsefFormatHelper
     /// <returns>Sparsowana kwota</returns>
     public static decimal ParseAmount(string value)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(value);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
+#endif
         return decimal.Parse(value, NumberStyles.Number, InvariantCulture);
     }
 
@@ -165,7 +169,11 @@ public static class KsefFormatHelper
     /// <returns>Sparsowana data</returns>
     public static DateOnly ParseDate(string value)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(value);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
+#endif
         return DateOnly.ParseExact(value, DateFormat, InvariantCulture);
     }
 
@@ -191,7 +199,11 @@ public static class KsefFormatHelper
     /// <returns>Sparsowana data i czas</returns>
     public static DateTime ParseDateTime(string value)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(value);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(value);
+#endif
 
         // Obsługa formatu z Z na końcu (UTC)
         if (value.EndsWith("Z", StringComparison.OrdinalIgnoreCase))
@@ -210,7 +222,11 @@ public static class KsefFormatHelper
     /// <returns>Sformatowany NIP (10 cyfr)</returns>
     public static string FormatNip(string nip)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(nip);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(nip);
+#endif
         return new string(nip.Where(char.IsDigit).ToArray());
     }
 

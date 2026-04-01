@@ -42,7 +42,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public string SerializeToXml(Models.Invoice invoice)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(invoice);
+#else
         ArgumentNullException.ThrowIfNull(invoice);
+#endif
 
         using var stringWriter = new Utf8StringWriter();
         using var xmlWriter = XmlWriter.Create(stringWriter, _writerSettings);
@@ -55,7 +59,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public byte[] SerializeToBytes(Models.Invoice invoice)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(invoice);
+#else
         ArgumentNullException.ThrowIfNull(invoice);
+#endif
 
         using var memoryStream = new MemoryStream();
         SerializeToStream(invoice, memoryStream);
@@ -65,8 +73,16 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public void SerializeToStream(Models.Invoice invoice, Stream stream)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(invoice);
+#else
         ArgumentNullException.ThrowIfNull(invoice);
+#endif
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(stream);
+#else
         ArgumentNullException.ThrowIfNull(stream);
+#endif
 
         using var xmlWriter = XmlWriter.Create(stream, _writerSettings);
         _serializer.Serialize(xmlWriter, invoice, _namespaces);
@@ -76,8 +92,16 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public void SerializeToFile(Models.Invoice invoice, string filePath)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(invoice);
+#else
         ArgumentNullException.ThrowIfNull(invoice);
+#endif
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(filePath);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+#endif
 
         using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         SerializeToStream(invoice, fileStream);
@@ -86,7 +110,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public Models.Invoice? DeserializeFromXml(string xml)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(xml);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
+#endif
 
         using var stringReader = new StringReader(xml);
         using var xmlReader = XmlReader.Create(stringReader);
@@ -97,7 +125,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public Models.Invoice? DeserializeFromBytes(byte[] bytes)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(bytes);
+#else
         ArgumentNullException.ThrowIfNull(bytes);
+#endif
 
         using var memoryStream = new MemoryStream(bytes);
         return DeserializeFromStream(memoryStream);
@@ -106,7 +138,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public Models.Invoice? DeserializeFromStream(Stream stream)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(stream);
+#else
         ArgumentNullException.ThrowIfNull(stream);
+#endif
 
         using var xmlReader = XmlReader.Create(stream);
         return (Models.Invoice?)_serializer.Deserialize(xmlReader);
@@ -115,7 +151,11 @@ public class KsefInvoiceSerializer : IInvoiceSerializer
     /// <inheritdoc />
     public Models.Invoice? DeserializeFromFile(string filePath)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(filePath);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+#endif
 
         if (!File.Exists(filePath))
         {

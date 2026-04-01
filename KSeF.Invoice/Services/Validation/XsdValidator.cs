@@ -58,7 +58,11 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
     /// <inheritdoc />
     public ValidationResult Validate(Models.Invoice invoice)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(invoice);
+#else
         ArgumentNullException.ThrowIfNull(invoice);
+#endif
 
         try
         {
@@ -76,7 +80,11 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
     /// <inheritdoc />
     public ValidationResult ValidateXml(string xml, SchemaVersion schemaVersion = SchemaVersion.Auto)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNullOrWhiteSpace(xml);
+#else
         ArgumentException.ThrowIfNullOrWhiteSpace(xml);
+#endif
 
         using var reader = new StringReader(xml);
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
@@ -86,7 +94,11 @@ public class XsdValidator : IXsdValidator, IInvoiceValidator
     /// <inheritdoc />
     public ValidationResult ValidateXml(Stream stream, SchemaVersion schemaVersion = SchemaVersion.Auto)
     {
+#if NETSTANDARD2_0
+        ThrowHelper.ThrowIfNull(stream);
+#else
         ArgumentNullException.ThrowIfNull(stream);
+#endif
         return ValidateXmlInternal(stream, schemaVersion);
     }
 
