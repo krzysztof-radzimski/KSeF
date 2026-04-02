@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca informacje o transporcie towarów (Transport)
+    na fakturze. Zawiera rodzaj transportu, dane przewoźnika (nazwę,
+    NIP, opis), daty rozpoczęcia i zakończenia transportu oraz miejsca
+    wysyłki i dostarczenia.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

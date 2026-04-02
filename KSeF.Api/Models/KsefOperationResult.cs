@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model ogólnego wyniku operacji KSeF. Uniwersalny typ
+    zwracany dla operacji, które nie wymagają specyficznych
+    danych wynikowych. Zawiera status sukcesu, komunikat
+    oraz listę błędów. Udostępnia metody fabryczne
+    Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

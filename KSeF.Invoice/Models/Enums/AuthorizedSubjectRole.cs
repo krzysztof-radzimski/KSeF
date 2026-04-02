@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący role podmiotów upoważnionych
+    (TRolaPodmiotuUpowaznionego) na fakturze w systemie KSeF.
+    Zawiera role: organ egzekucyjny (art. 106c pkt 1), komornik
+    sądowy (art. 106c pkt 2) oraz przedstawiciel podatkowy
+    (art. 18a-18d ustawy o VAT).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

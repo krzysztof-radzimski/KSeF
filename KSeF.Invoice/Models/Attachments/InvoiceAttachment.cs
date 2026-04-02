@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca załącznik do faktury (Zalacznik). Zawiera
+    nazwę pliku, opis, typ MIME, zawartość zakodowaną w Base64,
+    hash pliku oraz algorytm hashowania. Umożliwia dołączanie plików
+    binarnych do faktury KSeF z weryfikacją integralności.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Attachments;

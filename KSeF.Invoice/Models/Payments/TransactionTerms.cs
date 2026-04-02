@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca warunki transakcji (WarunkiTransakcji).
+    Zawiera informacje o transporcie, warunkach dostawy, numerze
+    zamówienia lub umowy z datą, numerze specyfikacji do faktury
+    oraz numerze partii produkcyjnej towaru.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Payments;

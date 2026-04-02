@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model kryteriów wyszukiwania faktur w KSeF. Umożliwia
+    filtrowanie po zakresie dat, NIP kontrahenta, numerze
+    faktury, numerze KSeF, kierunku (zakupowe/sprzedażowe)
+    oraz parametrach stronicowania wyników.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

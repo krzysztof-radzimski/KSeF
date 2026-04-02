@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs definiujący kontrakt dla serializacji i deserializacji
+    faktur do/z formatu XML zgodnego z KSeF. Udostępnia metody
+    do konwersji obiektów faktur na XML (string, bajty, strumień,
+    plik) oraz odwrotnie.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Serialization;
 
 /// <summary>

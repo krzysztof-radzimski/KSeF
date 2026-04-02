@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania danych podmiotu trzeciego (Podmiot3)
+    z wykorzystaniem wzorca Fluent API. Obsługuje różne role
+    podmiotu na fakturze: faktor, odbiorca, dodatkowy nabywca,
+    płatnik i inne. Wspiera identyfikację przez NIP, VAT UE
+    oraz identyfikatory zagraniczne.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Entities;
 using KSeF.Invoice.Models.Enums;

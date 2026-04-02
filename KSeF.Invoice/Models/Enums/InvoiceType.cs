@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący rodzaje faktur w systemie KSeF (TRodzajFaktury).
+    Zawiera typy: VAT (podstawowa), KOR (korygująca), ZAL (zaliczkowa),
+    ROZ (rozliczeniowa), UPR (uproszczona), KOR_ZAL (korekta zaliczkowej)
+    oraz KOR_ROZ (korekta rozliczeniowej).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs głównego serwisu biblioteki KSeF Invoice. Stanowi
+    główny punkt wejścia do biblioteki, udostępniając proste API
+    do tworzenia faktur (Fluent API), walidacji (biznesowej i XSD),
+    serializacji do XML oraz deserializacji z XML.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Services.Builders;
 using KSeF.Invoice.Services.Validation;
 

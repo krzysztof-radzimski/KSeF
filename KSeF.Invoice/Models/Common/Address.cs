@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące adresy na fakturze KSeF. Zawiera trzy modele:
+    Address (adres uproszczony dwuliniowy), PolishAddress (pełny adres
+    polski z województwem, powiatem, gminą, ulicą, numerem domu)
+    oraz ForeignAddress (adres zagraniczny z kodem kraju innym niż PL).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Common;

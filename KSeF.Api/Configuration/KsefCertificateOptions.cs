@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Klasa opcji konfiguracyjnych certyfikatu do autoryzacji
+    w KSeF. Umożliwia wskazanie pliku certyfikatu (.pfx/.p12),
+    odcisku palca (thumbprint) z magazynu certyfikatów Windows
+    lub klucza prywatnego PEM wraz z odpowiednimi hasłami.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Configuration;
 
 /// <summary>

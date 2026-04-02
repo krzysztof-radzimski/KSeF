@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca rachunek bankowy na fakturze (TRachunekBankowy).
+    Zawiera numer rachunku (IBAN lub krajowy), kod SWIFT, nazwę banku,
+    typ rachunku własnego banku/SKOK oraz opcjonalny opis rachunku.
+    Wykorzystywana w sekcji płatności faktury.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

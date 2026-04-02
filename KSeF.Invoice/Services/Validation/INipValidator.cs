@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs walidatora numeru NIP (Numer Identyfikacji
+    Podatkowej). Definiuje kontrakt do pełnej walidacji NIP
+    z wynikiem szczegółowym oraz szybkiego sprawdzenia
+    poprawności formatu.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

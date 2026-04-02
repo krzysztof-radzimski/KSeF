@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania obiektu adresu (Address) z wykorzystaniem
+    wzorca Fluent API. Umożliwia ustawienie kodu kraju, linii adresowych
+    oraz numeru GLN (Globalny Numer Lokalizacyjny).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 
 namespace KSeF.Invoice.Services.Builders;

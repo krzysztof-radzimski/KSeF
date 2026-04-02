@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa pomocnicza zawierająca metody formatowania i parsowania
+    danych zgodnie z wymaganiami XSD schematu KSeF. Obsługuje
+    formatowanie kwot, cen jednostkowych, ilości, dat oraz NIP.
+    Zawiera również metody walidacji NIP i zaokrąglania kwot
+    zgodnie ze standardami KSeF.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.Globalization;
 
 namespace KSeF.Invoice.Services.Serialization;

@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca dane zapłaty częściowej (ZaplataCzesciowa).
+    Zawiera kwotę zapłaty częściowej, datę zapłaty oraz opcjonalną
+    formę płatności (standardową lub inną z opisem). Wykorzystywana
+    w sekcji płatności faktury gdy nastąpiła zapłata w częściach.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

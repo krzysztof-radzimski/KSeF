@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący oznaczenia dostaw towarów i świadczenia usług
+    GTU (TGTU) stosowane na fakturach w systemie KSeF. Zawiera
+    kody od GTU_01 do GTU_13 obejmujące m.in.: napoje alkoholowe,
+    paliwa, oleje, wyroby tytoniowe, odpady, elektronikę, pojazdy,
+    metale szlachetne, produkty lecznicze, nieruchomości, uprawnienia
+    do emisji gazów, usługi niematerialne oraz usługi transportowe.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

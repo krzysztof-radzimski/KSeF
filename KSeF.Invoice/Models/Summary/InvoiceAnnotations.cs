@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące adnotacje faktury i powiązane struktury.
+    InvoiceAnnotations (Adnotacje) - specjalne oznaczenia i procedury
+    podatkowe: metoda kasowa, samofakturowanie, odwrotne obciążenie,
+    split payment, zwolnienia z VAT, nowe środki transportu,
+    procedura uproszczona oraz procedury marży. Zawiera również
+    klasy pomocnicze: VatExemption, NewTransportMeans, MarginProcedures
+    oraz enumy AnnotationValue i MarginProcedureType.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Summary;

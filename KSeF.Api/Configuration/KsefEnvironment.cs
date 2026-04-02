@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Klasa zawierająca stałe z adresami URL środowisk
+    Krajowego Systemu e-Faktur (KSeF): testowego, demo
+    oraz produkcyjnego. Używana do konfiguracji adresu
+    bazowego API w opcjach KsefApiOptions.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Configuration;
 
 /// <summary>

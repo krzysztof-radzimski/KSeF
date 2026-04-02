@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące stopkę faktury (Stopka) zgodną ze schematem
+    KSeF FA(3). InvoiceFooter zawiera informacje dodatkowe (FooterInfo)
+    oraz dane rejestrowe podmiotów (RegistryData) takie jak KRS,
+    REGON, BDO i pełna nazwa podmiotu.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Attachments;

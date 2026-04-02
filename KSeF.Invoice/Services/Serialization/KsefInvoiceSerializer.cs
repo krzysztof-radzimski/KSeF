@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Implementacja serializacji i deserializacji faktur do/z formatu
+    XML zgodnego ze schematem KSeF FA(3). Konfiguruje przestrzenie
+    nazw XML, formatowanie dokumentu oraz kodowanie UTF-8 bez BOM.
+    Obsługuje serializację do string, tablicy bajtów, strumienia
+    i pliku oraz deserializację z tych samych formatów.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;

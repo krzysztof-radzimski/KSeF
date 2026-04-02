@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący rodzaje transportu (TRodzajTransportu)
+    stosowane na fakturach w systemie KSeF. Obejmuje transport:
+    morski, kolejowy, drogowy, lotniczy, przesyłkę pocztową,
+    stałe instalacje przesyłowe (np. rurociągi) oraz żeglugę
+    śródlądową.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

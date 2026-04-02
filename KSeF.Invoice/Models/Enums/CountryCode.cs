@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący kody krajów członkowskich Unii Europejskiej
+    (TKodyKrajowUE) stosowane na fakturach w systemie KSeF.
+    Zawiera kody ISO wszystkich 27 państw członkowskich UE
+    oraz Irlandii Północnej (XI), używane m.in. przy transakcjach
+    wewnątrzwspólnotowych i identyfikacji kontrahentów.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

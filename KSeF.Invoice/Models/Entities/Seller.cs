@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca sprzedawcę / wystawcę faktury (Podmiot1)
+    zgodnie ze schematem KSeF FA(3). Zawiera dane identyfikacyjne
+    (NIP, nazwa), adresy (podstawowy i korespondencyjny), dane
+    kontaktowe, numer EORI, prefiks podatnika VAT UE oraz
+    informacje o statusie podatnika (likwidacja, upadłość itp.).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;

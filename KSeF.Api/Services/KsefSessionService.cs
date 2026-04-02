@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Implementacja serwisu zarządzania sesją interaktywną KSeF.
+    Realizuje pełny przepływ autoryzacji (tokenem lub
+    certyfikatem XAdES), otwieranie sesji z szyfrowaniem
+    AES-256, zamykanie sesji, odświeżanie tokenu dostępowego
+    oraz sprawdzanie statusu sesji. Wykorzystuje IAuthCoordinator
+    do autoryzacji i IKSeFClient do operacji na sesjach.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;
 using KSeF.Client.Api.Builders.Online;

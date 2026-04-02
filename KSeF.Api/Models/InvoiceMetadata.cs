@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model metadanych faktury pobranej z KSeF. Zawiera numer
+    KSeF, numer referencyjny, numer faktury wystawcy, NIP
+    sprzedawcy i nabywcy, kwotę brutto, datę wystawienia,
+    datę przesłania do KSeF oraz rodzaj faktury.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

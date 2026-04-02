@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania danych sprzedawcy (Podmiot1) z wykorzystaniem
+    wzorca Fluent API. Umożliwia konfigurację NIP, nazwy, adresu,
+    adresu korespondencyjnego, danych kontaktowych, numeru EORI
+    oraz statusu podatnika.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Entities;
 using KSeF.Invoice.Models.Enums;

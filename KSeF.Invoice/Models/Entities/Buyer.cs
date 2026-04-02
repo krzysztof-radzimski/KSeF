@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca nabywcę na fakturze (Podmiot2) zgodnie
+    ze schematem KSeF FA(3). Zawiera dane identyfikacyjne, adresy
+    (podstawowy i korespondencyjny), dane kontaktowe, numer klienta
+    oraz obowiązkowe znaczniki JST (jednostka samorządu terytorialnego)
+    i GV (członek grupy VAT). Udostępnia wygodne akcesory do danych
+    identyfikacyjnych nabywcy.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;

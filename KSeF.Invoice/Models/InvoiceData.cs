@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca dane merytoryczne faktury (Fa) zgodnie
+    z art. 106a-106q ustawy o VAT. Zawiera wszystkie dane transakcji:
+    walutę, datę wystawienia, numer faktury, podsumowania podatkowe
+    w podziale na stawki VAT, adnotacje, rodzaj faktury, dane korekt,
+    dane zaliczek, pozycje faktury, płatności, warunki transakcji
+    oraz dodatkowe opisy. Zawiera również klasę AdvancePaymentData.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Corrections;

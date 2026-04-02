@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca podmiot trzeci występujący na fakturze
+    (Podmiot3). Może to być faktor, odbiorca, podmiot pierwotny,
+    dodatkowy nabywca, wystawca faktury lub płatnik. Zawiera dane
+    identyfikacyjne, adres, rolę oraz opcjonalny udział procentowy.
+    Udostępnia wygodne akcesory delegujące do obiektu identyfikacji.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;

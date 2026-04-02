@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący stawki podatku VAT (TStawkaPodatku) stosowane
+    na fakturach w systemie KSeF. Obejmuje stawki podstawowe (23%, 22%),
+    obniżone (8%, 7%, 5%, 4%, 3%), zerowe (krajowe, WDT, eksport),
+    zwolnienie od podatku, odwrotne obciążenie oraz kategorie
+    niepodlegające opodatkowaniu na terytorium kraju.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

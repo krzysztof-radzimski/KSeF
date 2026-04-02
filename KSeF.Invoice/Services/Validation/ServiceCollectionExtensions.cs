@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Rozszerzenia IServiceCollection do rejestracji serwisów
+    walidacji faktur KSeF w kontenerze Dependency Injection.
+    Rejestruje walidatory szczegółowe (NIP, IBAN, dat), główny
+    walidator biznesowy (InvoiceValidator) oraz walidator XSD
+    (XsdValidator).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Services.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 

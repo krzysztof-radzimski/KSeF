@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania informacji o płatnościach na fakturze
+    z wykorzystaniem wzorca Fluent API. Zawiera również pomocniczy
+    BankAccountBuilder do konfiguracji rachunków bankowych.
+    Obsługuje terminy płatności, formy płatności (przelew, gotówka,
+    karta), płatności częściowe, rachunki bankowe i faktoringowe,
+    warunki skonta oraz link do płatności.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Models.Payments;

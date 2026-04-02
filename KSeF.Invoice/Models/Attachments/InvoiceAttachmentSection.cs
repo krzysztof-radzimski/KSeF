@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące sekcje załączników strukturalnych faktury
+    KSeF FA(3). InvoiceAttachmentSection zawiera bloki danych
+    (AttachmentDataBlock) z nagłówkami, metadanymi, tekstem
+    i tabelami. Obejmuje również klasy pomocnicze: AttachmentMetadata,
+    AttachmentText, AttachmentTable, TableMetadata, TableHeader,
+    TableColumn, TableRow i TableSummary.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Attachments;

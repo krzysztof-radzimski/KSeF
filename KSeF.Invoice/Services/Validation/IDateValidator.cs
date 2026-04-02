@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs walidatora dat na fakturze KSeF. Definiuje kontrakt
+    do walidacji daty wystawienia, daty sprzedaży oraz okresu
+    rozliczeniowego z uwzględnieniem wzajemnych zależności
+    między datami.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

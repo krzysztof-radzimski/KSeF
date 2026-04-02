@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Klasa opcji konfiguracyjnych dla połączenia z KSeF API.
+    Zawiera ustawienia adresu bazowego, NIP podmiotu, metody
+    autoryzacji (token lub certyfikat), timeout operacji,
+    liczbę ponowień oraz informację o systemie nadawczym.
+    Używana jako sekcja "KSeF" w pliku appsettings.json.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Configuration;
 
 /// <summary>

@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład wysyłania faktur do Krajowego Systemu e-Faktur.
+    Demonstruje przygotowanie faktury i różne metody wysyłania:
+    pojedyncza faktura, wysyłka wsadowa (batch), wysyłka
+    w istniejącej sesji oraz dedykowane metody dla różnych
+    typów faktur (VAT, korekta, zaliczkowa, rozliczeniowa).
+    Wymaga poprawnej konfiguracji i połączenia z API KSeF.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api;
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;

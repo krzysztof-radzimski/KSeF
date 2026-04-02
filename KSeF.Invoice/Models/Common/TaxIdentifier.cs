@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca identyfikator podatkowy podmiotu na fakturze.
+    Obsługuje różne typy identyfikatorów: NIP, PESEL, numer VAT UE,
+    identyfikator zagraniczny oraz identyfikator wewnętrzny.
+    Umożliwia również oznaczenie braku identyfikatora podatkowego.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

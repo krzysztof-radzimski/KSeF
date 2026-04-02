@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Interfejs serwisu zarządzania sesją interaktywną KSeF.
+    Definiuje operacje otwierania, zamykania i odświeżania
+    sesji interaktywnej oraz sprawdzania statusu sesji.
+    Sesja jest wymagana do wysyłania i odbierania faktur.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Models;
 
 namespace KSeF.Api.Services;

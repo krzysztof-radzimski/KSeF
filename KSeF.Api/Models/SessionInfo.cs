@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model przechowujący informacje o sesji interaktywnej KSeF.
+    Zawiera numer referencyjny sesji, token dostępowy, token
+    odświeżający, datę wygaśnięcia tokenu oraz dane szyfrowania
+    (klucz AES + IV) używane do szyfrowania faktur w ramach
+    sesji. Udostępnia właściwość IsActive do sprawdzenia
+    aktywności sesji.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Client.Core.Models.Sessions;
 
 namespace KSeF.Api.Models;

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące nagłówek faktury KSeF (TNaglowek).
+    InvoiceHeader zawiera metadane formularza: kod formularza, wariant,
+    datę wytworzenia oraz informacje o systemie teleinformatycznym.
+    FormCodeElement reprezentuje element kodu formularza z atrybutami
+    XML (kod systemowy i wersja schematu).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Implementacja walidatora numeru NIP (Numer Identyfikacji
+    Podatkowej). Weryfikuje długość (10 cyfr), dopuszczalne znaki
+    oraz sumę kontrolną zgodnie z polskim algorytmem NIP
+    wykorzystującym wagi: 6, 5, 7, 2, 3, 4, 5, 6, 7.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

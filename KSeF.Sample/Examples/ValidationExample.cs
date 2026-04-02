@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład różnych scenariuszy walidacji faktur. Demonstruje
+    walidację biznesową (NIP, IBAN, wymagane pola), walidację
+    XSD zgodną ze schematem FA(3), obsługę błędów walidacji
+    przy serializacji oraz możliwość używania poszczególnych
+    walidatorów niezależnie od głównego serwisu.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Services.Serialization;

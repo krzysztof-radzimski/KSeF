@@ -1,3 +1,20 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania danych merytorycznych faktury (sekcja Fa)
+    z wykorzystaniem wzorca Fluent API. Zawiera również buildery
+    pomocnicze: CorrectedInvoiceDataBuilder do danych faktury
+    korygowanej oraz InvoiceAnnotationsBuilder do adnotacji.
+    Umożliwia konfigurację typu faktury, dat, waluty, adnotacji
+    (metoda kasowa, samofakturowanie, split payment, zwolnienie
+    z VAT) oraz dodatkowych opisów.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Corrections;

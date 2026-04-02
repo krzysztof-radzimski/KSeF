@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład pobierania faktur z Krajowego Systemu e-Faktur.
+    Demonstruje różne scenariusze: pobranie konkretnej faktury
+    po numerze KSeF, wyszukiwanie faktur zakupowych według
+    kryteriów (daty, kierunek, stronicowanie), pobieranie
+    wszystkich nowych faktur oraz pobieranie UPO (Urzędowe
+    Poświadczenie Odbioru). Wymaga połączenia z API KSeF.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api;
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;

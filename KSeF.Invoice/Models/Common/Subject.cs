@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasy reprezentujące dane identyfikacyjne podmiotów na fakturze.
+    SellerIdentification (TPodmiot1) - dane sprzedawcy z NIP i nazwą.
+    BuyerIdentification (TPodmiot2) - dane nabywcy z różnymi typami
+    identyfikatorów (NIP, VAT UE, zagraniczny, brak ID).
+    ThirdPartyIdentification (TPodmiot3) - dane podmiotu trzeciego
+    z pełnym zestawem identyfikatorów włącznie z ID wewnętrznym.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

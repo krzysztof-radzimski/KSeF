@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca informacje o płatnościach na fakturze
+    (Platnosc). Obsługuje status zapłaty (całościowa lub częściowa),
+    terminy płatności, formy płatności (standardowe i inne), rachunki
+    bankowe (w tym faktoringowe), warunki skonta, link do płatności
+    bezgotówkowej oraz identyfikator płatności KSeF.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;

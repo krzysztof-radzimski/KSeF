@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący oznaczenia dotyczące procedur VAT
+    (TOznaczenieProcedury) stosowane na fakturach w systemie KSeF.
+    Obejmuje procedury: WSTO_EE, IED, transakcje trójstronne (TT_D),
+    import w procedurach celnych 42 i 63, bony jednego przeznaczenia
+    (B_SPV, B_SPV_DOSTAWA) oraz prowizje od bonów różnego
+    przeznaczenia (B_MPV_PROWIZJA).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

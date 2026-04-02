@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca pozycję faktury - pojedynczy wiersz faktury
+    (FaWiersz). Zawiera dane dotyczące sprzedawanego towaru lub
+    usługi: nazwę, jednostkę, ilość, cenę jednostkową (netto/brutto),
+    rabat, wartość netto/brutto, stawkę VAT, datę sprzedaży oraz
+    kody produktów (GTIN, PKWiU, CN).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

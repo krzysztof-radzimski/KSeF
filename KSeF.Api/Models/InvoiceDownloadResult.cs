@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model wyniku operacji pobrania faktury z KSeF. Zawiera
+    numer KSeF faktury, XML dokumentu, zdeserializowany model
+    faktury (jeśli deserializacja się powiodła) oraz listę
+    błędów. Udostępnia metody fabryczne Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

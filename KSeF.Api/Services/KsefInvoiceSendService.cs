@@ -1,3 +1,20 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Implementacja serwisu wysyłania faktur sprzedażowych do
+    KSeF. Obsługuje wszystkie 7 typów faktur: VAT, KOR, ZAL,
+    ROZ, UPR, KOR_ZAL, KOR_ROZ. Realizuje pełny przepływ
+    wysyłania: walidację faktury, serializację do XML,
+    szyfrowanie AES-256, przygotowanie metadanych i wysłanie
+    przez API KSeF. Automatycznie zarządza sesjami
+    interaktywnymi (otwieranie i zamykanie).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;
 using KSeF.Client.Core.Interfaces.Clients;

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący typ skutku korekty w ewidencji dla podatku
+    od towarów i usług (TTypKorekty). Określa, w jakiej dacie
+    korekta wywołuje skutek: w dacie ujęcia faktury pierwotnej,
+    w dacie wystawienia faktury korygującej lub w innej dacie.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

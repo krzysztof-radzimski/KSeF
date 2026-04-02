@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model wyniku operacji wysłania faktury do KSeF. Zawiera
+    informacje o sukcesie operacji, numer referencyjny, numer
+    KSeF nadany fakturze, referencję sesji, znacznik czasu
+    przetworzenia, listę błędów oraz XML wysłanej faktury.
+    Udostępnia metody fabryczne Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

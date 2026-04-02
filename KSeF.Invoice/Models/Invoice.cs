@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Główna klasa reprezentująca fakturę ustrukturyzowaną KSeF
+    (Faktura) zgodną ze schematem FA(3). Stanowi korzeń dokumentu
+    XML i łączy wszystkie elementy faktury: nagłówek, podmioty
+    (sprzedawca, nabywca, podmioty trzecie, podmiot upoważniony),
+    dane merytoryczne transakcji, stopkę oraz załączniki.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Attachments;
 using KSeF.Invoice.Models.Common;

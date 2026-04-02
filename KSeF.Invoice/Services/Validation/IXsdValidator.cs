@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs walidatora XML względem schematu XSD dla faktur
+    KSeF. Definiuje kontrakt do walidacji dokumentów XML (string,
+    strumień) oraz obiektów faktur względem schematów FA(2) i FA(3)
+    z automatycznym wykrywaniem wersji. Zawiera również enum
+    SchemaVersion określający wersję schematu XSD.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

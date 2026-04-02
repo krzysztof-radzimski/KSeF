@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca wynik walidacji faktury. Przechowuje
+    listę błędów (uniemożliwiających przetworzenie) i ostrzeżeń
+    (informacyjnych). Zawiera również rekordy ValidationError
+    i ValidationWarning oraz metody fabryczne do tworzenia
+    wyników walidacji.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

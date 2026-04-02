@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Rozszerzenia IServiceCollection do rejestracji wszystkich
+    serwisów biblioteki KSeF Invoice w kontenerze Dependency
+    Injection. Stanowi główny punkt konfiguracji DI, rejestrując
+    serwisy walidacji, serializacji oraz główną fasadę
+    KsefInvoiceService z możliwością konfiguracji opcji.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Services.Serialization;
 using KSeF.Invoice.Services.Validation;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący statusy informacyjne podatnika
+    (TStatusInfoPodatnika) w systemie KSeF. Obejmuje stany:
+    likwidacja, postępowanie restrukturyzacyjne, upadłość
+    oraz przedsiębiorstwo w spadku.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

@@ -1,3 +1,15 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca informacje o skoncie (Skonto) na fakturze.
+    Zawiera warunki, które nabywca powinien spełnić aby skorzystać
+    ze skonta oraz wysokość skonta (rabatu za wcześniejszą zapłatę).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Payments;

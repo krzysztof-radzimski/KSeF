@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład tworzenia faktury korygującej (typ KOR). Demonstruje
+    budowanie korekty z odwołaniem do faktury oryginalnej, w tym
+    podanie numeru KSeF faktury korygowanej, przyczyny korekty
+    oraz pozycji z ujemnymi wartościami (zmniejszenie kwoty).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Services.Validation;

@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład zarządzania sesjami w Krajowym Systemie e-Faktur.
+    Demonstruje pełny cykl życia sesji: otwieranie, odświeżanie
+    tokenu dostępu, sprawdzanie statusu sesji, sprawdzanie
+    statusu wysłanych faktur oraz zamykanie sesji. Pokazuje
+    również model SessionInfo i jego właściwości.
+    Wymaga połączenia z API KSeF.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api;
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;

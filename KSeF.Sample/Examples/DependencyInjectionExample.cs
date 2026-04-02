@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład integracji biblioteki KSeF.Invoice z kontenerem
+    Dependency Injection (Microsoft.Extensions.DependencyInjection).
+    Demonstruje podstawową konfigurację, konfigurację z opcjami,
+    pobieranie pojedynczych serwisów (walidatory, serializator)
+    oraz użycie IKsefInvoiceService we własnej klasie serwisowej.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Services.Serialization;

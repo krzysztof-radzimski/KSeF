@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania danych kontaktowych (ContactData) z wykorzystaniem
+    wzorca Fluent API. Umożliwia ustawienie adresu e-mail oraz numeru
+    telefonu podmiotu na fakturze.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 
 namespace KSeF.Invoice.Services.Builders;

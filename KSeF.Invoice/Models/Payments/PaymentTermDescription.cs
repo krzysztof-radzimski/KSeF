@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca opis terminu płatności (TerminOpis).
+    Opisuje termin płatności w formie: ilość jednostek czasu
+    od zdarzenia początkowego, np. "14 dni od daty wystawienia
+    faktury". Zawiera pola: Ilość, Jednostka, ZdarzeniePoczatkowe.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Payments;

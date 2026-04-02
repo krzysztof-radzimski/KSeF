@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład tworzenia prostej faktury VAT przy użyciu fluent API.
+    Demonstruje pełny cykl: konfigurację Dependency Injection,
+    budowanie faktury z danymi sprzedawcy, nabywcy, pozycjami
+    i płatnością, walidację biznesową oraz serializację do XML.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Services.Validation;

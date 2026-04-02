@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca dane faktury korygowanej (DaneFaKorygowanej).
+    Zawiera informacje o fakturze pierwotnej będącej przedmiotem
+    korekty: numer faktury, datę wystawienia, numer KSeF faktury
+    korygowanej oraz numer KSeF poprzedniej korekty (w przypadku
+    kolejnych korekt tej samej faktury).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

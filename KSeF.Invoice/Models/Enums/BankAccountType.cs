@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący typy rachunków własnych banku
+    (TRachunekWlasnyBanku) w systemie KSeF. Obejmuje rachunki:
+    do rozliczeń z tytułu nabywanych wierzytelności, do pobierania
+    należności i przekazywania dostawcy oraz rachunki prowadzone
+    w ramach gospodarki własnej banku lub SKOK.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

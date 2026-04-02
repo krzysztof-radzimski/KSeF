@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca okres rozliczeniowy faktury (OkresFa).
+    Używana gdy faktura dotyczy świadczeń ciągłych lub okresowych
+    (np. najem, media, abonamenty) zamiast konkretnej daty sprzedaży.
+    Zawiera datę początkową i końcową okresu z obsługą serializacji
+    XML poprzez wzorzec proxy string dla typu DateOnly.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Common;

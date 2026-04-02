@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Główny punkt wejścia aplikacji przykładowej. Demonstruje tworzenie
+    różnych typów faktur KSeF przy użyciu fluent API: prosta faktura VAT,
+    faktura z wieloma pozycjami, faktura korygująca oraz faktura
+    zaliczkowa. Pokazuje również konfigurację Dependency Injection,
+    walidację, serializację do XML i deserializację z XML.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 // Przyklady uzycia bibliotek KSeF.Invoice i KSeF.Api
 // Uruchom z: dotnet run
 

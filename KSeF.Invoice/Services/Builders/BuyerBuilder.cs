@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania danych nabywcy (Podmiot2) z wykorzystaniem
+    wzorca Fluent API. Obsługuje identyfikację przez NIP, VAT UE
+    lub identyfikator zagraniczny, a także konfigurację adresu,
+    danych kontaktowych, adresu korespondencyjnego oraz oznaczenia
+    jako jednostka samorządu terytorialnego (JST) lub członek
+    grupy VAT (GV).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Entities;
 using KSeF.Invoice.Models.Enums;

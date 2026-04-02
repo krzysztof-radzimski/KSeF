@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca podmiot upoważniony do wystawienia faktury
+    (PodmiotUpowazniony). Dotyczy organu egzekucyjnego, komornika
+    sądowego lub przedstawiciela podatkowego. Zawiera NIP, nazwę,
+    adres oraz rolę podmiotu upoważnionego.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Enums;

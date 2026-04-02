@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Interfejs serwisu pobierania faktur zakupowych z KSeF.
+    Umożliwia pobieranie pojedynczych faktur po numerze KSeF,
+    wyszukiwanie faktur zakupowych według kryteriów, masowe
+    pobieranie nowych faktur od podanej daty z automatycznym
+    stronicowaniem oraz pobieranie UPO (Urzędowe Poświadczenie
+    Odbioru) dla faktury.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Models;
 
 namespace KSeF.Api.Services;

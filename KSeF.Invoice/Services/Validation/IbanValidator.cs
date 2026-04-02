@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Implementacja walidatora numeru rachunku bankowego zgodnego
+    ze standardem ISO 13616 (IBAN) oraz polskiego formatu NRB.
+    Weryfikuje format, długość, dopuszczalne znaki oraz sumę
+    kontrolną IBAN (algorytm modulo 97). Obsługuje zarówno
+    numery z kodem kraju jak i polskie NRB (26 cyfr).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.Numerics;
 
 namespace KSeF.Invoice.Services.Validation;

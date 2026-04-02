@@ -1,3 +1,20 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Implementacja walidatora XML względem schematu XSD dla faktur
+    KSeF. Ładuje schematy XSD z zasobów osadzonych (embedded
+    resources) z wykorzystaniem EmbeddedResourceResolver do
+    automatycznego rozwiązywania importów między schematami.
+    Obsługuje wersje FA(2) i FA(3) z cache'owaniem skompilowanych
+    schematów oraz automatycznym wykrywaniem wersji na podstawie
+    przestrzeni nazw XML.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;

@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Klasa rozszerzeń IServiceCollection do rejestracji serwisów
+    KSeF API w kontenerze Dependency Injection. Rejestruje
+    KSeF.Client (komunikacja HTTP), KSeF.Invoice (modele,
+    walidacja, serializacja), serwis kryptograficzny oraz
+    serwisy sesji, wysyłania, odbierania i statusów faktur.
+    Obsługuje konfigurację z IConfiguration lub delegatem.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Configuration;
 using KSeF.Api.Services;
 using KSeF.Client.DI;

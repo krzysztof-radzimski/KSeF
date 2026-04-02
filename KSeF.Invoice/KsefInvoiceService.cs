@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Główny serwis biblioteki KSeF Invoice, stanowiący fasadę
+    łączącą funkcjonalności budowania, walidacji i serializacji
+    faktur. Implementuje wzorzec Facade, delegując operacje
+    do wyspecjalizowanych serwisów: InvoiceBuilder (tworzenie),
+    IInvoiceValidator (walidacja biznesowa), IXsdValidator
+    (walidacja XSD) oraz IInvoiceSerializer (serializacja XML).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Services.Builders;
 using KSeF.Invoice.Services.Serialization;
 using KSeF.Invoice.Services.Validation;

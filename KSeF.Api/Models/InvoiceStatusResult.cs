@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model wyniku sprawdzenia statusu faktury w KSeF oraz
+    typ wyliczeniowy InvoiceProcessingStatus. Zawiera numer
+    referencyjny, numer KSeF, status przetwarzania (Pending,
+    Processing, Processed, Rejected, Error), datę przetworzenia
+    oraz listę błędów. Udostępnia metody fabryczne Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

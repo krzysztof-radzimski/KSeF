@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Sample
+    Przykład konfiguracji warstwy API (KSeF.Api) z wykorzystaniem
+    Dependency Injection. Demonstruje ustawianie środowiska
+    (test/demo/produkcja), metod autoryzacji (token), timeoutów
+    i ponownych prób. Pokazuje także listę wszystkich serwisów
+    zarejestrowanych przez AddKsefApiServices.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api;
 using KSeF.Api.Configuration;
 using KSeF.Api.Services;

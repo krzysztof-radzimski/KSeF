@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca typ złożony klucz-wartość (TKluczWartosc).
+    Wykorzystywana do przekazywania dodatkowych informacji na fakturze
+    w postaci par klucz-wartość. Może być powiązana z konkretną
+    pozycją faktury poprzez numer wiersza.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Common;

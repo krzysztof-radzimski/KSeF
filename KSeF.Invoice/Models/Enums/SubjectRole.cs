@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący role podmiotów trzecich (TRolaPodmiotu3) na
+    fakturze w systemie KSeF. Obejmuje role takie jak: faktor,
+    odbiorca, podmiot pierwotny, dodatkowy nabywca, wystawca faktury,
+    dokonujący płatności, jednostki samorządu terytorialnego
+    (wystawca/odbiorca), członkowie grupy VAT oraz pracownik.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

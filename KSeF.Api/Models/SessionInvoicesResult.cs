@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model wyniku zapytania o faktury w ramach sesji KSeF.
+    Zawiera referencję sesji, listę statusów poszczególnych
+    faktur oraz wyliczane właściwości liczby faktur
+    przetworzonych poprawnie i odrzuconych.
+    Udostępnia metody fabryczne Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

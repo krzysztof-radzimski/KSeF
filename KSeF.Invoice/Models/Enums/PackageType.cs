@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący typy ładunków i opakowań (TLadunek) stosowane
+    na fakturach w systemie KSeF. Zawiera 20 rodzajów opakowań,
+    w tym m.in.: bańka, beczka, butla, karton, kanister, kontener,
+    paleta, pojemnik, pudełko, skrzynia, worek i inne typy
+    opakowań transportowych.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

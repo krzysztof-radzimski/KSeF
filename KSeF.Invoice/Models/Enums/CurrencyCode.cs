@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący kody walut (TKodWaluty) stosowane na fakturach
+    w systemie KSeF. Zawiera najczęściej używane waluty: PLN, EUR,
+    USD, GBP, CHF oraz inne popularne waluty europejskie i światowe.
+    Pełna lista w schemacie XSD obejmuje ponad 150 walut zgodnie
+    z normą ISO 4217.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

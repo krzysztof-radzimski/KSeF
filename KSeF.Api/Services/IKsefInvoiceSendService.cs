@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Interfejs serwisu wysyłania faktur sprzedażowych do KSeF.
+    Obsługuje wszystkie typy faktur: VAT, korekta (KOR),
+    zaliczkowa (ZAL), rozliczeniowa (ROZ), uproszczona (UPR),
+    korekta zaliczkowej (KOR_ZAL) i korekta rozliczeniowej
+    (KOR_ROZ). Umożliwia wysyłanie pojedynczych faktur oraz
+    pakietów faktur w jednej sesji interaktywnej.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Models;
 using KSeF.Invoice.Models;
 

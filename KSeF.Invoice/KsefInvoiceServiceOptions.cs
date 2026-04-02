@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa opcji konfiguracyjnych dla głównego serwisu KSeF Invoice.
+    Umożliwia ustawienie wersji schematu faktury (FA2/FA3),
+    włączenie/wyłączenie walidacji przed serializacją, walidacji
+    XSD oraz domyślnej informacji o systemie wytwarzającym
+    faktury.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Services.Validation;
 
 namespace KSeF.Invoice;

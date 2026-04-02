@@ -1,3 +1,18 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Implementacja walidatora dat na fakturze KSeF. Sprawdza
+    poprawność daty wystawienia (nie w przyszłości, nie starsza
+    niż 5 lat), daty sprzedaży (zgodność z datą wystawienia)
+    oraz okresu rozliczeniowego (poprawność zakresu dat,
+    długość okresu).
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Invoice.Services.Validation;
 
 /// <summary>

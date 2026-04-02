@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Implementacja serwisu pobierania faktur zakupowych z KSeF.
+    Realizuje pobieranie pojedynczych faktur, wyszukiwanie
+    według kryteriów z filtrowaniem po dacie, NIP kontrahenta
+    i numerze faktury, masowe pobieranie z automatycznym
+    stronicowaniem oraz pobieranie UPO. Automatycznie
+    zarządza sesjami i deserializuje pobrane XML do modeli.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Configuration;
 using KSeF.Api.Models;
 using KSeF.Client.Core.Interfaces.Clients;

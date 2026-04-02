@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Główna klasa Fluent API do budowania faktury KSeF. Stanowi
+    centralny punkt kompozycji faktury, łącząc sprzedawcę (Podmiot1),
+    nabywcę (Podmiot2), podmioty trzecie (Podmiot3), dane merytoryczne
+    (Fa), pozycje faktury (FaWiersz) oraz informacje o płatnościach.
+    Automatycznie oblicza podsumowania VAT w rozbiciu na stawki
+    oraz numeruje pozycje faktury.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Entities;

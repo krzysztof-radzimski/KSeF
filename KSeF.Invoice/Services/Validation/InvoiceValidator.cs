@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Główny walidator biznesowy faktur KSeF. Implementuje kompleksową
+    walidację obejmującą: strukturę faktury, dane sprzedawcy
+    i nabywcy (w tym NIP), dane merytoryczne (numery, daty, typy),
+    pozycje faktury (nazwy, kwoty, stawki VAT), spójność sum
+    i podsumowań VAT oraz dane płatności (rachunki bankowe IBAN).
+    Wykorzystuje dedykowane walidatory NIP, IBAN i dat.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Enums;
 

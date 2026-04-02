@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Interfejs walidatora faktur KSeF. Definiuje kontrakt walidacji
+    obiektu faktury, zwracając wynik zawierający listę błędów
+    i ostrzeżeń.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models;
 
 namespace KSeF.Invoice.Services.Validation;

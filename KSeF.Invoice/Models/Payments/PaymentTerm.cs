@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca termin płatności faktury (TerminPlatnosci).
+    Określa termin płatności jako konkretną datę (Termin) lub jako
+    opis (TerminOpis) w formie ilości jednostek czasu od zdarzenia
+    początkowego. Obsługuje serializację XML dat przez proxy string.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Payments;

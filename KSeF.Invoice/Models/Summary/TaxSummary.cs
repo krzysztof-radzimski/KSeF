@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca podsumowanie podatkowe faktury (Podsumowanie).
+    Zawiera sumy wartości netto i kwot podatku VAT w podziale na
+    poszczególne stawki: 23%, 8%, 5%, 0% (krajowa, WDT, eksport)
+    oraz wartość zwolnioną. Zawiera również kwotę należności ogółem
+    (P_15) oraz właściwości pomocnicze do obliczania sum.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Summary;

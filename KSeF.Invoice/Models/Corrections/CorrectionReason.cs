@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca przyczynę korekty faktury (PrzyczynaKorekty).
+    Zawiera tekstowy opis powodu wystawienia faktury korygującej
+    (wymagany zgodnie z art. 106j ust. 2 ustawy o VAT), typ skutku
+    korekty w ewidencji oraz opcjonalną datę ujęcia korekty.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 using KSeF.Invoice.Models.Enums;
 

@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Enum definiujący formy płatności (TFormaPlatnosci) dostępne
+    na fakturach w systemie KSeF. Zawiera metody: gotówka, karta
+    płatnicza, bon, czek, kredyt, przelew bankowy oraz płatność
+    mobilna.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using System.ComponentModel;
 using System.Xml.Serialization;
 

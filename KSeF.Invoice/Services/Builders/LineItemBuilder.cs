@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Builder do budowania pozycji faktury (FaWiersz) z wykorzystaniem
+    wzorca Fluent API. Umożliwia konfigurację nazwy produktu/usługi,
+    ilości, cen jednostkowych, stawki VAT, rabatów oraz automatyczne
+    obliczanie wartości netto i kwoty VAT na podstawie podanych danych.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Enums;
 

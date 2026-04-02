@@ -1,3 +1,16 @@
+/*=====================================================================================
+
+    KSeF.Invoice
+    Klasa reprezentująca warunki dostawy towarów (WarunkiDostawy).
+    Określa warunki dostarczenia zgodnie z Incoterms lub innymi
+    umowami. Zawiera kod warunków (np. EXW, FCA, DDP), opis
+    warunków oraz miejsce dostawy.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
 using System.Xml.Serialization;
 
 namespace KSeF.Invoice.Models.Payments;

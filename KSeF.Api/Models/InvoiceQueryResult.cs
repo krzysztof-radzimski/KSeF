@@ -1,3 +1,17 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Model wyniku zapytania o faktury z KSeF. Zawiera listę
+    metadanych znalezionych faktur, łączną liczbę wyników,
+    parametry stronicowania oraz informację o istnieniu
+    kolejnych stron. Udostępnia metody fabryczne Ok() i Fail().
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 namespace KSeF.Api.Models;
 
 /// <summary>

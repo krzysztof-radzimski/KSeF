@@ -1,3 +1,19 @@
+/*=====================================================================================
+
+    KSeF.Api
+    Interfejs serwisu sprawdzania statusów faktur w KSeF.
+    Umożliwia sprawdzanie statusu przetwarzania pojedynczej
+    faktury po numerze referencyjnym oraz statusu wszystkich
+    faktur w ramach sesji. UWAGA: KSeF API 2.0 nie udostępnia
+    endpointu do oznaczania faktur jako zaksięgowane -
+    śledzenie tego stanu należy realizować w systemie ERP.
+
+	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
+    Licencja MIT
+	http://itorg.pl
+
+  ===================================================================================*/
+
 using KSeF.Api.Models;
 
 namespace KSeF.Api.Services;
