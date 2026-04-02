@@ -57,47 +57,47 @@ integracja jako git submodule z referencjami projektowymi (ProjectReference) zam
 
 #### Faza 1: Fork i integracja kodu źródłowego `BLOCKER`
 
-- [x] F-001 Utworzenie forka repozytorium `CIRFMF/ksef-client-csharp` (v2.3.0) na konto użytkownika via `gh repo fork` [DONE: 2026-03-28, Claude]
+- [x] F-001 Utworzenie forka repozytorium `CIRFMF/ksef-client-csharp` (v2.3.0) na konto użytkownika via `gh repo fork` [DONE: 2026-03-28, KR]
   - Uwaga: Dodano upstream CIRFMF jako submodule (fork można utworzyć później gdy będzie potrzebny push)
-- [x] F-002 Dodanie forka jako git submodule w katalogu `lib/ksef-client-csharp` w repozytorium KSeF [DONE: 2026-03-28, Claude]
-- [x] F-003 Usunięcie referencji NuGet (`KSeF.Client`, `KSeF.Client.Core`, `KSeF.Client.ClientFactory`) z `KSeF.Api.csproj` [DONE: 2026-03-28, Claude]
-- [x] F-004 Dodanie referencji projektowych (ProjectReference) z `KSeF.Api.csproj` do projektów w submodule: [DONE: 2026-03-28, Claude]
+- [x] F-002 Dodanie forka jako git submodule w katalogu `lib/ksef-client-csharp` w repozytorium KSeF [DONE: 2026-03-28, KR]
+- [x] F-003 Usunięcie referencji NuGet (`KSeF.Client`, `KSeF.Client.Core`, `KSeF.Client.ClientFactory`) z `KSeF.Api.csproj` [DONE: 2026-03-28, KR]
+- [x] F-004 Dodanie referencji projektowych (ProjectReference) z `KSeF.Api.csproj` do projektów w submodule: [DONE: 2026-03-28, KR]
   - `lib/ksef-client-csharp/KSeF.Client/KSeF.Client.csproj`
   - `lib/ksef-client-csharp/KSeF.Client.Core/KSeF.Client.Core.csproj`
   - `lib/ksef-client-csharp/KSeF.Client.ClientFactory/KSeF.Client.ClientFactory.csproj`
-- [x] F-005 Dodanie projektów ksef-client-csharp do solution `KSeF.sln` (w osobnym Solution Folder `lib`) [DONE: 2026-03-28, Claude]
-- [x] F-006 Aktualizacja `nuget.config` - usunięcie źródła `github-cirf` (nie będzie już potrzebne) [DONE: 2026-03-28, Claude]
+- [x] F-005 Dodanie projektów ksef-client-csharp do solution `KSeF.sln` (w osobnym Solution Folder `lib`) [DONE: 2026-03-28, KR]
+- [x] F-006 Aktualizacja `nuget.config` - usunięcie źródła `github-cirf` (nie będzie już potrzebne) [DONE: 2026-03-28, KR]
 
 #### Faza 2: Dostosowanie kodu i kompilacja `BLOCKER`
 
-- [x] F-007 Ustawienie TargetFramework projektów ksef-client-csharp na zgodny z KSeF.Api (net9.0) - ewentualny trim zbędnych targetów [DONE: 2026-03-28, Claude]
+- [x] F-007 Ustawienie TargetFramework projektów ksef-client-csharp na zgodny z KSeF.Api (net9.0) - ewentualny trim zbędnych targetów [DONE: 2026-03-28, KR]
   - Nie wymagało zmian - multi-target (netstandard2.0;net8.0;net9.0;net10.0) jest kompatybilny
-- [x] F-008 Weryfikacja i rozwiązanie konfliktów zależności NuGet [DONE: 2026-03-28, Claude]
+- [x] F-008 Weryfikacja i rozwiązanie konfliktów zależności NuGet [DONE: 2026-03-28, KR]
   - Brak konfliktów - wszystkie zależności rozwiązane poprawnie
-- [x] F-009 Kompilacja pełnego solution `dotnet build KSeF.sln` - naprawienie ewentualnych błędów [DONE: 2026-03-28, Claude]
+- [x] F-009 Kompilacja pełnego solution `dotnet build KSeF.sln` - naprawienie ewentualnych błędów [DONE: 2026-03-28, KR]
   - Kompilacja: 0 błędów, 561 ostrzeżeń (wszystkie z upstream ksef-client-csharp)
-- [x] F-010 Dostosowanie kodu KSeF.Api do zmian API w wersji 2.3.0 (jeśli kompilacja wykryje niezgodności) [DONE: 2026-03-28, Claude]
+- [x] F-010 Dostosowanie kodu KSeF.Api do zmian API w wersji 2.3.0 (jeśli kompilacja wykryje niezgodności) [DONE: 2026-03-28, KR]
   - Nie wymagało zmian - brak breaking changes zgodnie z analizą
 
 #### Faza 3: Testy
 
-- [x] F-011 Uruchomienie istniejących testów KSeF.Api.Tests - `dotnet test` - naprawienie ewentualnych regresji [DONE: 2026-03-28, Claude]
+- [x] F-011 Uruchomienie istniejących testów KSeF.Api.Tests - `dotnet test` - naprawienie ewentualnych regresji [DONE: 2026-03-28, KR]
   - 16/16 testów przeszło pomyślnie
-- [x] F-012 Uruchomienie istniejących testów KSeF.Invoice.Tests - weryfikacja że nie ma side effects [DONE: 2026-03-28, Claude]
+- [x] F-012 Uruchomienie istniejących testów KSeF.Invoice.Tests - weryfikacja że nie ma side effects [DONE: 2026-03-28, KR]
   - 653/653 testów przeszło pomyślnie
-- [x] F-013 Aktualizacja mocków w testach jeśli zmieniły się interfejsy KSeF.Client (np. nowe parametry metod) [DONE: 2026-03-28, Claude]
+- [x] F-013 Aktualizacja mocków w testach jeśli zmieniły się interfejsy KSeF.Client (np. nowe parametry metod) [DONE: 2026-03-28, KR]
   - Nie wymagało zmian - interfejsy kompatybilne
 
 #### Faza 4: Dokumentacja i finalizacja
 
-- [x] F-014 Aktualizacja README.md - zmiana informacji o źródle zależności (z NuGet na submodule) [DONE: 2026-03-28, Claude]
-- [x] F-015 Aktualizacja `KSeF.Api/README.md` - sekcja instalacji (dodanie informacji o `git submodule init/update`) [DONE: 2026-03-28, Claude]
-- [x] F-016 Dodanie instrukcji klonowania z submodułem: `git clone --recurse-submodules` [DONE: 2026-03-28, Claude]
-- [x] F-017 Aktualizacja pliku `.gitignore` jeśli potrzebne (lib/ nie powinien być ignorowany) [DONE: 2026-03-28, Claude]
+- [x] F-014 Aktualizacja README.md - zmiana informacji o źródle zależności (z NuGet na submodule) [DONE: 2026-03-28, KR]
+- [x] F-015 Aktualizacja `KSeF.Api/README.md` - sekcja instalacji (dodanie informacji o `git submodule init/update`) [DONE: 2026-03-28, KR]
+- [x] F-016 Dodanie instrukcji klonowania z submodułem: `git clone --recurse-submodules` [DONE: 2026-03-28, KR]
+- [x] F-017 Aktualizacja pliku `.gitignore` jeśli potrzebne (lib/ nie powinien być ignorowany) [DONE: 2026-03-28, KR]
   - lib/ nie jest ignorowany - nie wymagało zmian
-- [x] F-018 Budowanie binariów Release: `dotnet build -c Release` [DONE: 2026-03-28, Claude]
+- [x] F-018 Budowanie binariów Release: `dotnet build -c Release` [DONE: 2026-03-28, KR]
   - Release build: 0 błędów, 561 ostrzeżeń
-- [x] F-019 Aktualizacja MEMORY.md z nowymi faktami o strukturze projektu [DONE: 2026-03-28, Claude]
+- [x] F-019 Aktualizacja MEMORY.md z nowymi faktami o strukturze projektu [DONE: 2026-03-28, KR]
 
 ### Procedura aktualizacji forka (na przyszłość)
 
@@ -143,20 +143,20 @@ Zidentyfikowano dwa oddzielne bugi w `KsefSessionService.OpenSessionAsync()`:
 
 ### Plan implementacji
 
-- [x] F-020.1 Analiza logów i identyfikacja obu problemów [DONE: 2026-04-01, Claude]
-- [x] F-020.2 Analiza kodu CryptographyService — flow szyfrowania RSA vs ECDSA [DONE: 2026-04-01, Claude]
-- [x] F-020.3 Analiza dokumentacji KSeF API v2 — wymagane pola OpenOnlineSession [DONE: 2026-04-01, Claude]
-- [x] F-020.4 Rozszerzenie `SessionInfo` o `EncryptionData` (klucz AES + IV sesji) [DONE: 2026-04-01, Claude]
-- [x] F-020.5 Naprawa `KsefSessionService.OpenSessionAsync()` — użycie `OpenOnlineSessionRequestBuilder` [DONE: 2026-04-01, Claude]
+- [x] F-020.1 Analiza logów i identyfikacja obu problemów [DONE: 2026-04-01, KR]
+- [x] F-020.2 Analiza kodu CryptographyService — flow szyfrowania RSA vs ECDSA [DONE: 2026-04-01, KR]
+- [x] F-020.3 Analiza dokumentacji KSeF API v2 — wymagane pola OpenOnlineSession [DONE: 2026-04-01, KR]
+- [x] F-020.4 Rozszerzenie `SessionInfo` o `EncryptionData` (klucz AES + IV sesji) [DONE: 2026-04-01, KR]
+- [x] F-020.5 Naprawa `KsefSessionService.OpenSessionAsync()` — użycie `OpenOnlineSessionRequestBuilder` [DONE: 2026-04-01, KR]
   - Generowanie `EncryptionData` przez `CryptographyService.GetEncryptionData()`
   - Budowanie requestu z `FormCode` (FA3) i `Encryption` (encryptedSymmetricKey + IV)
   - Przechowywanie `EncryptionData` w `SessionInfo` do szyfrowania faktur
-- [x] F-020.6 Naprawa `KsefInvoiceSendService` — użycie `EncryptionData` z sesji zamiast generowania nowego [DONE: 2026-04-01, Claude]
-- [x] F-020.7 Aktualizacja testów jednostkowych — mockowanie `GetEncryptionData()` [DONE: 2026-04-01, Claude]
-- [x] F-020.8 Dodanie testu integracyjnego `Integration_FullSessionFlow_OpenAndClose_Succeeds` [DONE: 2026-04-01, Claude]
+- [x] F-020.6 Naprawa `KsefInvoiceSendService` — użycie `EncryptionData` z sesji zamiast generowania nowego [DONE: 2026-04-01, KR]
+- [x] F-020.7 Aktualizacja testów jednostkowych — mockowanie `GetEncryptionData()` [DONE: 2026-04-01, KR]
+- [x] F-020.8 Dodanie testu integracyjnego `Integration_FullSessionFlow_OpenAndClose_Succeeds` [DONE: 2026-04-01, KR]
   - Pełny flow: WarmupAsync → AuthKsefTokenAsync → GetEncryptionData → OpenOnlineSession → CloseSession
   - Testowany na demo i produkcji
-- [x] F-020.9 Weryfikacja autoryzacji na obu środowiskach [DONE: 2026-04-01, Claude]
+- [x] F-020.9 Weryfikacja autoryzacji na obu środowiskach [DONE: 2026-04-01, KR]
   - Demo (`api-demo.ksef.mf.gov.pl`): autoryzacja + sesja — **OK**
   - Produkcja (`api.ksef.mf.gov.pl`): autoryzacja + sesja — **OK**
 
@@ -211,22 +211,22 @@ Główne problemy:
 
 ### Plan implementacji
 
-- [x] F-021.1 Usunięcie klasy `PaymentMethodInfo` — zastąpienie przez `PaymentMethod?` enum + string proxy w `Payment` [DONE: 2026-04-02, Claude]
-- [x] F-021.2 Dodanie obsługi statusu zapłaty: `PaidInFull`/`PaymentDate` oraz `PartialPaymentMarker`/`PartialPayments` [DONE: 2026-04-02, Claude]
-- [x] F-021.3 Nowa klasa `PartialPayment` — kwota, data, forma płatności (choice: standard/inna) [DONE: 2026-04-02, Claude]
-- [x] F-021.4 Nowa klasa `PaymentTermDescription` — complex type: `Quantity`, `Unit`, `StartingEvent` [DONE: 2026-04-02, Claude]
-- [x] F-021.5 Nowa klasa `DiscountTerms` — complex type: `Conditions`, `Amount` [DONE: 2026-04-02, Claude]
-- [x] F-021.6 Dodanie `OtherPaymentMarker`/`OtherPaymentDescription` (PlatnoscInna/OpisPlatnosci) do `Payment` [DONE: 2026-04-02, Claude]
-- [x] F-021.7 Zmiana `FactoringBankAccount` na `FactoringBankAccounts` (lista, maxOccurs=20) [DONE: 2026-04-02, Claude]
-- [x] F-021.8 Dodanie `PaymentLink` (LinkDoPlatnosci) i `KSeFPaymentId` (IPKSeF) do `Payment` [DONE: 2026-04-02, Claude]
-- [x] F-021.9 Dodanie metod ShouldSerialize do `Payment`, `PaymentTerm`, `PartialPayment` [DONE: 2026-04-02, Claude]
-- [x] F-021.10 Rozbudowa `PaymentBuilder` — nowe metody Fluent API: [DONE: 2026-04-02, Claude]
+- [x] F-021.1 Usunięcie klasy `PaymentMethodInfo` — zastąpienie przez `PaymentMethod?` enum + string proxy w `Payment` [DONE: 2026-04-02, KR]
+- [x] F-021.2 Dodanie obsługi statusu zapłaty: `PaidInFull`/`PaymentDate` oraz `PartialPaymentMarker`/`PartialPayments` [DONE: 2026-04-02, KR]
+- [x] F-021.3 Nowa klasa `PartialPayment` — kwota, data, forma płatności (choice: standard/inna) [DONE: 2026-04-02, KR]
+- [x] F-021.4 Nowa klasa `PaymentTermDescription` — complex type: `Quantity`, `Unit`, `StartingEvent` [DONE: 2026-04-02, KR]
+- [x] F-021.5 Nowa klasa `DiscountTerms` — complex type: `Conditions`, `Amount` [DONE: 2026-04-02, KR]
+- [x] F-021.6 Dodanie `OtherPaymentMarker`/`OtherPaymentDescription` (PlatnoscInna/OpisPlatnosci) do `Payment` [DONE: 2026-04-02, KR]
+- [x] F-021.7 Zmiana `FactoringBankAccount` na `FactoringBankAccounts` (lista, maxOccurs=20) [DONE: 2026-04-02, KR]
+- [x] F-021.8 Dodanie `PaymentLink` (LinkDoPlatnosci) i `KSeFPaymentId` (IPKSeF) do `Payment` [DONE: 2026-04-02, KR]
+- [x] F-021.9 Dodanie metod ShouldSerialize do `Payment`, `PaymentTerm`, `PartialPayment` [DONE: 2026-04-02, KR]
+- [x] F-021.10 Rozbudowa `PaymentBuilder` — nowe metody Fluent API: [DONE: 2026-04-02, KR]
   - `WithPaymentMethod()`, `WithOtherPaymentMethod()`
   - `AsPaidInFull()`, `WithPartialPayments()`, `AddPartialPayment()`, `AddPartialPaymentOther()`
   - `AddFactoringBankAccount()`, `WithDiscount()`, `WithPaymentLink()`, `WithKSeFPaymentId()`
   - Zmiana `AddPaymentTermDescription()` na wersję z parametrami (quantity, unit, startingEvent)
-- [x] F-021.11 Aktualizacja `InvoiceValidator` — walidacja listy rachunków faktoringowych (pętla zamiast single) [DONE: 2026-04-02, Claude]
-- [x] F-021.12 Aktualizacja testów (10 plików) — dostosowanie do nowego API PaymentBuilder i modelu Payment [DONE: 2026-04-02, Claude]
+- [x] F-021.11 Aktualizacja `InvoiceValidator` — walidacja listy rachunków faktoringowych (pętla zamiast single) [DONE: 2026-04-02, KR]
+- [x] F-021.12 Aktualizacja testów (10 plików) — dostosowanie do nowego API PaymentBuilder i modelu Payment [DONE: 2026-04-02, KR]
 
 ### Zmienione pliki
 
