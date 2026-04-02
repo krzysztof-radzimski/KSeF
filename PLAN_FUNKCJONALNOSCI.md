@@ -187,3 +187,66 @@ Zidentyfikowano dwa oddzielne bugi w `KsefSessionService.OpenSessionAsync()`:
 6. [wysyłanie faktur szyfrowanych AES-256-CBC z kluczem z kroku 3]
 7. KSeFClient.CloseOnlineSessionAsync()         — zamyka sesję
 ```
+
+---
+
+## F-021: Naprawa FormaPlatnosci i pełna obsługa struktury Platnosc (FA3)
+
+### Kontekst
+
+Model `Payment` (Platnosc) oraz powiązane klasy nie odpowiadały w pełni strukturze XSD schematu FA(3).
+Główne problemy:
+
+1. **FormaPlatnosci** — serializowane jako obiekt `PaymentMethodInfo` z zagnieżdżonym XML,
+   a XSD wymaga prostego elementu `<FormaPlatnosci>` z wartością integer (1-7).
+2. **Brak obsługi zapłaty** — XSD definiuje choice `Zaplacono/ZaplataCzesciowa` (status zapłaty
+   z datą lub listą zapłat częściowych), które nie istniały w modelu.
+3. **TerminOpis** — był prostym stringiem, a XSD definiuje complex type z polami
+   `Ilosc`, `Jednostka`, `ZdarzeniePoczatkowe`.
+4. **Skonto** — był prostym stringiem, a XSD definiuje complex type z polami
+   `WarunkiSkonta`, `WysokoscSkonta`.
+5. **Brak pól** — `PlatnoscInna`/`OpisPlatnosci` (inna forma płatności),
+   `RachunekBankowyFaktora` (lista zamiast pojedynczego),
+   `LinkDoPlatnosci`, `IPKSeF`.
+
+### Plan implementacji
+
+- [x] F-021.1 Usunięcie klasy `PaymentMethodInfo` — zastąpienie przez `PaymentMethod?` enum + string proxy w `Payment` [DONE: 2026-04-02, Claude]
+- [x] F-021.2 Dodanie obsługi statusu zapłaty: `PaidInFull`/`PaymentDate` oraz `PartialPaymentMarker`/`PartialPayments` [DONE: 2026-04-02, Claude]
+- [x] F-021.3 Nowa klasa `PartialPayment` — kwota, data, forma płatności (choice: standard/inna) [DONE: 2026-04-02, Claude]
+- [x] F-021.4 Nowa klasa `PaymentTermDescription` — complex type: `Quantity`, `Unit`, `StartingEvent` [DONE: 2026-04-02, Claude]
+- [x] F-021.5 Nowa klasa `DiscountTerms` — complex type: `Conditions`, `Amount` [DONE: 2026-04-02, Claude]
+- [x] F-021.6 Dodanie `OtherPaymentMarker`/`OtherPaymentDescription` (PlatnoscInna/OpisPlatnosci) do `Payment` [DONE: 2026-04-02, Claude]
+- [x] F-021.7 Zmiana `FactoringBankAccount` na `FactoringBankAccounts` (lista, maxOccurs=20) [DONE: 2026-04-02, Claude]
+- [x] F-021.8 Dodanie `PaymentLink` (LinkDoPlatnosci) i `KSeFPaymentId` (IPKSeF) do `Payment` [DONE: 2026-04-02, Claude]
+- [x] F-021.9 Dodanie metod ShouldSerialize do `Payment`, `PaymentTerm`, `PartialPayment` [DONE: 2026-04-02, Claude]
+- [x] F-021.10 Rozbudowa `PaymentBuilder` — nowe metody Fluent API: [DONE: 2026-04-02, Claude]
+  - `WithPaymentMethod()`, `WithOtherPaymentMethod()`
+  - `AsPaidInFull()`, `WithPartialPayments()`, `AddPartialPayment()`, `AddPartialPaymentOther()`
+  - `AddFactoringBankAccount()`, `WithDiscount()`, `WithPaymentLink()`, `WithKSeFPaymentId()`
+  - Zmiana `AddPaymentTermDescription()` na wersję z parametrami (quantity, unit, startingEvent)
+- [x] F-021.11 Aktualizacja `InvoiceValidator` — walidacja listy rachunków faktoringowych (pętla zamiast single) [DONE: 2026-04-02, Claude]
+- [x] F-021.12 Aktualizacja testów (10 plików) — dostosowanie do nowego API PaymentBuilder i modelu Payment [DONE: 2026-04-02, Claude]
+
+### Zmienione pliki
+
+| Plik | Zmiana |
+|------|--------|
+| `KSeF.Invoice/Models/Payments/Payment.cs` | Przebudowa: choice status zapłaty, enum zamiast PaymentMethodInfo, inna płatność, link, IPKSeF, ShouldSerialize |
+| `KSeF.Invoice/Models/Payments/PaymentMethodInfo.cs` | **Usunięty** — zastąpiony przez enum PaymentMethod? w Payment |
+| `KSeF.Invoice/Models/Payments/PartialPayment.cs` | **Nowy** — zapłata częściowa z kwotą, datą, formą płatności |
+| `KSeF.Invoice/Models/Payments/PaymentTerm.cs` | DueDateDescription zmieniony z string na PaymentTermDescription + ShouldSerialize |
+| `KSeF.Invoice/Models/Payments/PaymentTermDescription.cs` | **Nowy** — complex type: Ilosc, Jednostka, ZdarzeniePoczatkowe |
+| `KSeF.Invoice/Models/Payments/DiscountTerms.cs` | **Nowy** — complex type: WarunkiSkonta, WysokoscSkonta |
+| `KSeF.Invoice/Services/Builders/PaymentBuilder.cs` | Rozbudowa Fluent API o 10+ nowych metod |
+| `KSeF.Invoice/Services/Validation/InvoiceValidator.cs` | Walidacja listy rachunków faktoringowych |
+| `Tests/KSeF.Invoice.Tests/Builders/InvoiceBuilderTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/AdvancePaymentInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/BasicVatInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/CorrectionInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/JstAndVatGroupInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/MultiRecipientInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/SimplifiedInvoiceScenarioTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Scenarios/XmlStructureComparisonTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Validation/InvoiceValidatorIntegrationTests.cs` | Dostosowanie do nowego API |
+| `Tests/KSeF.Invoice.Tests/Validation/RequiredFieldsValidationTests.cs` | Dostosowanie do nowego API |
