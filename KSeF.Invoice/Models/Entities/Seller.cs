@@ -71,7 +71,7 @@ public class Seller
     /// Format: 10 cyfr bez kresek
     /// </summary>
     [XmlIgnore]
-    public string TaxId
+    public string? TaxId
     {
         get => Identification.Nip;
         set => Identification.Nip = value;

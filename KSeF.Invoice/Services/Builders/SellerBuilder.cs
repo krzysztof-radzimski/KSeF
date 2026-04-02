@@ -7,24 +7,21 @@ namespace KSeF.Invoice.Services.Builders;
 /// <summary>
 /// Builder do budowania danych sprzedawcy (Podmiot1)
 /// </summary>
-public class SellerBuilder
-{
+public class SellerBuilder {
     private readonly Seller _seller = new();
 
     /// <summary>
     /// Ustawia NIP sprzedawcy
     /// </summary>
-    public SellerBuilder WithTaxId(string taxId)
-    {
-        _seller.TaxId = taxId;
+    public SellerBuilder WithTaxId(string taxId) {
+        _seller.TaxId = taxId != null ? taxId.Trim().Replace("-", String.Empty) : taxId;
         return this;
     }
 
     /// <summary>
     /// Ustawia nazwę sprzedawcy
     /// </summary>
-    public SellerBuilder WithName(string name)
-    {
+    public SellerBuilder WithName(string name) {
         _seller.Name = name;
         return this;
     }
@@ -32,8 +29,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia adres sprzedawcy
     /// </summary>
-    public SellerBuilder WithAddress(Action<AddressBuilder> configure)
-    {
+    public SellerBuilder WithAddress(Action<AddressBuilder> configure) {
         var builder = new AddressBuilder();
         configure(builder);
         _seller.Address = builder.Build();
@@ -43,8 +39,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia adres sprzedawcy
     /// </summary>
-    public SellerBuilder WithAddress(Address address)
-    {
+    public SellerBuilder WithAddress(Address address) {
         _seller.Address = address;
         return this;
     }
@@ -52,8 +47,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia adres korespondencyjny sprzedawcy
     /// </summary>
-    public SellerBuilder WithCorrespondenceAddress(Action<AddressBuilder> configure)
-    {
+    public SellerBuilder WithCorrespondenceAddress(Action<AddressBuilder> configure) {
         var builder = new AddressBuilder();
         configure(builder);
         _seller.CorrespondenceAddress = builder.Build();
@@ -63,8 +57,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia dane kontaktowe sprzedawcy
     /// </summary>
-    public SellerBuilder WithContactData(Action<ContactDataBuilder> configure)
-    {
+    public SellerBuilder WithContactData(Action<ContactDataBuilder> configure) {
         var builder = new ContactDataBuilder();
         configure(builder);
         _seller.ContactData = builder.Build();
@@ -74,10 +67,8 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia dane kontaktowe sprzedawcy
     /// </summary>
-    public SellerBuilder WithContactData(string? email = null, string? phone = null)
-    {
-        _seller.ContactData = new ContactData
-        {
+    public SellerBuilder WithContactData(string? email = null, string? phone = null) {
+        _seller.ContactData = new ContactData {
             Email = email,
             Phone = phone
         };
@@ -87,8 +78,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia numer EORI sprzedawcy
     /// </summary>
-    public SellerBuilder WithEoriNumber(string eoriNumber)
-    {
+    public SellerBuilder WithEoriNumber(string eoriNumber) {
         _seller.EoriNumber = eoriNumber;
         return this;
     }
@@ -96,8 +86,7 @@ public class SellerBuilder
     /// <summary>
     /// Ustawia status podatnika
     /// </summary>
-    public SellerBuilder WithStatusInfo(TaxpayerStatus status)
-    {
+    public SellerBuilder WithStatusInfo(TaxpayerStatus status) {
         _seller.StatusInfo = status;
         return this;
     }

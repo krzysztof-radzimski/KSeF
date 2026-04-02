@@ -16,7 +16,7 @@ public class ThirdPartyBuilder
     /// </summary>
     public ThirdPartyBuilder WithTaxId(string taxId)
     {
-        _thirdParty.TaxId = taxId;
+        _thirdParty.TaxId = taxId != null ? taxId.Trim().Replace("-", String.Empty) : taxId;
         return this;
     }
 
