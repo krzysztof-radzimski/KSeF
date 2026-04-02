@@ -441,10 +441,13 @@ public class InvoiceValidatorIntegrationTests
         var invoice = CreateMinimalValidInvoice();
         invoice.InvoiceData.Payment = new Payment
         {
-            FactoringBankAccount = new BankAccount
+            FactoringBankAccounts = new List<BankAccount>
             {
-                AccountNumber = "PL61109010140000071219812874",
-                BankName = "Faktor Bank"
+                new BankAccount
+                {
+                    AccountNumber = "PL61109010140000071219812874",
+                    BankName = "Faktor Bank"
+                }
             }
         };
 

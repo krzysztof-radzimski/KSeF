@@ -47,7 +47,7 @@ public class JstAndVatGroupInvoiceScenarioTests
                 .WithVatAmount(6900.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874"))
             .Build();
 

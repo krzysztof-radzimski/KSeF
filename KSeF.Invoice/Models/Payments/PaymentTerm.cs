@@ -25,10 +25,17 @@ public class PaymentTerm
     public DateOnly? DueDate { get; set; }
 
     /// <summary>
-    /// Termin płatności - opis (TerminOpis)
-    /// Tekstowy opis terminu płatności (np. "14 dni od daty wystawienia")
-    /// Maksymalnie 256 znaków
+    /// Opis terminu płatności (TerminOpis) - complex type
+    /// Zawiera Ilosc, Jednostka, ZdarzeniePoczatkowe
     /// </summary>
     [XmlElement("TerminOpis")]
-    public string? DueDateDescription { get; set; }
+    public PaymentTermDescription? DueDateDescription { get; set; }
+
+    #region ShouldSerialize
+
+    public bool ShouldSerializeDueDateString() => DueDate.HasValue;
+
+    public bool ShouldSerializeDueDateDescription() => DueDateDescription != null;
+
+    #endregion
 }

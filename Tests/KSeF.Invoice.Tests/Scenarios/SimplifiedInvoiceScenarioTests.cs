@@ -335,14 +335,13 @@ public class SimplifiedInvoiceScenarioTests
                 .WithVatRate(VatRate.Rate23)
                 .WithVatAmount(34.50m))
             .WithPayment(p => p
-                .AsCash(184.50m))
+                .AsCash())
             .Build();
 
         // Assert
         invoice.InvoiceData.InvoiceType.Should().Be(InvoiceType.UPR);
         invoice.InvoiceData.Payment.Should().NotBeNull();
-        invoice.InvoiceData.Payment!.PaymentMethods![0].Method.Should().Be(PaymentMethod.Cash);
-        invoice.InvoiceData.Payment.PaymentMethods[0].Amount.Should().Be(184.50m);
+        invoice.InvoiceData.Payment!.PaymentMethod.Should().Be(PaymentMethod.Cash);
     }
 
     #endregion

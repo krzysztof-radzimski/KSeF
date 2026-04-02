@@ -48,7 +48,7 @@ public class CorrectionInvoiceScenarioTests
                 .WithVatRate(VatRate.Rate23)
                 .WithVatAmount(-1380.00m))
             .WithPayment(p => p
-                .AddPaymentTermDescription("Zwrot na konto nabywcy w ciągu 14 dni"))
+                .AddPaymentTermDescription(14, "dni", "od daty wystawienia korekty"))
             .Build();
 
         // Assert

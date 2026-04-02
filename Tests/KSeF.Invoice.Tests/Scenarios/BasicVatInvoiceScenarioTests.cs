@@ -62,7 +62,7 @@ public class BasicVatInvoiceScenarioTests
                 .WithVatAmount(1150.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874", "PKO BP S.A."))
             .WithSystemInfo("System Fakturowania v2.0")
             .Build();

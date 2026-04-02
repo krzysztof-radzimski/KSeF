@@ -704,7 +704,7 @@ public class InvoiceBuilderTests
             .AddLineItem(l => l.WithProductName("Item").WithNetAmount(100).WithVatRate(VatRate.Rate23).WithVatAmount(23))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 1, 30)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL12345678901234567890123456"))
             .Build();
 
@@ -712,7 +712,7 @@ public class InvoiceBuilderTests
         invoice.InvoiceData.Payment.Should().NotBeNull();
         invoice.InvoiceData.Payment!.PaymentTerms.Should().HaveCount(1);
         invoice.InvoiceData.Payment.PaymentTerms![0].DueDate.Should().Be(new DateOnly(2024, 1, 30));
-        invoice.InvoiceData.Payment.PaymentMethods.Should().HaveCount(1);
+        invoice.InvoiceData.Payment.PaymentMethod.Should().Be(PaymentMethod.BankTransfer);
         invoice.InvoiceData.Payment.BankAccounts.Should().HaveCount(1);
     }
 
@@ -726,10 +726,7 @@ public class InvoiceBuilderTests
             {
                 new() { DueDate = new DateOnly(2024, 2, 15) }
             },
-            PaymentMethods = new List<PaymentMethodInfo>
-            {
-                new() { Method = PaymentMethod.Cash }
-            }
+            PaymentMethod = PaymentMethod.Cash
         };
 
         // Act
@@ -762,7 +759,7 @@ public class InvoiceBuilderTests
             .Build();
 
         // Assert
-        invoice.InvoiceData.Payment!.PaymentMethods![0].Method.Should().Be(PaymentMethod.BankTransfer);
+        invoice.InvoiceData.Payment!.PaymentMethod.Should().Be(PaymentMethod.BankTransfer);
         invoice.InvoiceData.Payment.BankAccounts![0].AccountNumber.Should().Be("PL12345678901234567890123456");
         invoice.InvoiceData.Payment.BankAccounts[0].BankName.Should().Be("Test Bank");
     }
@@ -778,12 +775,11 @@ public class InvoiceBuilderTests
                 .WithIssueDate(2024, 1, 15)
                 .WithInvoiceNumber("FV/001/2024"))
             .AddLineItem(l => l.WithProductName("Item").WithNetAmount(100).WithVatRate(VatRate.Rate23).WithVatAmount(23))
-            .WithPayment(p => p.AsCash(123.00m))
+            .WithPayment(p => p.AsCash())
             .Build();
 
         // Assert
-        invoice.InvoiceData.Payment!.PaymentMethods![0].Method.Should().Be(PaymentMethod.Cash);
-        invoice.InvoiceData.Payment.PaymentMethods[0].Amount.Should().Be(123.00m);
+        invoice.InvoiceData.Payment!.PaymentMethod.Should().Be(PaymentMethod.Cash);
     }
 
     #endregion

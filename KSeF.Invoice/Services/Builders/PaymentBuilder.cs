@@ -30,25 +30,97 @@ public class PaymentBuilder
     }
 
     /// <summary>
-    /// Dodaje termin płatności (jako opis)
+    /// Dodaje termin płatności (jako opis: ilość + jednostka + zdarzenie początkowe)
     /// </summary>
-    public PaymentBuilder AddPaymentTermDescription(string description)
+    public PaymentBuilder AddPaymentTermDescription(int quantity, string unit, string startingEvent)
     {
         _payment.PaymentTerms ??= new List<PaymentTerm>();
-        _payment.PaymentTerms.Add(new PaymentTerm { DueDateDescription = description });
+        _payment.PaymentTerms.Add(new PaymentTerm
+        {
+            DueDateDescription = new PaymentTermDescription
+            {
+                Quantity = quantity,
+                Unit = unit,
+                StartingEvent = startingEvent
+            }
+        });
         return this;
     }
 
     /// <summary>
-    /// Dodaje formę płatności
+    /// Ustawia standardową formę płatności (FormaPlatnosci)
     /// </summary>
-    public PaymentBuilder AddPaymentMethod(PaymentMethod method, decimal? amount = null)
+    public PaymentBuilder WithPaymentMethod(PaymentMethod method)
     {
-        _payment.PaymentMethods ??= new List<PaymentMethodInfo>();
-        _payment.PaymentMethods.Add(new PaymentMethodInfo
+        _payment.PaymentMethod = method;
+        _payment.OtherPaymentMarker = null;
+        _payment.OtherPaymentDescription = null;
+        return this;
+    }
+
+    /// <summary>
+    /// Ustawia inną formę płatności (PlatnoscInna + OpisPlatnosci)
+    /// </summary>
+    public PaymentBuilder WithOtherPaymentMethod(string description)
+    {
+        _payment.OtherPaymentMarker = 1;
+        _payment.OtherPaymentDescription = description;
+        _payment.PaymentMethod = null;
+        return this;
+    }
+
+    /// <summary>
+    /// Oznacza fakturę jako zapłaconą w całości (Zaplacono + DataZaplaty)
+    /// </summary>
+    public PaymentBuilder AsPaidInFull(DateOnly paymentDate)
+    {
+        _payment.PaidInFull = 1;
+        _payment.PaymentDate = paymentDate;
+        _payment.PartialPaymentMarker = null;
+        _payment.PartialPayments = null;
+        return this;
+    }
+
+    /// <summary>
+    /// Ustawia znacznik zapłaty częściowej (ZnacznikZaplatyCzesciowej)
+    /// </summary>
+    /// <param name="fullyPaidInParts">true = zapłacono w całości w częściach (2), false = zapłacono częściowo (1)</param>
+    public PaymentBuilder WithPartialPayments(bool fullyPaidInParts = false)
+    {
+        _payment.PartialPaymentMarker = fullyPaidInParts ? 2 : 1;
+        _payment.PaidInFull = null;
+        _payment.PaymentDate = null;
+        _payment.PartialPayments ??= new List<PartialPayment>();
+        return this;
+    }
+
+    /// <summary>
+    /// Dodaje zapłatę częściową
+    /// </summary>
+    public PaymentBuilder AddPartialPayment(decimal amount, DateOnly date, PaymentMethod? method = null)
+    {
+        _payment.PartialPayments ??= new List<PartialPayment>();
+        _payment.PartialPayments.Add(new PartialPayment
         {
-            Method = method,
-            Amount = amount
+            Amount = amount,
+            Date = date,
+            PaymentMethod = method
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Dodaje zapłatę częściową z inną formą płatności
+    /// </summary>
+    public PaymentBuilder AddPartialPaymentOther(decimal amount, DateOnly date, string paymentDescription)
+    {
+        _payment.PartialPayments ??= new List<PartialPayment>();
+        _payment.PartialPayments.Add(new PartialPayment
+        {
+            Amount = amount,
+            Date = date,
+            OtherPaymentMarker = 1,
+            OtherPaymentDescription = paymentDescription
         });
         return this;
     }
@@ -61,7 +133,7 @@ public class PaymentBuilder
         var builder = new BankAccountBuilder();
         configure(builder);
 
-        _payment.BankAccounts ??= new List<Models.Common.BankAccount>();
+        _payment.BankAccounts ??= new List<BankAccount>();
         _payment.BankAccounts.Add(builder.Build());
         return this;
     }
@@ -71,8 +143,8 @@ public class PaymentBuilder
     /// </summary>
     public PaymentBuilder AddBankAccount(string accountNumber, string? bankName = null, string? swiftCode = null)
     {
-        _payment.BankAccounts ??= new List<Models.Common.BankAccount>();
-        _payment.BankAccounts.Add(new Models.Common.BankAccount
+        _payment.BankAccounts ??= new List<BankAccount>();
+        _payment.BankAccounts.Add(new BankAccount
         {
             AccountNumber = accountNumber,
             BankName = bankName,
@@ -82,31 +154,62 @@ public class PaymentBuilder
     }
 
     /// <summary>
-    /// Ustawia rachunek bankowy faktoringowy
+    /// Dodaje rachunek bankowy faktora (RachunekBankowyFaktora)
     /// </summary>
-    public PaymentBuilder WithFactoringBankAccount(Action<BankAccountBuilder> configure)
+    public PaymentBuilder AddFactoringBankAccount(Action<BankAccountBuilder> configure)
     {
         var builder = new BankAccountBuilder();
         configure(builder);
-        _payment.FactoringBankAccount = builder.Build();
+        _payment.FactoringBankAccounts ??= new List<BankAccount>();
+        _payment.FactoringBankAccounts.Add(builder.Build());
         return this;
     }
 
     /// <summary>
-    /// Ustawia warunki skonta
+    /// Ustawia rachunek bankowy faktoringowy (alias dla AddFactoringBankAccount)
     /// </summary>
-    public PaymentBuilder WithDiscountTerms(string discountTerms)
+    public PaymentBuilder WithFactoringBankAccount(Action<BankAccountBuilder> configure)
     {
-        _payment.DiscountTerms = discountTerms;
+        return AddFactoringBankAccount(configure);
+    }
+
+    /// <summary>
+    /// Ustawia warunki skonta (Skonto)
+    /// </summary>
+    public PaymentBuilder WithDiscount(string conditions, string amount)
+    {
+        _payment.Discount = new DiscountTerms
+        {
+            Conditions = conditions,
+            Amount = amount
+        };
+        return this;
+    }
+
+    /// <summary>
+    /// Ustawia link do płatności (LinkDoPlatnosci)
+    /// </summary>
+    public PaymentBuilder WithPaymentLink(string paymentLink)
+    {
+        _payment.PaymentLink = paymentLink;
+        return this;
+    }
+
+    /// <summary>
+    /// Ustawia identyfikator płatności KSeF (IPKSeF)
+    /// </summary>
+    public PaymentBuilder WithKSeFPaymentId(string ksefPaymentId)
+    {
+        _payment.KSeFPaymentId = ksefPaymentId;
         return this;
     }
 
     /// <summary>
     /// Konfiguruje płatność gotówką
     /// </summary>
-    public PaymentBuilder AsCash(decimal? amount = null)
+    public PaymentBuilder AsCash()
     {
-        return AddPaymentMethod(PaymentMethod.Cash, amount);
+        return WithPaymentMethod(PaymentMethod.Cash);
     }
 
     /// <summary>
@@ -114,16 +217,16 @@ public class PaymentBuilder
     /// </summary>
     public PaymentBuilder AsBankTransfer(string accountNumber, decimal? amount = null, string? bankName = null)
     {
-        AddPaymentMethod(PaymentMethod.BankTransfer, amount);
+        WithPaymentMethod(PaymentMethod.BankTransfer);
         return AddBankAccount(accountNumber, bankName);
     }
 
     /// <summary>
     /// Konfiguruje płatność kartą
     /// </summary>
-    public PaymentBuilder AsCard(decimal? amount = null)
+    public PaymentBuilder AsCard()
     {
-        return AddPaymentMethod(PaymentMethod.Card, amount);
+        return WithPaymentMethod(PaymentMethod.Card);
     }
 
     /// <summary>
@@ -137,7 +240,7 @@ public class PaymentBuilder
 /// </summary>
 public class BankAccountBuilder
 {
-    private readonly Models.Common.BankAccount _bankAccount = new();
+    private readonly BankAccount _bankAccount = new();
 
     /// <summary>
     /// Ustawia numer rachunku bankowego (IBAN)
@@ -187,5 +290,5 @@ public class BankAccountBuilder
     /// <summary>
     /// Buduje rachunek bankowy
     /// </summary>
-    public Models.Common.BankAccount Build() => _bankAccount;
+    public BankAccount Build() => _bankAccount;
 }

@@ -700,7 +700,7 @@ public class RequiredFieldsValidationTests
         var invoice = CreateValidInvoice();
         invoice.InvoiceData.Payment = new Payment
         {
-            FactoringBankAccount = new BankAccount { AccountNumber = "" }
+            FactoringBankAccounts = new List<BankAccount> { new BankAccount { AccountNumber = "" } }
         };
 
         // Act
@@ -718,7 +718,7 @@ public class RequiredFieldsValidationTests
         var invoice = CreateValidInvoice();
         invoice.InvoiceData.Payment = new Payment
         {
-            FactoringBankAccount = new BankAccount { AccountNumber = "PL12345678901234567890123456" } // Zła suma kontrolna
+            FactoringBankAccounts = new List<BankAccount> { new BankAccount { AccountNumber = "PL12345678901234567890123456" } } // Zła suma kontrolna
         };
 
         // Act

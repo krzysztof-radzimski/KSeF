@@ -558,27 +558,33 @@ public class InvoiceValidator : IInvoiceValidator
             }
         }
 
-        // Walidacja rachunku faktoringowego
-        if (payment.HasFactoringBankAccount && payment.FactoringBankAccount != null)
+        // Walidacja rachunków faktoringowych
+        if (payment.HasFactoringBankAccounts)
         {
-            if (string.IsNullOrWhiteSpace(payment.FactoringBankAccount.AccountNumber))
+            for (int i = 0; i < payment.FactoringBankAccounts!.Count; i++)
             {
-                result.AddError("PAYMENT_FACTORING_EMPTY",
-                    "Rachunek faktoringowy: Numer rachunku jest wymagany",
-                    "InvoiceData.Payment.FactoringBankAccount.AccountNumber");
-            }
-            else
-            {
-                var ibanResult = _ibanValidator.Validate(payment.FactoringBankAccount.AccountNumber);
-                foreach (var error in ibanResult.Errors)
+                var factoringAccount = payment.FactoringBankAccounts[i];
+                var fieldPrefix = $"InvoiceData.Payment.FactoringBankAccounts[{i}]";
+
+                if (string.IsNullOrWhiteSpace(factoringAccount.AccountNumber))
                 {
-                    result.AddError(error.Code, $"Rachunek faktoringowy: {error.Message}",
-                        $"InvoiceData.Payment.FactoringBankAccount.{error.FieldName}");
+                    result.AddError("PAYMENT_FACTORING_EMPTY",
+                        "Rachunek faktoringowy: Numer rachunku jest wymagany",
+                        $"{fieldPrefix}.AccountNumber");
                 }
-                foreach (var warning in ibanResult.Warnings)
+                else
                 {
-                    result.AddWarning(warning.Code, $"Rachunek faktoringowy: {warning.Message}",
-                        $"InvoiceData.Payment.FactoringBankAccount.{warning.FieldName}");
+                    var ibanResult = _ibanValidator.Validate(factoringAccount.AccountNumber);
+                    foreach (var error in ibanResult.Errors)
+                    {
+                        result.AddError(error.Code, $"Rachunek faktoringowy: {error.Message}",
+                            $"{fieldPrefix}.{error.FieldName}");
+                    }
+                    foreach (var warning in ibanResult.Warnings)
+                    {
+                        result.AddWarning(warning.Code, $"Rachunek faktoringowy: {warning.Message}",
+                            $"{fieldPrefix}.{warning.FieldName}");
+                    }
                 }
             }
         }

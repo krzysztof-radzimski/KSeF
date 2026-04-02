@@ -545,7 +545,7 @@ public class XmlStructureComparisonTests
                 .WithVatAmount(230))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874", "PKO BP S.A."))
             .Build();
 
@@ -662,7 +662,7 @@ public class XmlStructureComparisonTests
                 .WithVatAmount(1150.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874", "PKO BP S.A."))
             .WithSystemInfo("KSeF Test System v1.0")
             .Build();
@@ -742,7 +742,7 @@ public class XmlStructureComparisonTests
                 .WithVatAmount(230.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 1, 30)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874"))
             .WithSystemInfo("KSeF.Invoice.Samples 1.0")
             .Build();
@@ -894,7 +894,7 @@ public class XmlStructureComparisonTests
                 .WithVatAmount(11500.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 1, 20)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL27114020040000320218427362", "mBank S.A."))
             .Build();
 
@@ -1003,7 +1003,7 @@ public class XmlStructureComparisonTests
                 .WithPkwiuCode("58.11.1"))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 20)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874", "PKO BP S.A."))
             .Build();
 

@@ -52,7 +52,7 @@ public class MultiRecipientInvoiceScenarioTests
                 .WithVatAmount(11500.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .WithFactoringBankAccount(ba => ba
                     .WithAccountNumber("PL11111111111111111111111111")
                     .WithBankName("Faktoring Bank S.A.")
@@ -67,8 +67,9 @@ public class MultiRecipientInvoiceScenarioTests
         invoice.Recipients[0].Name.Should().Be("Faktoring Bank S.A.");
 
         // Płatność na rachunek faktora
-        invoice.InvoiceData.Payment!.FactoringBankAccount.Should().NotBeNull();
-        invoice.InvoiceData.Payment.FactoringBankAccount!.AccountNumber.Should().Be("PL11111111111111111111111111");
+        invoice.InvoiceData.Payment!.FactoringBankAccounts.Should().NotBeNull();
+        invoice.InvoiceData.Payment.FactoringBankAccounts.Should().HaveCount(1);
+        invoice.InvoiceData.Payment.FactoringBankAccounts![0].AccountNumber.Should().Be("PL11111111111111111111111111");
     }
 
     #endregion
@@ -414,7 +415,7 @@ public class MultiRecipientInvoiceScenarioTests
                 .WithVatAmount(23000.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 2, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .WithFactoringBankAccount(ba => ba
                     .WithAccountNumber("PL55555555555555555555555555")
                     .WithBankName("Bank Faktoring S.A.")))

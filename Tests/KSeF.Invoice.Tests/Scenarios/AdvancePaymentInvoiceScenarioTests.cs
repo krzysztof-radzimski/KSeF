@@ -46,7 +46,7 @@ public class AdvancePaymentInvoiceScenarioTests
                 .WithVatAmount(23000.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 1, 22)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874", "PKO BP S.A."))
             .Build();
 
@@ -86,7 +86,7 @@ public class AdvancePaymentInvoiceScenarioTests
                 .WithVatAmount(34500.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 1, 17)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874"))
             .Build();
 
@@ -260,7 +260,7 @@ public class AdvancePaymentInvoiceScenarioTests
                 .WithVatAmount(-34500.00m))
             .WithPayment(p => p
                 .AddPaymentTerm(2024, 7, 14)
-                .AddPaymentMethod(PaymentMethod.BankTransfer)
+                .WithPaymentMethod(PaymentMethod.BankTransfer)
                 .AddBankAccount("PL61109010140000071219812874"))
             .Build();
 
