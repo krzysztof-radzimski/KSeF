@@ -141,12 +141,13 @@ public class PaymentBuilder
     /// <summary>
     /// Dodaje rachunek bankowy (prostsza wersja)
     /// </summary>
-    public PaymentBuilder AddBankAccount(string accountNumber, string? bankName = null, string? swiftCode = null)
+    public PaymentBuilder AddBankAccount(string accountNumber, string? bankName = null, string? swiftCode = null, BankAccountType? bankOwnAccountType = null)
     {
         _payment.BankAccounts ??= new List<BankAccount>();
         _payment.BankAccounts.Add(new BankAccount
         {
             AccountNumber = accountNumber,
+            BankOwnAccountType = bankOwnAccountType,
             BankName = bankName,
             SwiftCode = swiftCode
         });
@@ -215,10 +216,10 @@ public class PaymentBuilder
     /// <summary>
     /// Konfiguruje płatność przelewem bankowym
     /// </summary>
-    public PaymentBuilder AsBankTransfer(string accountNumber, decimal? amount = null, string? bankName = null)
+    public PaymentBuilder AsBankTransfer(string accountNumber, decimal? amount = null, string? bankName = null, BankAccountType? bankOwnAccountType = null)
     {
         WithPaymentMethod(PaymentMethod.BankTransfer);
-        return AddBankAccount(accountNumber, bankName);
+        return AddBankAccount(accountNumber, bankName, bankOwnAccountType: bankOwnAccountType);
     }
 
     /// <summary>
