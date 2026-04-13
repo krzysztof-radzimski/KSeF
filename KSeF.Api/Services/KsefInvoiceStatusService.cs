@@ -53,6 +53,7 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
 
     /// <inheritdoc />
     public async Task<InvoiceStatusResult> GetInvoiceStatusAsync(
+        string sessionReferenceNumber,
         string referenceNumber,
         string accessToken,
         CancellationToken cancellationToken = default)
@@ -62,7 +63,7 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
             _logger.LogInformation("Sprawdzanie statusu faktury: {RefNumber}", referenceNumber);
 
             var response = await _ksefClient.GetSessionInvoiceAsync(
-                referenceNumber,
+                sessionReferenceNumber,
                 referenceNumber,
                 accessToken,
                 cancellationToken);
