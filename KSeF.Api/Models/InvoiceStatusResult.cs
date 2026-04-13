@@ -46,6 +46,16 @@ public class InvoiceStatusResult
     public DateTime? ProcessingTimestamp { get; set; }
 
     /// <summary>
+    /// Skrót SHA256 faktury zakodowany w Base64
+    /// </summary>
+    public string? InvoiceHash { get; set; }
+
+    /// <summary>
+    /// Adres URL do pobrania UPO faktury
+    /// </summary>
+    public Uri? UpoDownloadUrl { get; set; }
+
+    /// <summary>
     /// Lista błędów
     /// </summary>
     public List<string> Errors { get; set; } = [];
@@ -53,12 +63,19 @@ public class InvoiceStatusResult
     /// <summary>
     /// Tworzy wynik sukcesu
     /// </summary>
-    public static InvoiceStatusResult Ok(string referenceNumber, InvoiceProcessingStatus status, string? ksefNumber = null) => new()
+    public static InvoiceStatusResult Ok(
+        string referenceNumber,
+        InvoiceProcessingStatus status,
+        string? ksefNumber = null,
+        string? invoiceHash = null,
+        Uri? upoDownloadUrl = null) => new()
     {
         Success = true,
         ReferenceNumber = referenceNumber,
         Status = status,
-        KsefNumber = ksefNumber
+        KsefNumber = ksefNumber,
+        InvoiceHash = invoiceHash,
+        UpoDownloadUrl = upoDownloadUrl
     };
 
     /// <summary>

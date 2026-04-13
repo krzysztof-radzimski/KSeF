@@ -72,7 +72,9 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
             return InvoiceStatusResult.Ok(
                 referenceNumber,
                 status,
-                response.KsefNumber);
+                response.KsefNumber,
+                response.InvoiceHash,
+                response.UpoDownloadUrl);
         }
         catch (Exception ex)
         {
@@ -115,7 +117,9 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
                     statuses.Add(InvoiceStatusResult.Ok(
                         inv.ReferenceNumber ?? string.Empty,
                         status,
-                        inv.KsefNumber));
+                        inv.KsefNumber,
+                        inv.InvoiceHash,
+                        inv.UpoDownloadUrl));
                 }
             }
 
