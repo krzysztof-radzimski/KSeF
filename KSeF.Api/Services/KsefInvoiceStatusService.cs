@@ -29,8 +29,7 @@ namespace KSeF.Api.Services;
 /// jako zaksięgowane. Serwis pozwala na sprawdzanie statusu przetwarzania faktur
 /// i sesji, co jest wystarczające do śledzenia stanu faktur.
 /// </summary>
-public class KsefInvoiceStatusService : IKsefInvoiceStatusService
-{
+public class KsefInvoiceStatusService : IKsefInvoiceStatusService {
     private readonly IKSeFClient _ksefClient;
     private readonly KsefApiOptions _options;
     private readonly ILogger<KsefInvoiceStatusService> _logger;
@@ -44,8 +43,7 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
     public KsefInvoiceStatusService(
         IKSeFClient ksefClient,
         IOptions<KsefApiOptions> options,
-        ILogger<KsefInvoiceStatusService> logger)
-    {
+        ILogger<KsefInvoiceStatusService> logger) {
         _ksefClient = ksefClient;
         _options = options.Value;
         _logger = logger;
@@ -56,10 +54,8 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
         string sessionReferenceNumber,
         string referenceNumber,
         string accessToken,
-        CancellationToken cancellationToken = default)
-    {
-        try
-        {
+        CancellationToken cancellationToken = default) {
+        try {
             _logger.LogInformation("Sprawdzanie statusu faktury: {RefNumber}", referenceNumber);
 
             var response = await _ksefClient.GetSessionInvoiceAsync(
@@ -77,8 +73,7 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
                 response.InvoiceHash,
                 response.UpoDownloadUrl);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             _logger.LogError(ex, "Błąd sprawdzania statusu faktury {RefNumber}", referenceNumber);
             return InvoiceStatusResult.Fail(ex.Message);
         }
@@ -86,21 +81,19 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
 
     /// <inheritdoc />
     public Task<InvoiceStatusResult> GetInvoiceStatusAsync(
+        string sessionReferenceNumber,
         string referenceNumber,
         SessionInfo sessionInfo,
-        CancellationToken cancellationToken = default)
-    {
-        return GetInvoiceStatusAsync(referenceNumber, sessionInfo.AccessToken, cancellationToken);
+        CancellationToken cancellationToken = default) {
+        return GetInvoiceStatusAsync(sessionReferenceNumber, referenceNumber, sessionInfo.AccessToken, cancellationToken);
     }
 
     /// <inheritdoc />
     public async Task<SessionInvoicesResult> GetSessionInvoicesStatusAsync(
         string sessionReference,
         string accessToken,
-        CancellationToken cancellationToken = default)
-    {
-        try
-        {
+        CancellationToken cancellationToken = default) {
+        try {
             _logger.LogInformation("Sprawdzanie statusu faktur w sesji: {SessionRef}", sessionReference);
 
             var response = await _ksefClient.GetSessionInvoicesAsync(
@@ -110,10 +103,8 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
 
             var statuses = new List<InvoiceStatusResult>();
 
-            if (response?.Invoices != null)
-            {
-                foreach (var inv in response.Invoices)
-                {
+            if (response?.Invoices != null) {
+                foreach (var inv in response.Invoices) {
                     var status = MapProcessingStatus(inv.Status?.Code);
                     statuses.Add(InvoiceStatusResult.Ok(
                         inv.ReferenceNumber ?? string.Empty,
@@ -132,17 +123,14 @@ public class KsefInvoiceStatusService : IKsefInvoiceStatusService
 
             return SessionInvoicesResult.Ok(sessionReference, statuses);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             _logger.LogError(ex, "Błąd sprawdzania statusu sesji {SessionRef}", sessionReference);
             return SessionInvoicesResult.Fail(ex.Message);
         }
     }
 
-    private static InvoiceProcessingStatus MapProcessingStatus(int? processingCode)
-    {
-        return processingCode switch
-        {
+    private static InvoiceProcessingStatus MapProcessingStatus(int? processingCode) {
+        return processingCode switch {
             100 => InvoiceProcessingStatus.Pending,
             200 => InvoiceProcessingStatus.Processing,
             300 => InvoiceProcessingStatus.Processed,

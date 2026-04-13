@@ -35,6 +35,7 @@ public interface IKsefInvoiceStatusService
     /// <param name="cancellationToken">Token anulowania</param>
     /// <returns>Status faktury</returns>
     Task<InvoiceStatusResult> GetInvoiceStatusAsync(
+        string sessionReferenceNumber,
         string referenceNumber,
         string accessToken,
         CancellationToken cancellationToken = default);
@@ -47,6 +48,7 @@ public interface IKsefInvoiceStatusService
     /// <param name="cancellationToken">Token anulowania</param>
     /// <returns>Status faktury</returns>
     Task<InvoiceStatusResult> GetInvoiceStatusAsync(
+        string sessionReferenceNumber,
         string referenceNumber,
         SessionInfo sessionInfo,
         CancellationToken cancellationToken = default);
