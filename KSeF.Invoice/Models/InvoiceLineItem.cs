@@ -126,17 +126,17 @@ public class InvoiceLineItem
     public decimal? NetAmount { get; set; }
 
     /// <summary>
-    /// Kwota podatku VAT dla pozycji (P_11A)
+    /// Kwota podatku VAT dla pozycji (P_11Vat)
     /// Kwota podatku od wartości netto pozycji
     /// Wyrażona w walucie faktury
     /// Wartość z dokładnością do 2 miejsc po przecinku
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("P_11A")]
+    [XmlElement("P_11Vat")]
     public decimal? VatAmount { get; set; }
 
     /// <summary>
-    /// Wartość sprzedaży brutto (P_11Vat)
+    /// Wartość sprzedaży brutto (P_11A)
     /// Wartość dostarczonych towarów lub wykonanych usług wraz z kwotą podatku
     /// Stosowana gdy faktura dokumentuje czynności, dla których podstawą opodatkowania
     /// jest kwota brutto (metoda "w stu")
@@ -144,7 +144,7 @@ public class InvoiceLineItem
     /// Wartość z dokładnością do 2 miejsc po przecinku
     /// Pole opcjonalne - stosowane alternatywnie z P_11
     /// </summary>
-    [XmlElement("P_11Vat")]
+    [XmlElement("P_11A")]
     public decimal? GrossAmount { get; set; }
 
     #endregion

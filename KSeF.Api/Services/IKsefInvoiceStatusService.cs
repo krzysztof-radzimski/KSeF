@@ -30,6 +30,7 @@ public interface IKsefInvoiceStatusService
     /// <summary>
     /// Sprawdza status faktury po numerze referencyjnym
     /// </summary>
+    /// <param name="sessionReferenceNumber">Numer referencyjny sesji</param>
     /// <param name="referenceNumber">Numer referencyjny faktury</param>
     /// <param name="accessToken">Token dostępowy</param>
     /// <param name="cancellationToken">Token anulowania</param>
@@ -43,6 +44,7 @@ public interface IKsefInvoiceStatusService
     /// <summary>
     /// Sprawdza status faktury w ramach sesji
     /// </summary>
+    /// <param name="sessionReferenceNumber">Numer referencyjny sesji</param>
     /// <param name="referenceNumber">Numer referencyjny faktury</param>
     /// <param name="sessionInfo">Informacje o sesji</param>
     /// <param name="cancellationToken">Token anulowania</param>
