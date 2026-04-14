@@ -19,8 +19,7 @@ namespace KSeF.Invoice.Models.Common;
 /// <summary>
 /// Informacje o rachunku bankowym (TRachunekBankowy)
 /// </summary>
-public class BankAccount
-{
+public class BankAccount {
     /// <summary>
     /// Pełny numer rachunku bankowego (IBAN lub krajowy)
     /// Od 10 do 34 znaków
@@ -39,7 +38,7 @@ public class BankAccount
     /// Typ rachunku własnego banku (opcjonalnie)
     /// Stosowane gdy rachunek jest rachunkiem własnym banku lub SKOK
     /// </summary>
-    [XmlElement("RachunekWlasnyBanku")]
+    [XmlElement("RachunekWlasnyBanku", IsNullable = false)]
     public BankAccountType? BankOwnAccountType { get; set; }
 
     /// <summary>
