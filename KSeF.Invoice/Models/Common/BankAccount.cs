@@ -38,8 +38,13 @@ public class BankAccount {
     /// Typ rachunku własnego banku (opcjonalnie)
     /// Stosowane gdy rachunek jest rachunkiem własnym banku lub SKOK
     /// </summary>
-    [XmlElement("RachunekWlasnyBanku", IsNullable = false)]
+    [XmlElement("RachunekWlasnyBanku")]
     public BankAccountType? BankOwnAccountType { get; set; }
+
+    /// <summary>
+    /// Nie serwializuj gdy watość jest pusta
+    /// </summary>
+    public bool ShouldSerializeBankOwnAccountType() { return BankOwnAccountType.HasValue; }
 
     /// <summary>
     /// Nazwa banku (opcjonalnie)
