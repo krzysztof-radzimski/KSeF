@@ -1282,6 +1282,177 @@ public class XsdValidatorTests
 
     #endregion
 
+    #region Testy FakturaZaliczkowa (AdvanceInvoiceReference)
+
+    [Fact]
+    public void Validate_InvoiceWithFakturaZaliczkowa_KSeF_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura zaliczkowa wystawiona w KSeF
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.AdvanceInvoiceReferences = new List<AdvanceInvoiceReference>
+        {
+            new AdvanceInvoiceReference
+            {
+                KSeFNumber = "1234567890-20260401-ABC123DEF456-78"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:FakturaZaliczkowa>");
+        xml.Should().Contain("<tns:NrKSeFFaZaliczkowej>1234567890-20260401-ABC123DEF456-78</tns:NrKSeFFaZaliczkowej>");
+        xml.Should().NotContain("<tns:NrKSeFZN>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithFakturaZaliczkowa_OutsideKSeF_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura zaliczkowa wystawiona poza KSeF
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.AdvanceInvoiceReferences = new List<AdvanceInvoiceReference>
+        {
+            new AdvanceInvoiceReference
+            {
+                IsIssuedOutsideKSeF = true,
+                AdvanceInvoiceNumber = "FV/2026/ZAL/001"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:FakturaZaliczkowa>");
+        xml.Should().Contain("<tns:NrKSeFZN>1</tns:NrKSeFZN>");
+        xml.Should().Contain("<tns:NrFaZaliczkowej>FV/2026/ZAL/001</tns:NrFaZaliczkowej>");
+        xml.Should().NotContain("<tns:NrKSeFFaZaliczkowej>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithMixedFakturaZaliczkowa_ShouldPassXsdValidation()
+    {
+        // Arrange — 3 faktury zaliczkowe: 2 w KSeF, 1 poza
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.AdvanceInvoiceReferences = new List<AdvanceInvoiceReference>
+        {
+            new AdvanceInvoiceReference
+            {
+                KSeFNumber = "1234567890-20260101-AAA111BBB222-01"
+            },
+            new AdvanceInvoiceReference
+            {
+                IsIssuedOutsideKSeF = true,
+                AdvanceInvoiceNumber = "FV/2026/ZAL/EXT"
+            },
+            new AdvanceInvoiceReference
+            {
+                KSeFNumber = "1234567890-20260301-CCC333DDD444-03"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        Regex.Matches(xml, "<tns:FakturaZaliczkowa>").Count.Should().Be(3);
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithTooManyFakturaZaliczkowa_ShouldFailXsdValidation()
+    {
+        // Arrange — 101 elementów (maxOccurs=100)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.AdvanceInvoiceReferences = new List<AdvanceInvoiceReference>();
+        for (int i = 0; i < 101; i++)
+        {
+            invoice.InvoiceData.AdvanceInvoiceReferences.Add(new AdvanceInvoiceReference
+            {
+                KSeFNumber = $"1234567890-20260401-ABC{i:D6}DEF-78"
+            });
+        }
+
+        // Act
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        result.IsValid.Should().BeFalse();
+        result.HasErrors.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithFakturaZaliczkowa_OrderBeforeZwrotAkcyzy_ShouldPass()
+    {
+        // Arrange — FakturaZaliczkowa + ZwrotAkcyzy — verifies XSD order
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.IsExciseRefundEligible = true;
+        invoice.InvoiceData.AdvanceInvoiceReferences = new List<AdvanceInvoiceReference>
+        {
+            new AdvanceInvoiceReference
+            {
+                KSeFNumber = "1234567890-20260401-ABC123DEF456-78"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        var fakturaIndex = xml.IndexOf("<tns:FakturaZaliczkowa>");
+        var zwrotIndex = xml.IndexOf("<tns:ZwrotAkcyzy>");
+        var faWierszIndex = xml.IndexOf("<tns:FaWiersz>");
+
+        fakturaIndex.Should().BeLessThan(zwrotIndex, "FakturaZaliczkowa should appear before ZwrotAkcyzy");
+        zwrotIndex.Should().BeLessThan(faWierszIndex, "ZwrotAkcyzy should appear before FaWiersz");
+    }
+
+    #endregion
+
     #region Pomocnicze metody
 
     private static KSeF.Invoice.Models.Invoice CreateMinimalValidInvoice()

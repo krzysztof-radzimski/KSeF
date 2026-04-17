@@ -6,7 +6,7 @@
     walutę, datę wystawienia, numer faktury, podsumowania podatkowe
     w podziale na stawki VAT, adnotacje, rodzaj faktury, dane korekt,
     dane zaliczek, pozycje faktury, płatności, warunki transakcji
-    oraz dodatkowe opisy. Zawiera również klasę AdvancePaymentData.
+    oraz dodatkowe opisy.
 
 	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
     Licencja MIT
@@ -418,21 +418,19 @@ public class InvoiceData
 
     #endregion
 
-    #region Dane zaliczki (dla faktur zaliczkowych i rozliczeniowych)
+    #region Faktury zaliczkowe (FakturaZaliczkowa)
 
     /// <summary>
-    /// Lista wcześniejszych faktur zaliczkowych (ZaliczkaCalosciowa)
-    /// Dane dotyczące wcześniejszych faktur zaliczkowych przy fakturze końcowej/rozliczeniowej
+    /// Referencje do wcześniejszych faktur zaliczkowych (FakturaZaliczkowa).
+    /// XSD wymaga xsd:choice: albo (NrKSeFZN + NrFaZaliczkowej) — faktura poza KSeF,
+    /// albo NrKSeFFaZaliczkowej — faktura wystawiona w KSeF.
+    /// Maksymalnie 100 pozycji.
     /// </summary>
-    [XmlElement("ZaliczkaCalosciowa", Order = 46)]
-    public List<AdvancePaymentData>? AdvancePayments { get; set; }
+    [XmlElement("FakturaZaliczkowa", Order = 46)]
+    public List<AdvanceInvoiceReference>? AdvanceInvoiceReferences { get; set; }
 
-    /// <summary>
-    /// Numer faktury zaliczkowej dla faktury rozliczeniowej (NrFaZaliczkowej)
-    /// Numer faktury zaliczkowej, której dotyczy faktura rozliczeniowa
-    /// </summary>
-    [XmlElement("NrFaZaliczkowej", Order = 47)]
-    public List<string>? AdvanceInvoiceNumbers { get; set; }
+    public bool ShouldSerializeAdvanceInvoiceReferences() =>
+        AdvanceInvoiceReferences != null && AdvanceInvoiceReferences.Count > 0;
 
     #endregion
 
@@ -444,7 +442,7 @@ public class InvoiceData
     [XmlIgnore]
     public bool IsExciseRefundEligible { get; set; }
 
-    [XmlElement("ZwrotAkcyzy", Order = 48)]
+    [XmlElement("ZwrotAkcyzy", Order = 47)]
     public string? ExciseRefundMarker
     {
         get => IsExciseRefundEligible ? "1" : null;
@@ -462,7 +460,7 @@ public class InvoiceData
     /// Zawiera szczegółowe dane o towarach i usługach
     /// Może zawierać do 10000 pozycji
     /// </summary>
-    [XmlElement("FaWiersz", Order = 49)]
+    [XmlElement("FaWiersz", Order = 48)]
     public List<InvoiceLineItem>? LineItems { get; set; }
 
     #endregion
@@ -474,7 +472,7 @@ public class InvoiceData
     /// Zawiera terminy płatności, formy płatności i rachunki bankowe
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("Platnosc", Order = 50)]
+    [XmlElement("Platnosc", Order = 49)]
     public Payment? Payment { get; set; }
 
     #endregion
@@ -486,7 +484,7 @@ public class InvoiceData
     /// Zawiera informacje o warunkach dostawy i transportu
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("WarunkiTransakcji", Order = 51)]
+    [XmlElement("WarunkiTransakcji", Order = 50)]
     public TransactionTerms? TransactionTerms { get; set; }
 
     #endregion
@@ -529,12 +527,10 @@ public class InvoiceData
     public bool ShouldSerializeAmountBeforeCorrection() => AmountBeforeCorrection.HasValue;
     public bool ShouldSerializeExchangeRateBeforeCorrection() => ExchangeRateBeforeCorrection.HasValue;
     public bool ShouldSerializePartialAdvancePayments() => PartialAdvancePayments != null && PartialAdvancePayments.Count > 0;
-    public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;
     public bool ShouldSerializeLineItems() => LineItems != null && LineItems.Count > 0;
     public bool ShouldSerializePayment() => Payment != null;
     public bool ShouldSerializeTransactionTerms() => TransactionTerms != null;
     public bool ShouldSerializeAdditionalDescription() => AdditionalDescription != null && AdditionalDescription.Count > 0;
-    public bool ShouldSerializeAdvanceInvoiceNumbers() => AdvanceInvoiceNumbers != null && AdvanceInvoiceNumbers.Count > 0;
 
     #endregion
 
@@ -605,50 +601,3 @@ public class InvoiceData
     #endregion
 }
 
-/// <summary>
-/// Dane zaliczki częściowej lub całościowej
-/// Informacje o wcześniejszych fakturach zaliczkowych
-/// </summary>
-[XmlType("ZaliczkaCalosciowa")]
-public class AdvancePaymentData
-{
-    /// <summary>
-    /// Numer faktury zaliczkowej
-    /// </summary>
-    [XmlElement("NrKSeFFaZaliczkowej")]
-    public string? KSeFNumber { get; set; }
-
-    /// <summary>
-    /// Numer faktury zaliczkowej (bez KSeF)
-    /// </summary>
-    [XmlElement("NrFaZaliczkowej")]
-    public string? InvoiceNumber { get; set; }
-
-    /// <summary>
-    /// Data wystawienia faktury zaliczkowej - proxy string dla serializacji XML
-    /// </summary>
-    [XmlElement("DataFaZaliczkowej")]
-    public string? IssueDateString
-    {
-        get => IssueDate?.ToString("yyyy-MM-dd");
-        set => IssueDate = string.IsNullOrEmpty(value) ? null : DateOnly.Parse(value);
-    }
-
-    /// <summary>
-    /// Data wystawienia faktury zaliczkowej
-    /// </summary>
-    [XmlIgnore]
-    public DateOnly? IssueDate { get; set; }
-
-    /// <summary>
-    /// Kwota zaliczki netto
-    /// </summary>
-    [XmlElement("KwotaZaliczki")]
-    public decimal? Amount { get; set; }
-
-    /// <summary>
-    /// Kwota podatku VAT od zaliczki
-    /// </summary>
-    [XmlElement("KwotaVATZaliczki")]
-    public decimal? VatAmount { get; set; }
-}

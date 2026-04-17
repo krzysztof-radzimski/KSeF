@@ -296,6 +296,22 @@ public class InvoiceDetailsBuilder
     }
 
     /// <summary>
+    /// Dodaje referencję do wcześniejszej faktury zaliczkowej (FakturaZaliczkowa).
+    /// Maksymalnie 100 pozycji.
+    /// </summary>
+    public InvoiceDetailsBuilder AddAdvanceInvoiceReference(Action<AdvanceInvoiceReferenceBuilder> configure)
+    {
+        _invoiceData.AdvanceInvoiceReferences ??= new List<AdvanceInvoiceReference>();
+        if (_invoiceData.AdvanceInvoiceReferences.Count >= 100)
+            throw new InvalidOperationException("FakturaZaliczkowa może zawierać maksymalnie 100 pozycji (maxOccurs=100).");
+
+        var builder = new AdvanceInvoiceReferenceBuilder();
+        configure(builder);
+        _invoiceData.AdvanceInvoiceReferences.Add(builder.Build());
+        return this;
+    }
+
+    /// <summary>
     /// Dodaje dodatkowy opis do faktury
     /// </summary>
     public InvoiceDetailsBuilder AddDescription(string key, string value)
