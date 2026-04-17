@@ -1052,6 +1052,236 @@ public class XsdValidatorTests
 
     #endregion
 
+    #region Testy XSD znaczników FP, TP, ZwrotAkcyzy i ZaliczkaCzesciowa
+
+    [Fact]
+    public void Validate_InvoiceWithFP_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.IsArticle109_3dInvoice = true;
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:FP>1</tns:FP>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithTP_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.HasRelatedPartyTransaction = true;
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:TP>1</tns:TP>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithZwrotAkcyzy_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.IsExciseRefundEligible = true;
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:ZwrotAkcyzy>1</tns:ZwrotAkcyzy>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithZaliczkaCzesciowa_ShouldPassXsdValidation()
+    {
+        // Arrange — 3 zaliczki częściowe z różnymi datami i kwotami
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.PartialAdvancePayments = new List<PartialAdvancePayment>
+        {
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 1, 15),
+                Amount = 500.00m
+            },
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 2, 15),
+                Amount = 300.50m
+            },
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 3, 15),
+                Amount = 200.00m,
+                ExchangeRate = 4.3521m
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:P_6Z>");
+        xml.Should().Contain("<tns:P_15Z>");
+        xml.Should().Contain("<tns:KursWalutyZW>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithZaliczkaCzesciowa_WithoutExchangeRate_ShouldPassXsdValidation()
+    {
+        // Arrange — zaliczka bez kursu waluty
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.PartialAdvancePayments = new List<PartialAdvancePayment>
+        {
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 1, 15),
+                Amount = 1000.00m
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().NotContain("<tns:KursWalutyZW>");
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithTooManyZaliczkaCzesciowa_ShouldFailXsdValidation()
+    {
+        // Arrange — 32 elementów (maxOccurs=31)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.PartialAdvancePayments = new List<PartialAdvancePayment>();
+        for (int i = 0; i < 32; i++)
+        {
+            invoice.InvoiceData.PartialAdvancePayments.Add(new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 1, 1).AddDays(i),
+                Amount = 100m
+            });
+        }
+
+        // Act
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        result.IsValid.Should().BeFalse();
+        result.HasErrors.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Validate_InvoiceWithAllNewFields_ShouldPassXsdValidation()
+    {
+        // Arrange — FP + TP + ZwrotAkcyzy + ZaliczkaCzesciowa
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.IsArticle109_3dInvoice = true;
+        invoice.InvoiceData.HasRelatedPartyTransaction = true;
+        invoice.InvoiceData.IsExciseRefundEligible = true;
+        invoice.InvoiceData.PartialAdvancePayments = new List<PartialAdvancePayment>
+        {
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 1, 10),
+                Amount = 500m
+            },
+            new PartialAdvancePayment
+            {
+                PaymentDate = new DateOnly(2026, 2, 10),
+                Amount = 300m,
+                ExchangeRate = 4.25m
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        // Verify correct XSD order: ZaliczkaCzesciowa → FP → TP → ... → ZwrotAkcyzy → FaWiersz
+        var zaliczkaIndex = xml.IndexOf("<tns:ZaliczkaCzesciowa>");
+        var fpIndex = xml.IndexOf("<tns:FP>");
+        var tpIndex = xml.IndexOf("<tns:TP>");
+        var zwrotIndex = xml.IndexOf("<tns:ZwrotAkcyzy>");
+        var faWierszIndex = xml.IndexOf("<tns:FaWiersz>");
+
+        zaliczkaIndex.Should().BeLessThan(fpIndex, "ZaliczkaCzesciowa should appear before FP");
+        fpIndex.Should().BeLessThan(tpIndex, "FP should appear before TP");
+        tpIndex.Should().BeLessThan(zwrotIndex, "TP should appear before ZwrotAkcyzy");
+        zwrotIndex.Should().BeLessThan(faWierszIndex, "ZwrotAkcyzy should appear before FaWiersz");
+    }
+
+    #endregion
+
     #region Pomocnicze metody
 
     private static KSeF.Invoice.Models.Invoice CreateMinimalValidInvoice()

@@ -253,6 +253,49 @@ public class InvoiceDetailsBuilder
     }
 
     /// <summary>
+    /// Oznacza fakturę jako fakturę art. 109 ust. 3d ustawy (FP)
+    /// </summary>
+    public InvoiceDetailsBuilder WithArticle109_3d()
+    {
+        _invoiceData.IsArticle109_3dInvoice = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Oznacza istniejące powiązania między nabywcą a dokonującym dostawy (TP)
+    /// </summary>
+    public InvoiceDetailsBuilder WithRelatedPartyTransaction()
+    {
+        _invoiceData.HasRelatedPartyTransaction = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Oznacza fakturę dla rolników ubiegających się o zwrot podatku akcyzowego (ZwrotAkcyzy)
+    /// </summary>
+    public InvoiceDetailsBuilder WithExciseRefund()
+    {
+        _invoiceData.IsExciseRefundEligible = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Dodaje zaliczkę częściową (ZaliczkaCzesciowa)
+    /// Maksymalnie 31 pozycji
+    /// </summary>
+    public InvoiceDetailsBuilder AddPartialAdvancePayment(Action<PartialAdvancePaymentBuilder> configure)
+    {
+        _invoiceData.PartialAdvancePayments ??= new List<PartialAdvancePayment>();
+        if (_invoiceData.PartialAdvancePayments.Count >= 31)
+            throw new InvalidOperationException("ZaliczkaCzesciowa może zawierać maksymalnie 31 pozycji (maxOccurs=31).");
+
+        var builder = new PartialAdvancePaymentBuilder();
+        configure(builder);
+        _invoiceData.PartialAdvancePayments.Add(builder.Build());
+        return this;
+    }
+
+    /// <summary>
     /// Dodaje dodatkowy opis do faktury
     /// </summary>
     public InvoiceDetailsBuilder AddDescription(string key, string value)

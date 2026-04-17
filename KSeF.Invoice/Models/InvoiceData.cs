@@ -360,14 +360,98 @@ public class InvoiceData
 
     #endregion
 
+    #region Zaliczki częściowe (ZaliczkaCzesciowa)
+
+    /// <summary>
+    /// Lista wcześniejszych zaliczek częściowych (ZaliczkaCzesciowa)
+    /// Dane dla faktur dokumentujących otrzymanie więcej niż jednej płatności
+    /// Może zawierać do 31 pozycji
+    /// </summary>
+    [XmlElement("ZaliczkaCzesciowa", Order = 42)]
+    public List<PartialAdvancePayment>? PartialAdvancePayments { get; set; }
+
+    #endregion
+
+    #region Znaczniki FP, TP
+
+    /// <summary>
+    /// Znacznik faktury, o której mowa w art. 109 ust. 3d ustawy (FP)
+    /// </summary>
+    [XmlIgnore]
+    public bool IsArticle109_3dInvoice { get; set; }
+
+    [XmlElement("FP", Order = 43)]
+    public string? Article109_3dMarker
+    {
+        get => IsArticle109_3dInvoice ? "1" : null;
+        set => IsArticle109_3dInvoice = value == "1";
+    }
+
+    public bool ShouldSerializeArticle109_3dMarker() => IsArticle109_3dInvoice;
+
+    /// <summary>
+    /// Znacznik istniejących powiązań między nabywcą a dokonującym dostawy (TP)
+    /// </summary>
+    [XmlIgnore]
+    public bool HasRelatedPartyTransaction { get; set; }
+
+    [XmlElement("TP", Order = 44)]
+    public string? RelatedPartyMarker
+    {
+        get => HasRelatedPartyTransaction ? "1" : null;
+        set => HasRelatedPartyTransaction = value == "1";
+    }
+
+    public bool ShouldSerializeRelatedPartyMarker() => HasRelatedPartyTransaction;
+
+    #endregion
+
+    #region Dodatkowe informacje
+
+    /// <summary>
+    /// Dodatkowy opis faktury (DodatkowyOpis)
+    /// Dodatkowe informacje tekstowe w formie klucz-wartość
+    /// Pole opcjonalne - do 100 wpisów
+    /// </summary>
+    [XmlElement("DodatkowyOpis", Order = 45)]
+    public List<KeyValue>? AdditionalDescription { get; set; }
+
+    #endregion
+
     #region Dane zaliczki (dla faktur zaliczkowych i rozliczeniowych)
 
     /// <summary>
-    /// Lista wcześniejszych faktur zaliczkowych (ZalszczkaCzesciowa)
+    /// Lista wcześniejszych faktur zaliczkowych (ZaliczkaCalosciowa)
     /// Dane dotyczące wcześniejszych faktur zaliczkowych przy fakturze końcowej/rozliczeniowej
     /// </summary>
-    [XmlElement("ZaliczkaCalosciowa", Order = 42)]
+    [XmlElement("ZaliczkaCalosciowa", Order = 46)]
     public List<AdvancePaymentData>? AdvancePayments { get; set; }
+
+    /// <summary>
+    /// Numer faktury zaliczkowej dla faktury rozliczeniowej (NrFaZaliczkowej)
+    /// Numer faktury zaliczkowej, której dotyczy faktura rozliczeniowa
+    /// </summary>
+    [XmlElement("NrFaZaliczkowej", Order = 47)]
+    public List<string>? AdvanceInvoiceNumbers { get; set; }
+
+    #endregion
+
+    #region Znacznik ZwrotAkcyzy
+
+    /// <summary>
+    /// Znacznik dla rolników ubiegających się o zwrot podatku akcyzowego (ZwrotAkcyzy)
+    /// </summary>
+    [XmlIgnore]
+    public bool IsExciseRefundEligible { get; set; }
+
+    [XmlElement("ZwrotAkcyzy", Order = 48)]
+    public string? ExciseRefundMarker
+    {
+        get => IsExciseRefundEligible ? "1" : null;
+        set => IsExciseRefundEligible = value == "1";
+    }
+
+    public bool ShouldSerializeExciseRefundMarker() => IsExciseRefundEligible;
 
     #endregion
 
@@ -378,7 +462,7 @@ public class InvoiceData
     /// Zawiera szczegółowe dane o towarach i usługach
     /// Może zawierać do 10000 pozycji
     /// </summary>
-    [XmlElement("FaWiersz", Order = 43)]
+    [XmlElement("FaWiersz", Order = 49)]
     public List<InvoiceLineItem>? LineItems { get; set; }
 
     #endregion
@@ -390,7 +474,7 @@ public class InvoiceData
     /// Zawiera terminy płatności, formy płatności i rachunki bankowe
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("Platnosc", Order = 44)]
+    [XmlElement("Platnosc", Order = 50)]
     public Payment? Payment { get; set; }
 
     #endregion
@@ -402,27 +486,8 @@ public class InvoiceData
     /// Zawiera informacje o warunkach dostawy i transportu
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("WarunkiTransakcji", Order = 45)]
+    [XmlElement("WarunkiTransakcji", Order = 51)]
     public TransactionTerms? TransactionTerms { get; set; }
-
-    #endregion
-
-    #region Dodatkowe informacje
-
-    /// <summary>
-    /// Dodatkowy opis faktury (DodatkowyOpis)
-    /// Dodatkowe informacje tekstowe w formie klucz-wartość
-    /// Pole opcjonalne - do 100 wpisów
-    /// </summary>
-    [XmlElement("DodatkowyOpis", Order = 46)]
-    public List<KeyValue>? AdditionalDescription { get; set; }
-
-    /// <summary>
-    /// Numer faktury zaliczkowej dla faktury rozliczeniowej (NrFaZal662)
-    /// Numer faktury zaliczkowej, której dotyczy faktura rozliczeniowa
-    /// </summary>
-    [XmlElement("NrFaZaliczkowej", Order = 47)]
-    public List<string>? AdvanceInvoiceNumbers { get; set; }
 
     #endregion
 
@@ -463,6 +528,7 @@ public class InvoiceData
     public bool ShouldSerializeCorrectedBuyers() => CorrectedBuyers != null && CorrectedBuyers.Count > 0;
     public bool ShouldSerializeAmountBeforeCorrection() => AmountBeforeCorrection.HasValue;
     public bool ShouldSerializeExchangeRateBeforeCorrection() => ExchangeRateBeforeCorrection.HasValue;
+    public bool ShouldSerializePartialAdvancePayments() => PartialAdvancePayments != null && PartialAdvancePayments.Count > 0;
     public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;
     public bool ShouldSerializeLineItems() => LineItems != null && LineItems.Count > 0;
     public bool ShouldSerializePayment() => Payment != null;
