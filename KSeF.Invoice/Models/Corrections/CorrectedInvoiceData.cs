@@ -3,9 +3,8 @@
     KSeF.Invoice
     Klasa reprezentująca dane faktury korygowanej (DaneFaKorygowanej).
     Zawiera informacje o fakturze pierwotnej będącej przedmiotem
-    korekty: numer faktury, datę wystawienia, numer KSeF faktury
-    korygowanej oraz numer KSeF poprzedniej korekty (w przypadku
-    kolejnych korekt tej samej faktury).
+    korekty: numer faktury, datę wystawienia oraz informację
+    czy faktura pierwotna była wystawiona w KSeF (xsd:choice).
 
 	Autor: (C)2009-2026 ITORG Krzysztof Radzimski
     Licencja MIT
@@ -13,69 +12,53 @@
 
   ===================================================================================*/
 using System.Xml.Serialization;
-using KSeF.Invoice.Models.Enums;
 
 namespace KSeF.Invoice.Models.Corrections;
 
-/// <summary>
-/// Dane faktury korygowanej (DaneFaKorygowanej)
-/// Zawiera informacje o fakturze pierwotnej, która jest korygowana
-/// </summary>
 public class CorrectedInvoiceData
 {
-    /// <summary>
-    /// Numer faktury korygowanej (NrFaKorygowanej)
-    /// Numer faktury pierwotnej, która jest przedmiotem korekty
-    /// Maksymalnie 256 znaków
-    /// </summary>
-    [XmlElement("NrFaKorygowanej")]
-    public string CorrectedInvoiceNumber { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Data wystawienia faktury korygowanej - proxy string dla serializacji XML
-    /// </summary>
-    [XmlElement("DataWystFaKorygowanej")]
+    [XmlElement("DataWystFaKorygowanej", Order = 1)]
     public string CorrectedInvoiceIssueDateString
     {
         get => CorrectedInvoiceIssueDate.ToString("yyyy-MM-dd");
         set => CorrectedInvoiceIssueDate = string.IsNullOrEmpty(value) ? default : DateOnly.Parse(value);
     }
 
-    /// <summary>
-    /// Data wystawienia faktury korygowanej (DataWystFaKorygowanej)
-    /// Data wystawienia faktury pierwotnej
-    /// </summary>
     [XmlIgnore]
     public DateOnly CorrectedInvoiceIssueDate { get; set; }
 
-    /// <summary>
-    /// Numer KSeF faktury korygowanej (NrKSeF)
-    /// Numer identyfikujący fakturę korygowaną w systemie KSeF
-    /// Używane gdy faktura korygowana została wystawiona w KSeF
-    /// </summary>
-    [XmlElement("NrKSeF")]
+    [XmlElement("NrFaKorygowanej", Order = 2)]
+    public string CorrectedInvoiceNumber { get; set; } = string.Empty;
+
+    // TWybor1 — emituje "1" jako znacznik, że faktura pierwotna była w KSeF
+    [XmlElement("NrKSeF", Order = 3)]
+    public string? IsIssuedInKSeFMarker
+    {
+        get => IsIssuedInKSeF ? "1" : null;
+        set => IsIssuedInKSeF = value == "1";
+    }
+
+    [XmlIgnore]
+    public bool IsIssuedInKSeF { get; set; }
+
+    [XmlElement("NrKSeFFaKorygowanej", Order = 4)]
     public string? CorrectedInvoiceKSeFNumber { get; set; }
 
-    /// <summary>
-    /// Numer KSeF faktury korygującej tę fakturę (NrKSeFN)
-    /// Stosowane w przypadku kolejnych korekt faktury
-    /// </summary>
-    [XmlElement("NrKSeFN")]
-    public string? PreviousCorrectionKSeFNumber { get; set; }
+    // TWybor1 — emituje "1" jako znacznik, że faktura pierwotna była poza KSeF
+    [XmlElement("NrKSeFN", Order = 5)]
+    public string? IsIssuedOutsideKSeFMarker
+    {
+        get => IsIssuedOutsideKSeF ? "1" : null;
+        set => IsIssuedOutsideKSeF = value == "1";
+    }
 
-    #region Właściwości pomocnicze
-
-    /// <summary>
-    /// Sprawdza czy faktura korygowana posiada numer KSeF
-    /// </summary>
     [XmlIgnore]
-    public bool HasKSeFNumber => !string.IsNullOrEmpty(CorrectedInvoiceKSeFNumber);
+    public bool IsIssuedOutsideKSeF { get; set; }
 
-    /// <summary>
-    /// Sprawdza czy istnieje wcześniejsza korekta tej faktury
-    /// </summary>
-    [XmlIgnore]
-    public bool HasPreviousCorrection => !string.IsNullOrEmpty(PreviousCorrectionKSeFNumber);
+    public bool ShouldSerializeIsIssuedInKSeFMarker() => IsIssuedInKSeF;
 
-    #endregion
+    public bool ShouldSerializeCorrectedInvoiceKSeFNumber() =>
+        IsIssuedInKSeF && !string.IsNullOrEmpty(CorrectedInvoiceKSeFNumber);
+
+    public bool ShouldSerializeIsIssuedOutsideKSeFMarker() => IsIssuedOutsideKSeF;
 }

@@ -264,44 +264,49 @@ public class InvoiceDetailsBuilder
     public InvoiceData Build() => _invoiceData;
 }
 
-/// <summary>
-/// Builder do budowania danych faktury korygowanej
-/// </summary>
 public class CorrectedInvoiceDataBuilder
 {
     private readonly CorrectedInvoiceData _data = new();
 
-    /// <summary>
-    /// Ustawia numer faktury korygowanej
-    /// </summary>
     public CorrectedInvoiceDataBuilder WithInvoiceNumber(string invoiceNumber)
     {
         _data.CorrectedInvoiceNumber = invoiceNumber;
         return this;
     }
 
-    /// <summary>
-    /// Ustawia datę wystawienia faktury korygowanej
-    /// </summary>
     public CorrectedInvoiceDataBuilder WithIssueDate(DateOnly issueDate)
     {
         _data.CorrectedInvoiceIssueDate = issueDate;
         return this;
     }
 
-    /// <summary>
-    /// Ustawia numer KSeF faktury korygowanej
-    /// </summary>
     public CorrectedInvoiceDataBuilder WithKSeFNumber(string ksefNumber)
     {
+        if (_data.IsIssuedOutsideKSeF)
+            throw new InvalidOperationException("Nie można ustawić NrKSeF i NrKSeFN jednocześnie (xsd:choice).");
+
+        _data.IsIssuedInKSeF = true;
         _data.CorrectedInvoiceKSeFNumber = ksefNumber;
         return this;
     }
 
-    /// <summary>
-    /// Buduje dane faktury korygowanej
-    /// </summary>
-    public CorrectedInvoiceData Build() => _data;
+    public CorrectedInvoiceDataBuilder IssuedOutsideKSeF()
+    {
+        if (_data.IsIssuedInKSeF)
+            throw new InvalidOperationException("Nie można ustawić NrKSeFN i NrKSeF jednocześnie (xsd:choice).");
+
+        _data.IsIssuedOutsideKSeF = true;
+        return this;
+    }
+
+    public CorrectedInvoiceData Build()
+    {
+        if (!_data.IsIssuedInKSeF && !_data.IsIssuedOutsideKSeF)
+            throw new InvalidOperationException(
+                "DaneFaKorygowanej wymagają NrKSeF+NrKSeFFaKorygowanej lub NrKSeFN (xsd:choice).");
+
+        return _data;
+    }
 }
 
 /// <summary>
