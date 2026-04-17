@@ -311,13 +311,6 @@ public class InvoiceData
     public CorrectedInvoiceData? CorrectedInvoiceData { get; set; }
 
     /// <summary>
-    /// Numer KSeF faktury korygującej poprzednią korektę (NrKSeFN)
-    /// Stosowane w przypadku kolejnych korekt faktury
-    /// </summary>
-    [XmlElement("NrKSeFN", Order = 35)]
-    public string? PreviousCorrectionKSeFNumber { get; set; }
-
-    /// <summary>
     /// Okres, którego dotyczy korekta (OkresFaKorygowanej)
     /// Data "od" - "do" dla faktur z okresem, które są korygowane
     /// </summary>
@@ -423,7 +416,6 @@ public class InvoiceData
     public bool ShouldSerializeCorrectionReason() => !string.IsNullOrEmpty(CorrectionReason);
     public bool ShouldSerializeCorrectionType() => CorrectionType.HasValue;
     public bool ShouldSerializeCorrectedInvoiceData() => CorrectedInvoiceData != null;
-    public bool ShouldSerializePreviousCorrectionKSeFNumber() => !string.IsNullOrEmpty(PreviousCorrectionKSeFNumber);
     public bool ShouldSerializeCorrectedInvoicePeriod() => CorrectedInvoicePeriod != null;
     public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;
     public bool ShouldSerializeLineItems() => LineItems != null && LineItems.Count > 0;
