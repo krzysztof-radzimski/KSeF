@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Common;
@@ -804,6 +805,247 @@ public class XsdValidatorTests
         var result = _validator.Validate(invoice);
 
         // Assert — empty NIP should fail XSD validation (NIP has minLength=10)
+        result.IsValid.Should().BeFalse();
+        result.HasErrors.Should().BeTrue();
+    }
+
+    #endregion
+
+    #region Testy XSD Podmiot2K (dane nabywców z faktury korygowanej)
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithPodmiot2K_FullData_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura KOR z pełnym Podmiot2K (identyfikacja + adres + IDNabywcy)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych nabywcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/020",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedBuyers = new List<CorrectedBuyerData>
+        {
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    Nip = "5252248481",
+                    Name = "Stary Nabywca S.A."
+                },
+                Address = new Address
+                {
+                    CountryCode = "PL",
+                    AddressLine1 = "ul. Stara 10",
+                    AddressLine2 = "00-003 Warszawa"
+                },
+                BuyerIdentifier = "KLIENT-001"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("Podmiot2K");
+        xml.Should().Contain("<tns:NIP>5252248481</tns:NIP>");
+        xml.Should().Contain("Stary Nabywca S.A.");
+        xml.Should().Contain("IDNabywcy");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithMultiplePodmiot2K_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura KOR z 3 Podmiot2K (różni nabywcy)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych wielu nabywców";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/021",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-8)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedBuyers = new List<CorrectedBuyerData>
+        {
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    Nip = "5252248481",
+                    Name = "Nabywca Pierwszy S.A."
+                },
+                Address = new Address
+                {
+                    CountryCode = "PL",
+                    AddressLine1 = "ul. Pierwsza 1",
+                    AddressLine2 = "00-001 Warszawa"
+                }
+            },
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    EUCountryCode = EUCountryCode.DE,
+                    VatNumberEU = "123456789",
+                    Name = "Nabywca Drugi GmbH"
+                },
+                BuyerIdentifier = "KLIENT-DE"
+            },
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    Nip = "1234567890",
+                    Name = "Nabywca Trzeci Sp. z o.o."
+                }
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        var podmiot2kCount = System.Text.RegularExpressions.Regex.Matches(xml, "<tns:Podmiot2K>").Count;
+        podmiot2kCount.Should().Be(3);
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithPodmiot2K_OnlyIdentification_ShouldPassXsdValidation()
+    {
+        // Arrange — Podmiot2K bez Adres i bez IDNabywcy (tylko DaneIdentyfikacyjne)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych nabywcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/022",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-5)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedBuyers = new List<CorrectedBuyerData>
+        {
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    Nip = "5252248481",
+                    Name = "Nabywca Testowy S.A."
+                }
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("Podmiot2K");
+        xml.Should().NotContain("IDNabywcy");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithoutPodmiot2K_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura KOR bez Podmiot2K (cała sekcja opcjonalna)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta ilości";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/023",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-3)),
+            IsIssuedOutsideKSeF = true
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().NotContain("Podmiot2K");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_Podmiot2K_WithTooLongIDNabywcy_ShouldFailXsdValidation()
+    {
+        // Arrange — Podmiot2K z IDNabywcy > 32 znaki
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych nabywcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/024",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-2)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedBuyers = new List<CorrectedBuyerData>
+        {
+            new CorrectedBuyerData
+            {
+                IdentificationData = new BuyerIdentification
+                {
+                    Nip = "5252248481",
+                    Name = "Nabywca Testowy S.A."
+                },
+                BuyerIdentifier = new string('A', 33)
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert — IDNabywcy > 32 chars should fail XSD validation (maxLength=32)
         result.IsValid.Should().BeFalse();
         result.HasErrors.Should().BeTrue();
     }

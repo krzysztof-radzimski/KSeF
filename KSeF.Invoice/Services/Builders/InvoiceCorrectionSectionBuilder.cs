@@ -92,5 +92,17 @@ public class InvoiceCorrectionSectionBuilder
         return this;
     }
 
+    public InvoiceCorrectionSectionBuilder AddCorrectedBuyer(Action<CorrectedBuyerDataBuilder> configure)
+    {
+        _section.CorrectedBuyers ??= new List<CorrectedBuyerData>();
+        if (_section.CorrectedBuyers.Count >= 101)
+            throw new InvalidOperationException("Max 101 Podmiot2K elements allowed per XSD FA(3).");
+
+        var builder = new CorrectedBuyerDataBuilder();
+        configure(builder);
+        _section.CorrectedBuyers.Add(builder.Build());
+        return this;
+    }
+
     public InvoiceCorrectionSection Build() => _section;
 }

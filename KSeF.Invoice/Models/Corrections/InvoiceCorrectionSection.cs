@@ -34,6 +34,8 @@ public class InvoiceCorrectionSection
 
     public CorrectedSellerData? CorrectedSeller { get; set; }
 
+    public List<CorrectedBuyerData>? CorrectedBuyers { get; set; }
+
     public bool HasAnyData =>
         !string.IsNullOrEmpty(CorrectionReason) ||
         CorrectionType.HasValue ||
@@ -42,5 +44,6 @@ public class InvoiceCorrectionSection
         !string.IsNullOrEmpty(CorrectedInvoiceNumberAmended) ||
         AmountBeforeCorrection.HasValue ||
         ExchangeRateBeforeCorrection.HasValue ||
-        CorrectedSeller != null;
+        CorrectedSeller != null ||
+        (CorrectedBuyers != null && CorrectedBuyers.Count > 0);
 }
