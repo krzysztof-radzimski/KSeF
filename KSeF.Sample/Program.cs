@@ -59,8 +59,12 @@ Console.WriteLine("\n4. Tworzenie faktury zaliczkowej...");
 var advanceInvoice = CreateAdvanceInvoice(invoiceService);
 ValidateAndSerialize(invoiceService, advanceInvoice, "Faktura zaliczkowa");
 
-// 6. Przyklad: Deserializacja faktury z XML
-Console.WriteLine("\n5. Deserializacja faktury z XML...");
+// 6. Przyklad: Faktura z pelna stopka
+Console.WriteLine("\n5. Tworzenie faktury z pelna stopka...");
+KSeF.Sample.Examples.InvoiceWithFooterExample.Run();
+
+// 7. Przyklad: Deserializacja faktury z XML
+Console.WriteLine("\n6. Deserializacja faktury z XML...");
 var xml = invoiceService.ToXml(simpleInvoice);
 var deserializedInvoice = invoiceService.FromXml(xml);
 if (deserializedInvoice != null)

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:Faktura xmlns:dt="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://crd.gov.pl/wzor/2025/06/25/13775/">
+  <tns:Naglowek>
+    <tns:KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</tns:KodFormularza>
+    <tns:WariantFormularza>3</tns:WariantFormularza>
+    <tns:DataWytworzeniaFa>2026-04-17T13:01:16.9444968+02:00</tns:DataWytworzeniaFa>
+  </tns:Naglowek>
+  <tns:Podmiot1>
+    <tns:DaneIdentyfikacyjne>
+      <tns:NIP>1234567890</tns:NIP>
+      <tns:Nazwa>Acme Sp. z o.o.</tns:Nazwa>
+    </tns:DaneIdentyfikacyjne>
+    <tns:Adres>
+      <tns:KodKraju>PL</tns:KodKraju>
+      <tns:AdresL1>ul. Przemyslowa 15</tns:AdresL1>
+      <tns:AdresL2>00-850 Warszawa</tns:AdresL2>
+    </tns:Adres>
+    <tns:DaneKontaktowe>
+      <tns:Email>kontakt@acme.pl</tns:Email>
+      <tns:Telefon>+48 22 555 66 77</tns:Telefon>
+    </tns:DaneKontaktowe>
+  </tns:Podmiot1>
+  <tns:Podmiot2>
+    <tns:DaneIdentyfikacyjne>
+      <tns:NIP>9876543210</tns:NIP>
+      <tns:Nazwa>Klient Sp. z o.o.</tns:Nazwa>
+    </tns:DaneIdentyfikacyjne>
+    <tns:Adres>
+      <tns:KodKraju>PL</tns:KodKraju>
+      <tns:AdresL1>ul. Handlowa 99</tns:AdresL1>
+      <tns:AdresL2>31-500 Krakow</tns:AdresL2>
+    </tns:Adres>
+    <tns:JST>2</tns:JST>
+    <tns:GV>2</tns:GV>
+  </tns:Podmiot2>
+  <tns:Fa>
+    <tns:KodWaluty>PLN</tns:KodWaluty>
+    <tns:P_1>2024-03-15</tns:P_1>
+    <tns:P_2>FV/2024/100</tns:P_2>
+    <tns:P_6>2024-03-15</tns:P_6>
+    <tns:P_13_1>20000.00</tns:P_13_1>
+    <tns:P_14_1>4600.00</tns:P_14_1>
+    <tns:P_15>24600.00</tns:P_15>
+    <tns:Adnotacje>
+      <tns:P_16>2</tns:P_16>
+      <tns:P_17>2</tns:P_17>
+      <tns:P_18>2</tns:P_18>
+      <tns:P_18A>2</tns:P_18A>
+      <tns:Zwolnienie>
+        <tns:P_19N>1</tns:P_19N>
+      </tns:Zwolnienie>
+      <tns:NoweSrodkiTransportu>
+        <tns:P_22N>1</tns:P_22N>
+      </tns:NoweSrodkiTransportu>
+      <tns:P_23>2</tns:P_23>
+      <tns:PMarzy>
+        <tns:P_PMarzyN>1</tns:P_PMarzyN>
+      </tns:PMarzy>
+    </tns:Adnotacje>
+    <tns:RodzajFaktury>VAT</tns:RodzajFaktury>
+    <tns:FaWiersz>
+      <tns:NrWierszaFa>1</tns:NrWierszaFa>
+      <tns:P_7>Usluga wdrozenia systemu CRM</tns:P_7>
+      <tns:P_8A>szt.</tns:P_8A>
+      <tns:P_8B>1</tns:P_8B>
+      <tns:P_9A>15000.00</tns:P_9A>
+      <tns:P_11>15000.00</tns:P_11>
+      <tns:P_11Vat>3450.00</tns:P_11Vat>
+      <tns:P_12>23</tns:P_12>
+    </tns:FaWiersz>
+    <tns:FaWiersz>
+      <tns:NrWierszaFa>2</tns:NrWierszaFa>
+      <tns:P_7>Licencja roczna - 10 uzytkownikow</tns:P_7>
+      <tns:P_8A>szt.</tns:P_8A>
+      <tns:P_8B>1</tns:P_8B>
+      <tns:P_9A>5000.00</tns:P_9A>
+      <tns:P_11>5000.00</tns:P_11>
+      <tns:P_11Vat>1150.00</tns:P_11Vat>
+      <tns:P_12>23</tns:P_12>
+    </tns:FaWiersz>
+    <tns:Platnosc>
+      <tns:TerminPlatnosci>
+        <tns:Termin>2024-04-15</tns:Termin>
+      </tns:TerminPlatnosci>
+      <tns:FormaPlatnosci>6</tns:FormaPlatnosci>
+      <tns:RachunekBankowy>
+        <tns:NrRB>PL61109010140000071219812874</tns:NrRB>
+      </tns:RachunekBankowy>
+    </tns:Platnosc>
+  </tns:Fa>
+  <tns:Stopka>
+    <tns:Informacje>
+      <tns:StopkaFaktury>Faktura wygenerowana automatycznie przez system KSeF.Invoice</tns:StopkaFaktury>
+    </tns:Informacje>
+    <tns:Informacje>
+      <tns:StopkaFaktury>Termin reklamacji: 14 dni od daty otrzymania faktury</tns:StopkaFaktury>
+    </tns:Informacje>
+    <tns:Rejestry>
+      <tns:PelnaNazwa>Acme Sp. z o.o.</tns:PelnaNazwa>
+      <tns:KRS>0000123456</tns:KRS>
+      <tns:REGON>123456789</tns:REGON>
+      <tns:BDO>000123456</tns:BDO>
+    </tns:Rejestry>
+    <tns:Rejestry>
+      <tns:PelnaNazwa>Oddzial Acme Krakow</tns:PelnaNazwa>
+      <tns:KRS>0000654321</tns:KRS>
+      <tns:REGON>987654321</tns:REGON>
+    </tns:Rejestry>
+  </tns:Stopka>
+</tns:Faktura>
