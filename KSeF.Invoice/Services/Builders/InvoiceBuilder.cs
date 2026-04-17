@@ -15,6 +15,7 @@
   ===================================================================================*/
 
 using KSeF.Invoice.Models;
+using KSeF.Invoice.Models.Attachments;
 using KSeF.Invoice.Models.Common;
 using KSeF.Invoice.Models.Entities;
 using KSeF.Invoice.Models.Enums;
@@ -172,6 +173,26 @@ public class InvoiceBuilder
     public InvoiceBuilder WithPayment(Payment payment)
     {
         _invoice.InvoiceData.Payment = payment;
+        return this;
+    }
+
+    /// <summary>
+    /// Konfiguruje stopkę faktury (Stopka) przez Fluent API
+    /// </summary>
+    public InvoiceBuilder WithFooter(Action<FooterBuilder> configure)
+    {
+        var builder = new FooterBuilder();
+        configure(builder);
+        _invoice.Footer = builder.Build();
+        return this;
+    }
+
+    /// <summary>
+    /// Konfiguruje stopkę faktury (Stopka) za pomocą gotowego obiektu
+    /// </summary>
+    public InvoiceBuilder WithFooter(InvoiceFooter footer)
+    {
+        _invoice.Footer = footer;
         return this;
     }
 
