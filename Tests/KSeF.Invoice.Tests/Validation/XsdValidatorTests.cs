@@ -1,6 +1,7 @@
 using FluentAssertions;
 using KSeF.Invoice.Models;
 using KSeF.Invoice.Models.Common;
+using KSeF.Invoice.Models.Corrections;
 using KSeF.Invoice.Models.Entities;
 using KSeF.Invoice.Models.Enums;
 using KSeF.Invoice.Models.Summary;
@@ -632,6 +633,179 @@ public class XsdValidatorTests
         xml.Should().NotContain("<tns:P_15ZK>");
         xml.Should().NotContain("<tns:KursWalutyZK>");
         xml.Should().NotContain("<tns:NrFaKorygowany>");
+    }
+
+    #endregion
+
+    #region Testy XSD Podmiot1K (dane sprzedawcy z faktury korygowanej)
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithPodmiot1K_FullData_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura KOR z pełnym Podmiot1K (prefiks + identyfikacja + adres)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych sprzedawcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/010",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedSeller = new CorrectedSellerData
+        {
+            TaxpayerPrefix = EUCountryCode.PL,
+            IdentificationData = new SellerIdentification
+            {
+                Nip = "5261040828",
+                Name = "Stara Nazwa Firmy Sp. z o.o."
+            },
+            Address = new Address
+            {
+                CountryCode = "PL",
+                AddressLine1 = "ul. Stara 5",
+                AddressLine2 = "00-002 Warszawa"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("Podmiot1K");
+        xml.Should().Contain("PrefiksPodatnika");
+        xml.Should().Contain("<tns:NIP>5261040828</tns:NIP>");
+        xml.Should().Contain("Stara Nazwa Firmy");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithPodmiot1K_WithoutPrefix_ShouldPassXsdValidation()
+    {
+        // Arrange — Podmiot1K bez PrefiksPodatnika (opcjonalny)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych sprzedawcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/011",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-5)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedSeller = new CorrectedSellerData
+        {
+            IdentificationData = new SellerIdentification
+            {
+                Nip = "5261040828",
+                Name = "Stara Nazwa Firmy Sp. z o.o."
+            },
+            Address = new Address
+            {
+                CountryCode = "PL",
+                AddressLine1 = "ul. Stara 5",
+                AddressLine2 = "00-002 Warszawa"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("Podmiot1K");
+        xml.Should().NotContain("PrefiksPodatnika");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithoutPodmiot1K_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura KOR bez Podmiot1K (cała sekcja opcjonalna)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta ilości";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/012",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-3)),
+            IsIssuedOutsideKSeF = true
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().NotContain("Podmiot1K");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_Podmiot1K_MissingIdentification_ShouldFailXsdValidation()
+    {
+        // Arrange — Podmiot1K z brakującym DaneIdentyfikacyjne (wymagane wg XSD)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych sprzedawcy";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/013",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedSeller = new CorrectedSellerData
+        {
+            IdentificationData = new SellerIdentification
+            {
+                Nip = "",
+                Name = ""
+            },
+            Address = new Address
+            {
+                CountryCode = "PL",
+                AddressLine1 = "ul. Testowa 1"
+            }
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert — empty NIP should fail XSD validation (NIP has minLength=10)
+        result.IsValid.Should().BeFalse();
+        result.HasErrors.Should().BeTrue();
     }
 
     #endregion

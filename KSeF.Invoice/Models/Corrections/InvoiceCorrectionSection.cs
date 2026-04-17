@@ -32,6 +32,8 @@ public class InvoiceCorrectionSection
 
     public decimal? ExchangeRateBeforeCorrection { get; set; }
 
+    public CorrectedSellerData? CorrectedSeller { get; set; }
+
     public bool HasAnyData =>
         !string.IsNullOrEmpty(CorrectionReason) ||
         CorrectionType.HasValue ||
@@ -39,5 +41,6 @@ public class InvoiceCorrectionSection
         CorrectedInvoicePeriod != null ||
         !string.IsNullOrEmpty(CorrectedInvoiceNumberAmended) ||
         AmountBeforeCorrection.HasValue ||
-        ExchangeRateBeforeCorrection.HasValue;
+        ExchangeRateBeforeCorrection.HasValue ||
+        CorrectedSeller != null;
 }

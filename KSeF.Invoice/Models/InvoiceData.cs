@@ -330,7 +330,13 @@ public class InvoiceData
         set => _correction.CorrectedInvoiceNumberAmended = value;
     }
 
-    // TODO: Podmiot1K będzie w Order=38 (task #1767)
+    [XmlElement("Podmiot1K", Order = 38)]
+    public CorrectedSellerData? CorrectedSeller
+    {
+        get => _correction.CorrectedSeller;
+        set => _correction.CorrectedSeller = value;
+    }
+
     // TODO: Podmiot2K będzie w Order=39 (task #1768)
 
     [XmlElement("P_15ZK", Order = 40)]
@@ -448,6 +454,7 @@ public class InvoiceData
     public bool ShouldSerializeCorrectedInvoiceData() => CorrectedInvoiceData != null;
     public bool ShouldSerializeCorrectedInvoicePeriod() => CorrectedInvoicePeriod != null;
     public bool ShouldSerializeCorrectedInvoiceNumberAmended() => !string.IsNullOrEmpty(CorrectedInvoiceNumberAmended);
+    public bool ShouldSerializeCorrectedSeller() => CorrectedSeller != null;
     public bool ShouldSerializeAmountBeforeCorrection() => AmountBeforeCorrection.HasValue;
     public bool ShouldSerializeExchangeRateBeforeCorrection() => ExchangeRateBeforeCorrection.HasValue;
     public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;

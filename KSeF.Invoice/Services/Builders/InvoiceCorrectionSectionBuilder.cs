@@ -84,5 +84,13 @@ public class InvoiceCorrectionSectionBuilder
         return this;
     }
 
+    public InvoiceCorrectionSectionBuilder WithCorrectedSeller(Action<CorrectedSellerDataBuilder> configure)
+    {
+        var builder = new CorrectedSellerDataBuilder();
+        configure(builder);
+        _section.CorrectedSeller = builder.Build();
+        return this;
+    }
+
     public InvoiceCorrectionSection Build() => _section;
 }
