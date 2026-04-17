@@ -492,6 +492,150 @@ public class XsdValidatorTests
 
     #endregion
 
+    #region Testy XSD nowych pól sekcji korekty (NrFaKorygowany, P_15ZK, KursWalutyZK)
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithNrFaKorygowany_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Błędny numer faktury";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/001",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.CorrectedInvoiceNumberAmended = "FV/2025/001-POPRAWIONY";
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:NrFaKorygowany>FV/2025/001-POPRAWIONY</tns:NrFaKorygowany>");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithP15ZKAndKursWalutyZK_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta kwoty";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/002",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-5)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.AmountBeforeCorrection = 1500.50m;
+        invoice.InvoiceData.ExchangeRateBeforeCorrection = 4.3521m;
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:P_15ZK>");
+        xml.Should().Contain("<tns:KursWalutyZK>");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithP15ZKWithoutKursWalutyZK_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta kwoty";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/003",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-3)),
+            IsIssuedOutsideKSeF = true
+        };
+        invoice.InvoiceData.AmountBeforeCorrection = 2000.00m;
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:P_15ZK>");
+        xml.Should().NotContain("<tns:KursWalutyZK>");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_WithoutP15ZKAndKursWalutyZK_ShouldPassXsdValidation()
+    {
+        // Arrange
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta danych";
+        invoice.InvoiceData.CorrectionType = 2;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/004",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7)),
+            IsIssuedOutsideKSeF = true
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed:\n{errorMessages}\n\nXML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().NotContain("<tns:P_15ZK>");
+        xml.Should().NotContain("<tns:KursWalutyZK>");
+        xml.Should().NotContain("<tns:NrFaKorygowany>");
+    }
+
+    #endregion
+
     #region Pomocnicze metody
 
     private static KSeF.Invoice.Models.Invoice CreateMinimalValidInvoice()

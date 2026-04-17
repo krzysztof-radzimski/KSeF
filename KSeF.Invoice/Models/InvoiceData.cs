@@ -286,36 +286,66 @@ public class InvoiceData
 
     #region Dane korekty (dla faktur korygujących)
 
-    /// <summary>
-    /// Przyczyna korekty (PrzyczynaKorekty)
-    /// Opis przyczyny dokonania korekty faktury
-    /// Wymagane dla faktur korygujących
-    /// Maksymalnie 256 znaków
-    /// </summary>
+    private InvoiceCorrectionSection _correction = new();
+
+    [XmlIgnore]
+    public InvoiceCorrectionSection Correction
+    {
+        get => _correction;
+        set => _correction = value ?? new();
+    }
+
     [XmlElement("PrzyczynaKorekty", Order = 32)]
-    public string? CorrectionReason { get; set; }
+    public string? CorrectionReason
+    {
+        get => _correction.CorrectionReason;
+        set => _correction.CorrectionReason = value;
+    }
 
-    /// <summary>
-    /// Typ korekty (TypKorekty)
-    /// Określa typ korekty: 1 - korekta wartości, 2 - korekta danych, 3 - oba typy
-    /// </summary>
     [XmlElement("TypKorekty", Order = 33)]
-    public int? CorrectionType { get; set; }
+    public int? CorrectionType
+    {
+        get => _correction.CorrectionType;
+        set => _correction.CorrectionType = value;
+    }
 
-    /// <summary>
-    /// Dane faktury korygowanej (DaneFaKorygowanej)
-    /// Informacje o fakturze pierwotnej będącej przedmiotem korekty
-    /// Wymagane dla faktur korygujących
-    /// </summary>
     [XmlElement("DaneFaKorygowanej", Order = 34)]
-    public CorrectedInvoiceData? CorrectedInvoiceData { get; set; }
+    public CorrectedInvoiceData? CorrectedInvoiceData
+    {
+        get => _correction.CorrectedInvoiceData;
+        set => _correction.CorrectedInvoiceData = value;
+    }
 
-    /// <summary>
-    /// Okres, którego dotyczy korekta (OkresFaKorygowanej)
-    /// Data "od" - "do" dla faktur z okresem, które są korygowane
-    /// </summary>
     [XmlElement("OkresFaKorygowanej", Order = 36)]
-    public SalePeriod? CorrectedInvoicePeriod { get; set; }
+    public SalePeriod? CorrectedInvoicePeriod
+    {
+        get => _correction.CorrectedInvoicePeriod;
+        set => _correction.CorrectedInvoicePeriod = value;
+    }
+
+    [XmlElement("NrFaKorygowany", Order = 37)]
+    public string? CorrectedInvoiceNumberAmended
+    {
+        get => _correction.CorrectedInvoiceNumberAmended;
+        set => _correction.CorrectedInvoiceNumberAmended = value;
+    }
+
+    // TODO: Podmiot1K będzie w Order=38 (task #1767)
+    // TODO: Podmiot2K będzie w Order=39 (task #1768)
+
+    [XmlElement("P_15ZK", Order = 40)]
+    public decimal? AmountBeforeCorrection
+    {
+        get => _correction.AmountBeforeCorrection;
+        set => _correction.AmountBeforeCorrection = value;
+    }
+
+    [XmlElement("KursWalutyZK", Order = 41)]
+    public decimal? ExchangeRateBeforeCorrection
+    {
+        get => _correction.ExchangeRateBeforeCorrection;
+        set => _correction.ExchangeRateBeforeCorrection = value;
+    }
 
     #endregion
 
@@ -325,7 +355,7 @@ public class InvoiceData
     /// Lista wcześniejszych faktur zaliczkowych (ZalszczkaCzesciowa)
     /// Dane dotyczące wcześniejszych faktur zaliczkowych przy fakturze końcowej/rozliczeniowej
     /// </summary>
-    [XmlElement("ZaliczkaCalosciowa", Order = 37)]
+    [XmlElement("ZaliczkaCalosciowa", Order = 42)]
     public List<AdvancePaymentData>? AdvancePayments { get; set; }
 
     #endregion
@@ -337,7 +367,7 @@ public class InvoiceData
     /// Zawiera szczegółowe dane o towarach i usługach
     /// Może zawierać do 10000 pozycji
     /// </summary>
-    [XmlElement("FaWiersz", Order = 38)]
+    [XmlElement("FaWiersz", Order = 43)]
     public List<InvoiceLineItem>? LineItems { get; set; }
 
     #endregion
@@ -349,7 +379,7 @@ public class InvoiceData
     /// Zawiera terminy płatności, formy płatności i rachunki bankowe
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("Platnosc", Order = 39)]
+    [XmlElement("Platnosc", Order = 44)]
     public Payment? Payment { get; set; }
 
     #endregion
@@ -361,7 +391,7 @@ public class InvoiceData
     /// Zawiera informacje o warunkach dostawy i transportu
     /// Pole opcjonalne
     /// </summary>
-    [XmlElement("WarunkiTransakcji", Order = 40)]
+    [XmlElement("WarunkiTransakcji", Order = 45)]
     public TransactionTerms? TransactionTerms { get; set; }
 
     #endregion
@@ -373,14 +403,14 @@ public class InvoiceData
     /// Dodatkowe informacje tekstowe w formie klucz-wartość
     /// Pole opcjonalne - do 100 wpisów
     /// </summary>
-    [XmlElement("DodatkowyOpis", Order = 41)]
+    [XmlElement("DodatkowyOpis", Order = 46)]
     public List<KeyValue>? AdditionalDescription { get; set; }
 
     /// <summary>
     /// Numer faktury zaliczkowej dla faktury rozliczeniowej (NrFaZal662)
     /// Numer faktury zaliczkowej, której dotyczy faktura rozliczeniowa
     /// </summary>
-    [XmlElement("NrFaZaliczkowej", Order = 42)]
+    [XmlElement("NrFaZaliczkowej", Order = 47)]
     public List<string>? AdvanceInvoiceNumbers { get; set; }
 
     #endregion
@@ -417,6 +447,9 @@ public class InvoiceData
     public bool ShouldSerializeCorrectionType() => CorrectionType.HasValue;
     public bool ShouldSerializeCorrectedInvoiceData() => CorrectedInvoiceData != null;
     public bool ShouldSerializeCorrectedInvoicePeriod() => CorrectedInvoicePeriod != null;
+    public bool ShouldSerializeCorrectedInvoiceNumberAmended() => !string.IsNullOrEmpty(CorrectedInvoiceNumberAmended);
+    public bool ShouldSerializeAmountBeforeCorrection() => AmountBeforeCorrection.HasValue;
+    public bool ShouldSerializeExchangeRateBeforeCorrection() => ExchangeRateBeforeCorrection.HasValue;
     public bool ShouldSerializeAdvancePayments() => AdvancePayments != null && AdvancePayments.Count > 0;
     public bool ShouldSerializeLineItems() => LineItems != null && LineItems.Count > 0;
     public bool ShouldSerializePayment() => Payment != null;

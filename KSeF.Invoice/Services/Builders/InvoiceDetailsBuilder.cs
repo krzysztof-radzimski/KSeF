@@ -140,18 +140,26 @@ public class InvoiceDetailsBuilder
     }
 
     /// <summary>
-    /// Konfiguruje fakturę jako korygującą
+    /// Konfiguruje fakturę jako korygującą (uproszczona wersja)
     /// </summary>
     public InvoiceDetailsBuilder AsCorrection(string correctionReason, Action<CorrectedInvoiceDataBuilder> configure)
     {
         _invoiceData.InvoiceType = InvoiceType.KOR;
-        _invoiceData.CorrectionReason = correctionReason;
-        _invoiceData.CorrectionType = 1;
+        var builder = new InvoiceCorrectionSectionBuilder(_invoiceData.Correction);
+        builder.WithReason(correctionReason)
+               .WithType(1)
+               .WithCorrectedInvoice(configure);
+        return this;
+    }
 
-        var builder = new CorrectedInvoiceDataBuilder();
+    /// <summary>
+    /// Konfiguruje fakturę jako korygującą (pełne API sekcji korekty)
+    /// </summary>
+    public InvoiceDetailsBuilder AsCorrection(Action<InvoiceCorrectionSectionBuilder> configure)
+    {
+        _invoiceData.InvoiceType = InvoiceType.KOR;
+        var builder = new InvoiceCorrectionSectionBuilder(_invoiceData.Correction);
         configure(builder);
-        _invoiceData.CorrectedInvoiceData = builder.Build();
-
         return this;
     }
 
