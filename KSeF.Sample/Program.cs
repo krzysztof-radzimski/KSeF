@@ -203,7 +203,8 @@ static KSeF.Invoice.Models.Invoice CreateCorrectionInvoice(IKsefInvoiceService s
             .WithCurrency(CurrencyCode.PLN)
             .AsCorrection("Blad w cenie jednostkowej", corrected => corrected
                 .WithInvoiceNumber("FV/2024/001")
-                .WithIssueDate(new DateOnly(2024, 1, 15))))
+                .WithIssueDate(new DateOnly(2024, 1, 15))
+                .IssuedOutsideKSeF()))
         .AddLineItem(item => item
             .WithProductName("Usluga konsultingowa - korekta")
             .WithUnit("szt.")

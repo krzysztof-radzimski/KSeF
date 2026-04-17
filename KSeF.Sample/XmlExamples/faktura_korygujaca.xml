@@ -52,7 +52,8 @@
     <DaneFaKorygowanej>
       <DataWystFaKorygowanej>2024-01-15</DataWystFaKorygowanej>
       <NrFaKorygowanej>FV/2024/001</NrFaKorygowanej>
-      <NrKSeF>1234567890-20240115-ABC123456789</NrKSeF>
+      <NrKSeF>1</NrKSeF>
+      <NrKSeFFaKorygowanej>1234567890-20240115-ABC123456789</NrKSeFFaKorygowanej>
     </DaneFaKorygowanej>
 
     <!-- Przyczyna korekty -->

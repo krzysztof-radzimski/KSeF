@@ -464,7 +464,8 @@ public class InvoiceBuilderTests
                 .WithInvoiceNumber("FV/001/2024/KOR")
                 .AsCorrection("Błędna ilość na fakturze pierwotnej", c => c
                     .WithInvoiceNumber("FV/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             .Build();
 
         // Assert

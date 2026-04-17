@@ -701,7 +701,8 @@ public class InvoiceValidatorIntegrationTests
                 CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
                 {
                     CorrectedInvoiceNumber = "FV/2025/001",
-                    CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10))
+                    CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+                    IsIssuedOutsideKSeF = true
                 },
                 NetAmount23 = -50.00m, // Korekta ujemna
                 VatAmount23 = -11.50m,

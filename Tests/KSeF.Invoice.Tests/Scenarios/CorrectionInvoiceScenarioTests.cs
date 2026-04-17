@@ -37,7 +37,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/001/01/2024/KOR")
                 .AsCorrection("Korekta ilości - błędnie wprowadzono 10 szt. zamiast 8 szt.", c => c
                     .WithInvoiceNumber("FV/001/01/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             // Pozycja korygująca - różnica (zmniejszenie o 2 szt.)
             .AddLineItem(l => l
                 .WithProductName("Laptop - korekta ilości")
@@ -81,7 +82,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/002/01/2024/KOR")
                 .AsCorrection("Korekta ceny - udzielono rabatu retroaktywnego 10%", c => c
                     .WithInvoiceNumber("FV/002/01/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 10))))
+                    .WithIssueDate(new DateOnly(2024, 1, 10))
+                    .IssuedOutsideKSeF()))
             // Pozycja korygująca - rabat 10% od kwoty 10000 netto
             .AddLineItem(l => l
                 .WithProductName("Usługa konsultingowa - rabat 10%")
@@ -114,7 +116,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/003/01/2024/KOR")
                 .AsCorrection("Korekta stawki VAT - błędnie zastosowano 23% zamiast 5% dla książki", c => c
                     .WithInvoiceNumber("FV/003/01/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 5))))
+                    .WithIssueDate(new DateOnly(2024, 1, 5))
+                    .IssuedOutsideKSeF()))
             // Storno starej pozycji (23%)
             .AddLineItem(l => l
                 .WithProductName("Książka - storno stawki 23%")
@@ -192,7 +195,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/ZAL/001/2024/KOR")
                 .AsCorrection("Korekta faktury zaliczkowej - zmniejszenie zaliczki", c => c
                     .WithInvoiceNumber("FV/ZAL/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 10)))
+                    .WithIssueDate(new DateOnly(2024, 1, 10))
+                    .IssuedOutsideKSeF())
                 .WithInvoiceType(InvoiceType.KOR_ZAL))
             .AddLineItem(l => l
                 .WithProductName("Zaliczka na dostawę towaru - korekta")
@@ -227,7 +231,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/ROZ/001/2024/KOR")
                 .AsCorrection("Korekta faktury rozliczeniowej - błąd w rozliczeniu zaliczek", c => c
                     .WithInvoiceNumber("FV/ROZ/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 2, 28)))
+                    .WithIssueDate(new DateOnly(2024, 2, 28))
+                    .IssuedOutsideKSeF())
                 .WithInvoiceType(InvoiceType.KOR_ROZ))
             .AddLineItem(l => l
                 .WithProductName("Dostawa towaru - korekta rozliczenia")
@@ -262,7 +267,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/005/02/2024/KOR")
                 .AsCorrection("Korekta zwiększająca - dodatkowa usługa nieuwzględniona w fakturze pierwotnej", c => c
                     .WithInvoiceNumber("FV/005/01/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 25))))
+                    .WithIssueDate(new DateOnly(2024, 1, 25))
+                    .IssuedOutsideKSeF()))
             .AddLineItem(l => l
                 .WithProductName("Dodatkowa usługa serwisowa")
                 .WithQuantity(5)
@@ -300,7 +306,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/006/02/2024/KOR")
                 .AsCorrection("Korekta zbiorcza - zwrot części towaru", c => c
                     .WithInvoiceNumber("FV/006/01/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             // Zwrot elektroniki (23%)
             .AddLineItem(l => l
                 .WithProductName("Telefon - zwrot")
@@ -363,7 +370,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/001/2024/KOR")
                 .AsCorrection("Korekta ilości", c => c
                     .WithInvoiceNumber("FV/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             .AddLineItem(l => l
                 .WithProductName("Towar - korekta")
                 .WithNetAmount(-1000.00m)
@@ -396,7 +404,8 @@ public class CorrectionInvoiceScenarioTests
                 .WithInvoiceNumber("FV/KOR/001/2024")
                 .AsCorrection("Korekta", c => c
                     .WithInvoiceNumber("FV/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             .AddLineItem(l => l
                 .WithProductName("Korekta")
                 .WithNetAmount(-100.00m)

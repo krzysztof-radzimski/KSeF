@@ -312,7 +312,8 @@ public class XmlStructureComparisonTests
                 .WithInvoiceNumber("FV/001/2024/KOR")
                 .AsCorrection("Korekta ilości", c => c
                     .WithInvoiceNumber("FV/001/2024")
-                    .WithIssueDate(new DateOnly(2024, 1, 15))))
+                    .WithIssueDate(new DateOnly(2024, 1, 15))
+                    .IssuedOutsideKSeF()))
             .AddLineItem(l => l
                 .WithProductName("Test - korekta")
                 .WithNetAmount(-100)
@@ -1127,7 +1128,8 @@ public class XmlStructureComparisonTests
                     case InvoiceType.KOR:
                         d.AsCorrection("Korekta testowa", c => c
                             .WithInvoiceNumber("FV/000/2024")
-                            .WithIssueDate(new DateOnly(2024, 1, 10)));
+                            .WithIssueDate(new DateOnly(2024, 1, 10))
+                            .IssuedOutsideKSeF());
                         break;
                     case InvoiceType.ZAL:
                         d.AsAdvancePayment();

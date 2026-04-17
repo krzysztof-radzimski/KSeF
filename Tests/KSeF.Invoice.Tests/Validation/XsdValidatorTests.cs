@@ -262,7 +262,8 @@ public class XsdValidatorTests
         invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
         {
             CorrectedInvoiceNumber = "FV/2025/001",
-            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10))
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
         };
 
         // Act
@@ -412,6 +413,81 @@ public class XsdValidatorTests
         // Assert
         schemas.Should().NotBeNull();
         schemas.Should().BeAssignableTo<IReadOnlyCollection<SchemaVersion>>();
+    }
+
+    #endregion
+
+    #region Testy XSD xsd:choice w DaneFaKorygowanej
+
+    [Fact]
+    public void Validate_CorrectionInvoice_IssuedInKSeF_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura korygująca faktury z KSeF (gałąź A: NrKSeF + NrKSeFFaKorygowanej)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta ilości";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/001",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedInKSeF = true,
+            CorrectedInvoiceKSeFNumber = "1234567890-20240115-ABC123456789-01"
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed with errors:\n{errorMessages}\n\nGenerated XML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:NrKSeF>1</tns:NrKSeF>");
+        xml.Should().Contain("NrKSeFFaKorygowanej");
+        xml.Should().Contain("1234567890-20240115-ABC123456789-01");
+    }
+
+    [Fact]
+    public void Validate_CorrectionInvoice_IssuedOutsideKSeF_ShouldPassXsdValidation()
+    {
+        // Arrange — faktura korygująca faktury spoza KSeF (gałąź B: NrKSeFN)
+        var invoice = CreateMinimalValidInvoice();
+        invoice.InvoiceData.InvoiceType = InvoiceType.KOR;
+        invoice.InvoiceData.CorrectionReason = "Korekta ilości";
+        invoice.InvoiceData.CorrectionType = 1;
+        invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
+        {
+            CorrectedInvoiceNumber = "FV/2025/001",
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
+        };
+
+        // Act
+        var xml = _serializer.SerializeToXml(invoice);
+        var result = _validator.Validate(invoice);
+
+        // Assert
+        if (result.HasErrors)
+        {
+            var errorMessages = string.Join("\n", result.Errors.Select(e => $"[{e.Code}] {e.Message}"));
+            result.IsValid.Should().BeTrue($"XSD validation failed with errors:\n{errorMessages}\n\nGenerated XML:\n{xml}");
+        }
+        else
+        {
+            result.IsValid.Should().BeTrue();
+        }
+
+        xml.Should().Contain("<tns:NrKSeFN>1</tns:NrKSeFN>");
+        xml.Should().NotContain("<tns:NrKSeF>");
+        xml.Should().NotContain("NrKSeFFaKorygowanej");
     }
 
     #endregion

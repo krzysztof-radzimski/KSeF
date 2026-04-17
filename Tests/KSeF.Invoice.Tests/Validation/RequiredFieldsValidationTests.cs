@@ -557,7 +557,8 @@ public class RequiredFieldsValidationTests
         invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
         {
             CorrectedInvoiceNumber = "FV/2025/001",
-            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10))
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
         };
 
         // Act
@@ -578,7 +579,8 @@ public class RequiredFieldsValidationTests
         invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
         {
             CorrectedInvoiceNumber = "FV/2025/001",
-            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10))
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
         };
 
         // Act
@@ -599,7 +601,8 @@ public class RequiredFieldsValidationTests
         invoice.InvoiceData.CorrectedInvoiceData = new KSeF.Invoice.Models.Corrections.CorrectedInvoiceData
         {
             CorrectedInvoiceNumber = "FV/2025/001",
-            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10))
+            CorrectedInvoiceIssueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)),
+            IsIssuedOutsideKSeF = true
         };
 
         // Act
