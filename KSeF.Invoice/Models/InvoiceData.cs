@@ -323,6 +323,11 @@ public class InvoiceData
         set => _correction.CorrectedInvoicePeriod = value;
     }
 
+    /// <summary>
+    /// Numer faktury korygowanej zmieniony (NrFaKorygowany)
+    /// Delegat do InvoiceCorrectionSection - numer faktury pierwotnej po zmianie numeracji
+    /// Element FA(3) "NrFaKorygowany", maksymalnie 256 znaków
+    /// </summary>
     [XmlElement("NrFaKorygowany", Order = 37)]
     public string? CorrectedInvoiceNumberAmended
     {
