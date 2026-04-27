@@ -13,10 +13,20 @@ using KSeF.Invoice.Models;
 
 namespace KSeF.Invoice.Services.Builders;
 
+/// <summary>
+/// Builder do budowania referencji do faktury zaliczkowej (AdvanceInvoiceReference)
+/// Obsługuje xsd:choice - faktura w KSeF lub poza KSeF
+/// </summary>
 public class AdvanceInvoiceReferenceBuilder
 {
     private readonly AdvanceInvoiceReference _data = new();
 
+    /// <summary>
+    /// Ustawia numer faktury zaliczkowej wystawionej w KSeF (NrKSeFFaZaliczkowej)
+    /// </summary>
+    /// <param name="ksefNumber">Numer KSeF faktury zaliczkowej</param>
+    /// <returns>Ten sam builder do fluent chaining</returns>
+    /// <exception cref="InvalidOperationException">Gdy już ustawiono wariant poza KSeF (xsd:choice)</exception>
     public AdvanceInvoiceReferenceBuilder WithKSeFNumber(string ksefNumber)
     {
         if (_data.IsIssuedOutsideKSeF)
@@ -26,6 +36,12 @@ public class AdvanceInvoiceReferenceBuilder
         return this;
     }
 
+    /// <summary>
+    /// Ustawia numer faktury zaliczkowej wystawionej poza KSeF (NrKSeFZN + NrFaZaliczkowej)
+    /// </summary>
+    /// <param name="invoiceNumber">Numer faktury zaliczkowej spoza KSeF</param>
+    /// <returns>Ten sam builder do fluent chaining</returns>
+    /// <exception cref="InvalidOperationException">Gdy już ustawiono wariant KSeF (xsd:choice)</exception>
     public AdvanceInvoiceReferenceBuilder IssuedOutsideKSeF(string invoiceNumber)
     {
         if (!string.IsNullOrEmpty(_data.KSeFNumber))
@@ -36,6 +52,11 @@ public class AdvanceInvoiceReferenceBuilder
         return this;
     }
 
+    /// <summary>
+    /// Buduje obiekt AdvanceInvoiceReference
+    /// </summary>
+    /// <returns>Skonfigurowany obiekt referencji do faktury zaliczkowej</returns>
+    /// <exception cref="InvalidOperationException">Gdy nie wybrano żadnego wariantu lub wybrano oba (xsd:choice)</exception>
     public AdvanceInvoiceReference Build()
     {
         var hasKSeF = !string.IsNullOrEmpty(_data.KSeFNumber);
